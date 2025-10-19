@@ -10,4 +10,9 @@ public class Chromosome {
     public Object[] getGenes() { 
         return genes;
     }
+
+    // Need to be  implemented #################################
+    public double getFitness(){
+        return 0.0;
+    }
 }
