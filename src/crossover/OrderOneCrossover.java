@@ -47,7 +47,6 @@ public class OrderOneCrossover<T> implements Crossover<T> {
             offSpringGenes2.set(i, parent2.getGenes().get(i));
         }
 
-        // Fill remaining genes
         fillRemainingGenes(offSpringGenes1, parent2, start, end + 1);
         fillRemainingGenes(offSpringGenes2, parent1, start, end + 1);
 

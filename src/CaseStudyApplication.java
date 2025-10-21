@@ -3,16 +3,13 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 import chromosome.Chromosome;
-import java.util.concurrent.atomic.AtomicBoolean;
+import crossover.Crossover;
+import crossover.UniformCrossover;
+import mutation.Insert;
+import replacement.GGA_Replacment;
+import selection.RouletteWheelSelection;
 public class CaseStudyApplication {
 
-// [[1], [1,3], [2]]
-
-// [0, 1, 2, 1]
-// [1, 3, 2, 4]
-// 10 15 5 1 
-// 15 20 30 5
-// sort by time limit for every machine
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter population size: ");
@@ -116,6 +113,10 @@ public class CaseStudyApplication {
         ga_engine.setCrossoverRate (crossoverRate);
         ga_engine.setMutationRate(mutationRate);
         ga_engine.setGenerations(generations);
+        ga_engine.setCrossover(new UniformCrossover<>());
+        ga_engine.setMutation(new Insert());
+        ga_engine.setSelection(new RouletteWheelSelection<>());
+        ga_engine.setReplacement(new GGA_Replacment<>());
         ga_engine.run();
     }
 }
