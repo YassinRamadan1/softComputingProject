@@ -28,7 +28,7 @@ public class RankSelection<T> implements Selection<T> {
         }
 
         // Step 4: Select parents based on probabilities
-        Vector<Chromosome<T>> selected = new Vector<>(numOfSelections);
+        Vector<Chromosome<T>> selected = new Vector<>(Collections.nCopies(numOfSelections, new Chromosome<>(new Vector<>())));
 
         for(int i=0; i<numOfSelections; i++){
             double r = rand.nextDouble();

@@ -49,7 +49,7 @@ public class CaseStudyApplication {
                     Machines.add(machine);
                 }
                 Vector<Integer> genes = individual.getGenes();
-                for (int i = 0; i < individual.chromosomeLength; i++) {
+                for (int i = 0; i < numberOfJobs; i++) {
                     int index = genes.get(i);
                     Machines.get(index).add(i);
                 }
