@@ -1,18 +1,29 @@
 package chromosome;
 
-public class Chromosome {
-    private Object[] genes;
+import java.util.Vector;
 
-    public Chromosome(Object[] genes){
+public class Chromosome<T> {
+    private Vector<T> genes;
+    private double fitness = Double.POSITIVE_INFINITY;
+    public int chromosomeLength;
+
+    public Chromosome(Vector<T> genes){
         this.genes = genes;
     }
 
-    public Object[] getGenes() { 
+    public Vector<T> getGenes() { 
         return genes;
     }
 
-    // Need to be  implemented #################################
-    public double getFitness(){
-        return 0.0;
+    public void setGenes(Vector<T> genes) {
+        this.genes = genes;
+    }
+
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
     }
 }

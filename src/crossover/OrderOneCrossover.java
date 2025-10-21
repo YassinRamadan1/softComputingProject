@@ -1,13 +1,14 @@
 package crossover;
-
+import java.util.Vector;
 import java.util.Random;
 import chromosome.Chromosome;
+import java.util.Collections;
 
-public class OrderOneCrossover implements Crossover {
+public class OrderOneCrossover<T> implements Crossover<T> {
     private Random rand = new Random();
 
-    private boolean containGene(Object[] genes, Object gene){
-        for(Object g : genes){
+    private boolean containGene(Vector<T> genes, T gene){
+        for(T g : genes){
             if(g != null && gene.equals(g)){
                 return true;
             }
@@ -15,44 +16,47 @@ public class OrderOneCrossover implements Crossover {
         return false;
     }
 
-    private void fillRemainingGenes(Object[] offSpringGenes, Chromosome parent, int start, int end){
-        int length = offSpringGenes.length;
+    private void fillRemainingGenes(Vector<T> offSpringGenes, Chromosome<T> parent, int start, int end){
+        int length = offSpringGenes.size();
         int currentPos = end % length;
 
         for(int i = 0; i < length; i++){
-            Object gene = parent.getGenes()[(end + i) % length];
+            T gene = parent.getGenes().get((end + i) % length);
             if(!containGene(offSpringGenes, gene)){
-                while (offSpringGenes[currentPos] != null) {
+                while (offSpringGenes.get(currentPos) != null) {
                     currentPos = (currentPos + 1) % length;
                 }
-                offSpringGenes[currentPos] = gene;
+                offSpringGenes.set(currentPos,gene);
             }
         }
     }
 
     @Override
-    public Chromosome[] crossover(Chromosome parent1, Chromosome parent2) {
-        int length = parent1.getGenes().length;
+    public Vector<Chromosome<T>> crossover(Chromosome<T> parent1, Chromosome<T> parent2) {
+        int length = parent1.getGenes().size();
         // Can crash if length < 2 ####################################################
         int start = rand.nextInt(length - 2);
         int end = rand.nextInt(length - start - 1) + start + 1;
 
-        Object[] offSpringGenes1 = new Object[length];
-        Object[] offSpringGenes2 = new Object[length];
+        Vector<T> offSpringGenes1 = new Vector<>((Collections.nCopies(length, (T) null)));
+        Vector<T> offSpringGenes2 = new Vector<>((Collections.nCopies(length, (T) null)));
 
-        // Copy segment between start and end (inclusive)
+
         for(int i = start; i <= end; i++){
-            offSpringGenes1[i] = parent1.getGenes()[i];
-            offSpringGenes2[i] = parent2.getGenes()[i];
+            offSpringGenes1.set(i, parent1.getGenes().get(i));
+            offSpringGenes2.set(i, parent2.getGenes().get(i));
         }
 
         // Fill remaining genes
         fillRemainingGenes(offSpringGenes1, parent2, start, end + 1);
         fillRemainingGenes(offSpringGenes2, parent1, start, end + 1);
 
-        Chromosome offSpring1 = new Chromosome(offSpringGenes1);
-        Chromosome offSpring2 = new Chromosome(offSpringGenes2);
+        Chromosome<T> offSpring1 = new Chromosome<T>(offSpringGenes1);
+        Chromosome<T> offSpring2 = new Chromosome<T>(offSpringGenes2);
 
-        return new Chromosome[] { offSpring1, offSpring2 };
+        Vector<Chromosome<T>> offSpring = new Vector<Chromosome<T>>(2);
+        offSpring.add(offSpring1);
+        offSpring.add(offSpring2);
+        return offSpring;
     }
 }

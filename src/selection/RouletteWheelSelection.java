@@ -1,24 +1,27 @@
 package selection;
 
 import chromosome.Chromosome;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
-public class RouletteWheelSelection implements Selection {
+public class RouletteWheelSelection<T> implements Selection<T> {
     @Override
-    public Chromosome[] select(Chromosome[] population, int numSelections){
-        Chromosome[] selected = new Chromosome[numSelections];
+    public Vector<Chromosome<T>> select(Vector<Chromosome<T>> population, int numSelections){
+        Vector<Chromosome<T>> selected = new Vector<>((Collections.nCopies(numSelections, new Chromosome<T>(new Vector<>()))));
 
         double totalFitnessSum = 0;
-        for (Chromosome c : population) {
+        for (Chromosome<T> c : population) {
             totalFitnessSum += c.getFitness();
         }
 
         Map<Integer, Float> chromosomeRange = new HashMap<>();
 
         float currentStart = 0.0f;
-        for (int i=0; i<population.length; i++) {
-            float currEnd = currentStart + (float)( (population[i].getFitness() / totalFitnessSum) * 100);
+        for (int i=0; i<population.size(); i++) {
+            float currEnd = currentStart + (float)( (population.get(i).getFitness() / totalFitnessSum) * 100);
             currEnd = Math.round(currEnd * 100f) / 100f;
 
             chromosomeRange.put(i, currEnd);
@@ -37,12 +40,12 @@ public class RouletteWheelSelection implements Selection {
 
             for (Map.Entry<Integer, Float> item : chromosomeRange.entrySet()) {
                 if (probability <= item.getValue()) {
-                    selected[idx] = population[item.getKey()];
+                    selected.set(idx, population.get(item.getKey()));
                     idx++;
                     break;
                 }
             }
         }
-        return  selected;
+        return selected;
     }
 }

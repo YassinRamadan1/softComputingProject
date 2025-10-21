@@ -3,16 +3,16 @@ package selection;
 import chromosome.Chromosome;
 import java.util.*;
 
-public class RankSelection implements Selection {
+public class RankSelection<T> implements Selection<T> {
     private Random rand = new Random();
 
     @Override
-    public Chromosome[] select(Chromosome[] population, int numOfSelections) {
-        int size = population.length;
+    public Vector<Chromosome<T>> select(Vector<Chromosome<T>> population, int numOfSelections) {
+        int size = population.size();
 
         // Step 1: Sort population by fitness ascending
-        Chromosome[] sortedPopulation = Arrays.copyOf(population, size);
-        Arrays.sort(sortedPopulation, Comparator.comparingDouble(Chromosome::getFitness));
+        Vector<Chromosome<T>> sortedPopulation = population;
+        Collections.sort(sortedPopulation, Comparator.comparingDouble(Chromosome::getFitness));
 
         // Step 2: Assign ranks (highest fitness → highest rank)
         double totalRankSum = (size * (size + 1)) / 2.0;
@@ -28,13 +28,13 @@ public class RankSelection implements Selection {
         }
 
         // Step 4: Select parents based on probabilities
-        Chromosome[] selected = new Chromosome[numOfSelections];
+        Vector<Chromosome<T>> selected = new Vector<>(numOfSelections);
 
         for(int i=0; i<numOfSelections; i++){
             double r = rand.nextDouble();
             for(int j=0; j<size; j++){
                 if(r <= cumulativeProb[j]){
-                    selected[i] = sortedPopulation[j];
+                    selected.set(i,sortedPopulation.get(j));
                     break;
                 }
             }

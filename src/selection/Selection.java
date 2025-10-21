@@ -1,7 +1,7 @@
 package selection;
-
+import java.util.Vector;
 import chromosome.Chromosome;
 
-public interface Selection {
-    Chromosome[] select(Chromosome[] population, int numSelections);
+public interface Selection<T> {
+    Vector<Chromosome<T>> select(Vector<Chromosome<T>> population, int numSelections);
 }

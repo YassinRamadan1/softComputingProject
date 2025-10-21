@@ -1,29 +1,30 @@
 package replacement;
-import java.util.Arrays;
+import java.util.Vector;
+import java.util.Collections;
 import java.util.Comparator;
 import chromosome.Chromosome;
 
-public class GGA_Replacment implements Replacement {
+public class GGA_Replacment<T> implements Replacement<T> {
 
     @Override
-    public Chromosome[] replacement(Chromosome[] population, Chromosome[] offspring) {
-        if(offspring.length == population.length)
+    public Vector<Chromosome<T>> replacement(Vector<Chromosome<T>> population, Vector<Chromosome<T>> offspring) {
+        if(offspring.size() == population.size())
             return offspring;
         
         //make new population array
-        Chromosome[] newPopulation = new Chromosome[population.length];
+        Vector<Chromosome<T>> newPopulation = new Vector<>((Collections.nCopies(population.size(), new Chromosome<T>(new Vector<>()))));
 
         //sort population by fitness descending
-        Arrays.sort(population, Comparator.comparingDouble(Chromosome::getFitness).reversed());
-
+        Collections.sort(population, Comparator.comparingDouble(Chromosome::getFitness));
+        Collections.reverse(population);
         //replace old population with offspring
-        for(int i = 0; i < population.length; i++) {
-            if(i < offspring.length) {
-                newPopulation[i] = offspring[i];
+        for(int i = 0; i < population.size(); i++) {
+            if(i < offspring.size()) {
+                newPopulation.set(i, offspring.get(i));
             }
             //if not enough offspring fill with best old population individuals
             else {
-                newPopulation[i] = population[i];
+                newPopulation.set(i, population.get(i));
             }
         }
         return newPopulation;
