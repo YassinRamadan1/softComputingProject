@@ -1,4 +1,6 @@
+import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
@@ -38,7 +40,7 @@ public class CaseStudyApplication {
         boolean [] isFeasable = new boolean[1];
         FitnessFunction<Integer> fitnessFunction = new FitnessFunction<Integer>() {
             @Override
-            public double evaluate(Chromosome<Integer> individual) {
+            public Map.Entry<Double, Vector<String>> evaluate(Chromosome<Integer> individual) {
                 isFeasable[0] = true;
                 Vector<Vector<Integer>> Machines = new Vector<Vector<Integer>>(3); 
                 for (int i = 0; i < 3; i++) {
@@ -85,9 +87,7 @@ public class CaseStudyApplication {
                     finalTime = Math.max(finalTime, currentTime);
                 }
 
-                individual.setSchedule(schedule);
-
-                return 1.0 / finalTime;
+                return new AbstractMap.SimpleEntry<>(1.0 / finalTime, schedule);
             }
         };
 
@@ -112,7 +112,7 @@ public class CaseStudyApplication {
                    }
                     Chromosome<Integer> chromosome = new Chromosome<Integer>(genes);
                     
-                    double fitness = fitnessFunction.evaluate(chromosome);
+                    double fitness = fitnessFunction.evaluate(chromosome).getKey();
                     if(isFeasable[0]){
                         population.set(i, chromosome);
                     }

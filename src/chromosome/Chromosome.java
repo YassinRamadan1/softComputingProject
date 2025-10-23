@@ -4,7 +4,6 @@ import java.util.Vector;
 
 public class Chromosome<T> {
     private Vector<T> genes;
-    private Vector<String> schedule;
     private double fitness = Double.POSITIVE_INFINITY;
     public int chromosomeLength;
 
@@ -26,13 +25,5 @@ public class Chromosome<T> {
 
     public void setFitness(double fitness) {
         this.fitness = fitness;
-    }
-
-    public Vector<String> getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Vector<String> schedule) {
-        this.schedule = schedule;
     }
 }
