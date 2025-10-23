@@ -82,7 +82,9 @@ public class CaseStudyApplication {
                             .append("], ");
                     }
 
+                    machineSchedule.setLength(machineSchedule.length() - 2);
                     schedule.add(machineSchedule.toString());
+                    
                     currentTime += infeasiblePenalty * 1000;
                     finalTime = Math.max(finalTime, currentTime);
                 }
