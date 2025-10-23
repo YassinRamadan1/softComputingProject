@@ -1,5 +1,4 @@
 package selection;
-
 import chromosome.Chromosome;
 import java.util.*;
 
