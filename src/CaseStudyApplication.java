@@ -13,18 +13,35 @@ import selection.RouletteWheelSelection;
 public class CaseStudyApplication {
 
     public static void main(String[] args){
+        System.out.print("Population size = 100\nCrossover rate = 0.7\nMutation rate = 0.01\nGenerations = 1000\n");
+        System.out.println("Enter 1 or 2:\n1.Use default parameters\n2.Enter custom parameters");
+
+        int popSize = 100;
+        double coRate = 0.7;
+        double mRate = 0.01;
+        int gs = 1000;
+        
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter population size: ");
-        int populationSize = sc.nextInt();
+        int choice = sc.nextInt();
+        if(choice == 2){
+            System.out.print("Enter population size: ");
+            popSize = sc.nextInt();
 
-        System.out.print("Enter crossover rate (e.g. 0.7): ");
-        double crossoverRate = sc.nextDouble();
+            System.out.print("Enter crossover rate (e.g. 0.7): ");
+            coRate = sc.nextDouble();
 
-        System.out.print("Enter mutation rate (e.g. 0.02): ");
-        double mutationRate = sc.nextDouble();
+            System.out.print("Enter mutation rate (e.g. 0.01): ");
+            mRate = sc.nextDouble();
 
-        System.out.print("Enter number of generations: ");
-        int generations = sc.nextInt();
+            System.out.print("Enter number of generations: ");
+            gs = sc.nextInt();
+        }
+
+        int populationSize = popSize;
+        double crossoverRate = coRate;
+        double mutationRate = mRate;
+        int generations = gs;
+
         System.out.print("Enter number of jobs: ");
         Integer numberOfJobs = sc.nextInt();
         Integer [] durations = new Integer[numberOfJobs];
@@ -103,27 +120,38 @@ public class CaseStudyApplication {
                 Vector <Chromosome<Integer>> population = new Vector<Chromosome<Integer>>(populationSize);
                 for (int i = 0; i < populationSize; i++) {
                     Vector <Integer> genes = new Vector<>(numberOfJobs);
-                    Chromosome<Integer> c = new Chromosome<>(genes); 
+                    Chromosome<Integer> c = new Chromosome<>(genes);
                     population.add(c);
                 }
+
+                int maxAttempts = 10000; // Maximum attempts to find a feasible solution
+                int totalAttempts = 0;
+
                 for (int i = 0; i < populationSize; i++) {
-                    Vector <Integer> genes = new Vector<Integer>(numberOfJobs);
-                    for (int j = 0; j < numberOfJobs; j++) {
-                        genes.add(0);
-                    }
-                    for(int j=0; j<numberOfJobs; ++j){
-                        int gene = (int) Math.floor((rand.nextDouble() * 3));
-                        genes.set(j, gene);
-                   }
-                    Chromosome<Integer> chromosome = new Chromosome<Integer>(genes);
+                    boolean foundFeasible = false;
+
+                    while (!foundFeasible && totalAttempts < maxAttempts) {
+                        totalAttempts++;
+
+                        Vector <Integer> genes = new Vector<Integer>(numberOfJobs);
+                        for (int j = 0; j < numberOfJobs; j++) {
+                            int gene = rand.nextInt(3);
+                            genes.add(gene);
+                        }
+                        Chromosome<Integer> chromosome = new Chromosome<Integer>(genes);
                     
-                    double fitness = fitnessFunction.evaluate(chromosome).getKey();
-                    if(isFeasable[0]){
-                        population.set(i, chromosome);
+                        double fitness = fitnessFunction.evaluate(chromosome).getKey();
+                        if(isFeasable[0]){
+                            population.set(i, chromosome);
+                            foundFeasible = true;
+                        }
                     }
-                    else {
-                        i--;
-                    }                    
+
+                    // no feasible solution is found
+                    if (!foundFeasible) {
+                        System.out.println("There is no feasible solution for the given jobs and limits.");
+                        System.exit(0);
+                    }
                 }
                 return population;
             }
