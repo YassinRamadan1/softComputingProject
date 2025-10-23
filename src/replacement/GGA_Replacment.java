@@ -14,7 +14,6 @@ public class GGA_Replacment<T> implements Replacement<T> {
         Vector<Chromosome<T>> newPopulation = new Vector<>((Collections.nCopies(population.size(), new Chromosome<T>(new Vector<>()))));
 
         Collections.sort(population, Comparator.comparingDouble(Chromosome::getFitness));
-        Collections.reverse(population);
         for(int i = 0; i < population.size(); i++) {
             if(i < offspring.size()) {
                 newPopulation.set(i, offspring.get(i));

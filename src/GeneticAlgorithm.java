@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 import chromosome.Chromosome;
@@ -16,7 +17,6 @@ public class GeneticAlgorithm<T> {
     Vector<Double> fitnessValues;
     Random rand = new Random();
     FitnessFunction<T> func;
-    InfeasibilityHandler infeasibilityHandler;
     InitializePopulation<T> initializePopulation;
 
 
@@ -85,14 +85,17 @@ public class GeneticAlgorithm<T> {
     {
         population = initializePopulation.initializePopulation();
         double maxFitness = 0;
-        Chromosome bestChromosome = population.get(0);
+        Chromosome<T> bestChromosome = population.get(0);
+        Vector<String> bestSchedule = new Vector<>();
         for(int t=0; t<generations; t++){
             for(int i=0; i<populationSize; i++){
-                double fitness = func.evaluate(population.get(i));
+                Map.Entry<Double, Vector<String>> evalResult = func.evaluate(population.get(i));
+                double fitness = evalResult.getKey();
                 fitnessValues.set(i, fitness);
                 if(maxFitness < fitness){
                     maxFitness = fitness;
                     bestChromosome = population.get(i);
+                    bestSchedule = evalResult.getValue();
                 }
             }
 
@@ -112,7 +115,14 @@ public class GeneticAlgorithm<T> {
                         
         }
 
-        System.out.println(maxFitness);
-        System.out.println(bestChromosome.getGenes());       
+        // System.out.println(maxFitness);
+        // System.out.println(bestChromosome.getGenes());
+
+        System.out.println("\nTotal Time: " + 1 / maxFitness);
+        System.out.println("Best Chromosome: " + bestChromosome.getGenes());
+        System.out.println("\nExecution Order per Machine:");
+        for (String s : bestSchedule) {
+            System.out.println(s);
+        }
     }
 }

@@ -1,7 +1,8 @@
+import java.util.Map;
 import java.util.Vector;
 import chromosome.Chromosome;
 
 public interface FitnessFunction<T>
 {
-    double evaluate(Chromosome<T> x);
+    Map.Entry<Double, Vector<String>> evaluate(Chromosome<T> x);
 }

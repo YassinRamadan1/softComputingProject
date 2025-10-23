@@ -51,7 +51,9 @@ public class OrderOneCrossover<T> implements Crossover<T> {
         fillRemainingGenes(offSpringGenes2, parent1, start, end + 1);
 
         Chromosome<T> offSpring1 = new Chromosome<T>(offSpringGenes1);
+        offSpring1.parent = parent1; 
         Chromosome<T> offSpring2 = new Chromosome<T>(offSpringGenes2);
+        offSpring2.parent = parent2; 
 
         Vector<Chromosome<T>> offSpring = new Vector<Chromosome<T>>(2);
         offSpring.add(offSpring1);

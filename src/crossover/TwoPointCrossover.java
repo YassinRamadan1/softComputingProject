@@ -36,6 +36,8 @@ public class TwoPointCrossover<T> implements Crossover<T> {
 
         Chromosome<T> offSpring1 = new Chromosome<T>(offSpringGenes1);
         Chromosome<T> offSpring2 = new Chromosome<T>(offSpringGenes2);
+        offSpring1.parent = parent1;
+        offSpring2.parent = parent2;
 
         Vector<Chromosome<T>> offSpring = new Vector<Chromosome<T>>(2);
         offSpring.add(offSpring1);

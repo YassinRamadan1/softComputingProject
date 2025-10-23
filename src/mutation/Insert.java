@@ -8,6 +8,11 @@ public class Insert implements Mutation<Integer> {
     @Override
     public Chromosome<Integer> mutate(Chromosome<Integer> chromosome, double mutationRate) {
         Random random = new Random();
+        
+        if (random.nextDouble() > mutationRate) {
+            return chromosome;
+        }
+
         int length = chromosome.getGenes().size();
 
         int randomPosition1 = random.nextInt(length);

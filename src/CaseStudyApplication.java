@@ -1,4 +1,6 @@
+import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
@@ -38,7 +40,7 @@ public class CaseStudyApplication {
         boolean [] isFeasable = new boolean[1];
         FitnessFunction<Integer> fitnessFunction = new FitnessFunction<Integer>() {
             @Override
-            public double evaluate(Chromosome<Integer> individual) {
+            public Map.Entry<Double, Vector<String>> evaluate(Chromosome<Integer> individual) {
                 isFeasable[0] = true;
                 Vector<Vector<Integer>> Machines = new Vector<Vector<Integer>>(3); 
                 for (int i = 0; i < 3; i++) {
@@ -51,24 +53,46 @@ public class CaseStudyApplication {
                     Machines.get(index).add(i);
                 }
 
+                Vector<String> schedule = new Vector<>();
+
                 double finalTime = 1;
                 for(int i = 0; i < Machines.size(); i++) {
                     Vector<Integer> jobs = Machines.get(i);
-                    Collections.sort(jobs);
-                    double totalTime = 0;
-                    int infeasible = 0;
+                    Collections.sort(jobs, (j1, j2) -> {
+                        if (limits[j1] != limits[j2]) return Integer.compare(limits[j1], limits[j2]);
+                        return Integer.compare(durations[j1], durations[j2]);
+                    });
+                    
+                    double currentTime = 0;
+                    int infeasiblePenalty = 0;
+                    StringBuilder machineSchedule = new StringBuilder("Machine " + (i + 1) + ": ");
+
                     for (Integer jobIndex : jobs) {
-                        totalTime += durations[jobIndex];
-                        if (totalTime > limits[jobIndex]) {
+                        double start = currentTime;
+                        double end = currentTime + durations[jobIndex];
+                        currentTime = end;
+
+                        if (end > limits[jobIndex]) {
                             isFeasable[0] = false;
-                            infeasible += totalTime - limits[jobIndex];
+                            infeasiblePenalty += (end - limits[jobIndex]);
                         }
+
+                        machineSchedule.append(jobIndex)
+                            .append("[")
+                            .append((int) start)
+                            .append("->")
+                            .append((int) end)
+                            .append("], ");
                     }
-                    totalTime += infeasible * 1000;
-                    finalTime = Math.max(finalTime, totalTime);
+
+                    machineSchedule.setLength(machineSchedule.length() - 2);
+                    schedule.add(machineSchedule.toString());
+                    
+                    currentTime += infeasiblePenalty * 1000;
+                    finalTime = Math.max(finalTime, currentTime);
                 }
-                finalTime = 1.0 / finalTime;
-                return finalTime;
+
+                return new AbstractMap.SimpleEntry<>(1.0 / finalTime, schedule);
             }
         };
 
@@ -93,7 +117,7 @@ public class CaseStudyApplication {
                    }
                     Chromosome<Integer> chromosome = new Chromosome<Integer>(genes);
                     
-                    double fitness = fitnessFunction.evaluate(chromosome);
+                    double fitness = fitnessFunction.evaluate(chromosome).getKey();
                     if(isFeasable[0]){
                         population.set(i, chromosome);
                     }
