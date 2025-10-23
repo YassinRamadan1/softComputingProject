@@ -25,11 +25,11 @@ public class GeneticAlgorithm<T> {
     Crossover<T> cv ;
     Mutation<T> mutation;
 
-    public void setSelection(Selection<T> selection) {
+    public void setSelection(Selection<T> selection) { 
         this.selection = selection;
     }
 
-    public void setCrossover(Crossover<T> crossover) {
+    public void setCrossover(Crossover<T> crossover) { 
         this.cv = crossover;
     }
 
@@ -81,27 +81,30 @@ public class GeneticAlgorithm<T> {
         this.initializePopulation = initializePopulation;
     }
 
-    public void run()
+    public void run() 
     {
         population = initializePopulation.initializePopulation();
-        double maxFitness = 0;
+        double maxFitness = Double.NEGATIVE_INFINITY;
         Chromosome<T> bestChromosome = population.get(0);
         Vector<String> bestSchedule = new Vector<>();
+        boolean bestFeasible = false;
         for(int t=0; t<generations; t++){
             for(int i=0; i<populationSize; i++){
-                Map.Entry<Double, Vector<String>> evalResult = func.evaluate(population.get(i));
-                double fitness = evalResult.getKey();
+                EvaluationResult eval = func.evaluate(population.get(i));
+                double fitness = eval.fitness;
                 fitnessValues.set(i, fitness);
-                if(maxFitness < fitness){
+
+                if (maxFitness < fitness) {
                     maxFitness = fitness;
                     bestChromosome = population.get(i);
-                    bestSchedule = evalResult.getValue();
+                    bestSchedule = eval.schedule;
+                    bestFeasible = eval.isFeasible;
                 }
             }
 
             Vector<Chromosome<T>> selected = selection.select(population, (int)(population.size() * crossoverRate));
             Vector<Chromosome<T>> offSpring = new Vector<>();
-            
+
             for (int i = 0; i < selected.size(); i += 2) {
                 offSpring.addAll(cv.crossover(selected.get(i), selected.get((i+1)%selected.size())));
             }
@@ -115,10 +118,14 @@ public class GeneticAlgorithm<T> {
                         
         }
 
-        // System.out.println(maxFitness);
-        // System.out.println(bestChromosome.getGenes());
+        System.out.println("\n========== Genetic Algorithm Result ==========");
+        if (bestFeasible) {
+            System.out.println("Feasible Solution Found!");
+            System.out.println("Total Time: " + (1 / maxFitness));
+        } else {
+            System.out.println("No feasible solution found after all generations.");
+        }
 
-        System.out.println("\nTotal Time: " + 1 / maxFitness);
         System.out.println("Best Chromosome: " + bestChromosome.getGenes());
         System.out.println("\nExecution Order per Machine:");
         for (String s : bestSchedule) {

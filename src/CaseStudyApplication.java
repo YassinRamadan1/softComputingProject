@@ -20,7 +20,7 @@ public class CaseStudyApplication {
         double coRate = 0.7;
         double mRate = 0.01;
         int gs = 1000;
-        
+
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         if(choice == 2){
@@ -47,22 +47,22 @@ public class CaseStudyApplication {
         Integer [] durations = new Integer[numberOfJobs];
         Integer [] limits = new Integer[numberOfJobs];
         for(int i=0; i<numberOfJobs; ++i){
-            System.out.println("Enter duration and limit for job " + i + ": ");   
+            System.out.println("Enter duration and limit for job " + i + ": ");
             Integer duration = sc.nextInt();
             Integer limit = sc.nextInt();
             durations[i] = duration;
             limits[i] = limit;
         }
 
-        boolean [] isFeasable = new boolean[1];
+        boolean[] isFeasible = new boolean[1];
+
         FitnessFunction<Integer> fitnessFunction = new FitnessFunction<Integer>() {
             @Override
-            public Map.Entry<Double, Vector<String>> evaluate(Chromosome<Integer> individual) {
-                isFeasable[0] = true;
-                Vector<Vector<Integer>> Machines = new Vector<Vector<Integer>>(3); 
+            public EvaluationResult evaluate(Chromosome<Integer> individual) {
+                isFeasible[0] = true;
+                Vector<Vector<Integer>> Machines = new Vector<Vector<Integer>>(3);
                 for (int i = 0; i < 3; i++) {
-                    Vector<Integer> machine = new Vector<>();
-                    Machines.add(machine);
+                    Machines.add(new Vector<>());
                 }
                 Vector<Integer> genes = individual.getGenes();
                 for (int i = 0; i < numberOfJobs; i++) {
@@ -79,7 +79,7 @@ public class CaseStudyApplication {
                         if (limits[j1] != limits[j2]) return Integer.compare(limits[j1], limits[j2]);
                         return Integer.compare(durations[j1], durations[j2]);
                     });
-                    
+
                     double currentTime = 0;
                     int infeasiblePenalty = 0;
                     StringBuilder machineSchedule = new StringBuilder("Machine " + (i + 1) + ": ");
@@ -90,26 +90,33 @@ public class CaseStudyApplication {
                         currentTime = end;
 
                         if (end > limits[jobIndex]) {
-                            isFeasable[0] = false;
+                            isFeasible[0] = false;
                             infeasiblePenalty += (end - limits[jobIndex]);
                         }
 
                         machineSchedule.append(jobIndex)
-                            .append("[")
-                            .append((int) start)
-                            .append("->")
-                            .append((int) end)
-                            .append("], ");
+                                .append("[")
+                                .append((int) start)
+                                .append("->")
+                                .append((int) end)
+                                .append("], ");
                     }
 
-                    machineSchedule.setLength(machineSchedule.length() - 2);
+                    if (machineSchedule.length() > 2){
+                        machineSchedule.setLength(machineSchedule.length() - 2);
+                    }
                     schedule.add(machineSchedule.toString());
-                    
+
                     currentTime += infeasiblePenalty * 1000;
                     finalTime = Math.max(finalTime, currentTime);
                 }
 
-                return new AbstractMap.SimpleEntry<>(1.0 / finalTime, schedule);
+                double fitness = 1.0 / finalTime;
+                if(!isFeasible[0]){
+                    fitness *= 0.001; // give a low fitness to infeasible solutions
+                }
+
+                return new EvaluationResult(fitness, schedule, isFeasible[0]);
             }
         };
 
@@ -118,45 +125,50 @@ public class CaseStudyApplication {
             public Vector<Chromosome<Integer>> initializePopulation() {
                 Random rand = new Random();
                 Vector <Chromosome<Integer>> population = new Vector<Chromosome<Integer>>(populationSize);
-                for (int i = 0; i < populationSize; i++) {
-                    Vector <Integer> genes = new Vector<>(numberOfJobs);
-                    Chromosome<Integer> c = new Chromosome<>(genes);
-                    population.add(c);
-                }
 
                 int maxAttempts = 10000; // Maximum attempts to find a feasible solution
                 int totalAttempts = 0;
+                int feasibleCount = 0;
 
                 for (int i = 0; i < populationSize; i++) {
-                    boolean foundFeasible = false;
+                    Chromosome<Integer> bestAttempt = null;
+                    double bestFitness = Double.NEGATIVE_INFINITY;
 
-                    while (!foundFeasible && totalAttempts < maxAttempts) {
+                    while (totalAttempts < maxAttempts) {
                         totalAttempts++;
-
                         Vector <Integer> genes = new Vector<Integer>(numberOfJobs);
                         for (int j = 0; j < numberOfJobs; j++) {
                             int gene = rand.nextInt(3);
                             genes.add(gene);
                         }
                         Chromosome<Integer> chromosome = new Chromosome<Integer>(genes);
-                    
-                        double fitness = fitnessFunction.evaluate(chromosome).getKey();
-                        if(isFeasable[0]){
-                            population.set(i, chromosome);
-                            foundFeasible = true;
+                        double fitness = fitnessFunction.evaluate(chromosome).fitness;
+                        if (fitness > bestFitness) {
+                            bestFitness = fitness;
+                            bestAttempt = chromosome;
+                        }
+
+                        if (isFeasible[0]) {
+                            feasibleCount++;
+                            population.add(chromosome);
+                            break;
                         }
                     }
+                    totalAttempts = 0;
 
-                    // no feasible solution is found
-                    if (!foundFeasible) {
-                        System.out.println("There is no feasible solution for the given jobs and limits.");
-                        System.exit(0);
+                    // add best infeasible solution if none feasible found
+                    if (population.size() <= i) {
+                        population.add(bestAttempt);
                     }
+                }
+
+                if(feasibleCount == 0){
+                    System.out.println("Warning: No feasible solution found in initialization. Continuing with infeasible population...");
                 }
                 return population;
             }
         };
-        
+
         GeneticAlgorithm<Integer> ga_engine = new GeneticAlgorithm<Integer>();
         ga_engine.setPopulationSize(populationSize);
         ga_engine.setChromosomeLength(numberOfJobs);
@@ -169,6 +181,7 @@ public class CaseStudyApplication {
         ga_engine.setMutation(new Insert());
         ga_engine.setSelection(new RouletteWheelSelection<>());
         ga_engine.setReplacement(new GGA_Replacment<>());
+
         ga_engine.run();
     }
 }
