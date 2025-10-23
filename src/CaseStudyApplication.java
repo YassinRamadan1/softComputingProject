@@ -51,24 +51,43 @@ public class CaseStudyApplication {
                     Machines.get(index).add(i);
                 }
 
+                Vector<String> schedule = new Vector<>();
+
                 double finalTime = 1;
                 for(int i = 0; i < Machines.size(); i++) {
                     Vector<Integer> jobs = Machines.get(i);
                     Collections.sort(jobs);
-                    double totalTime = 0;
-                    int infeasible = 0;
+                    
+                    double currentTime = 0;
+                    int infeasiblePenalty = 0;
+                    StringBuilder machineSchedule = new StringBuilder("Machine " + (i + 1) + ": ");
+
                     for (Integer jobIndex : jobs) {
-                        totalTime += durations[jobIndex];
-                        if (totalTime > limits[jobIndex]) {
+                        double start = currentTime;
+                        double end = currentTime + durations[jobIndex];
+                        currentTime = end;
+
+                        if (end > limits[jobIndex]) {
                             isFeasable[0] = false;
-                            infeasible += totalTime - limits[jobIndex];
+                            infeasiblePenalty += (end - limits[jobIndex]);
                         }
+
+                        machineSchedule.append(jobIndex)
+                            .append("[")
+                            .append((int) start)
+                            .append("->")
+                            .append((int) end)
+                            .append("], ");
                     }
-                    totalTime += infeasible * 1000;
-                    finalTime = Math.max(finalTime, totalTime);
+
+                    schedule.add(machineSchedule.toString());
+                    currentTime += infeasiblePenalty * 1000;
+                    finalTime = Math.max(finalTime, currentTime);
                 }
-                finalTime = 1.0 / finalTime;
-                return finalTime;
+
+                individual.setSchedule(schedule);
+
+                return 1.0 / finalTime;
             }
         };
 

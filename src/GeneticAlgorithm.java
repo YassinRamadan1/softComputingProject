@@ -112,7 +112,14 @@ public class GeneticAlgorithm<T> {
                         
         }
 
-        System.out.println(maxFitness);
-        System.out.println(bestChromosome.getGenes());       
+        // System.out.println(maxFitness);
+        // System.out.println(bestChromosome.getGenes());
+
+        System.out.println("\nBest Fitness: " + maxFitness);
+        System.out.println("Best Chromosome: " + bestChromosome.getGenes());
+        System.out.println("\nExecution Order per Machine:");
+        for (String s : (Vector<String>) bestChromosome.getSchedule()) {
+            System.out.println(s);
+        }
     }
 }
