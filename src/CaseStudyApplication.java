@@ -58,7 +58,12 @@ public class CaseStudyApplication {
                 double finalTime = 1;
                 for(int i = 0; i < Machines.size(); i++) {
                     Vector<Integer> jobs = Machines.get(i);
-                    Collections.sort(jobs);
+                    Collections.sort(jobs, (j1, j2) -> {
+                        int slack1 = limits[j1] - durations[j1];
+                        int slack2 = limits[j2] - durations[j2];
+                        if (slack1 != slack2) return Integer.compare(slack1, slack2);
+                        return Integer.compare(durations[j1], durations[j2]);
+                    });
                     
                     double currentTime = 0;
                     int infeasiblePenalty = 0;
