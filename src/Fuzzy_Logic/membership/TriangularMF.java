@@ -1,5 +1,7 @@
 package membership;
 
+import java.util.Vector;
+
 public class TriangularMF implements IMembershipFunction {
     private final double a, b, c;
     private final String name;
@@ -9,6 +11,31 @@ public class TriangularMF implements IMembershipFunction {
         this.a = a;
         this.b = b;
         this.c = c;
+    }
+
+    @Override
+    public double calculateCentroid() {
+        return (a + b + c) / 3.0;
+    }
+
+    @Override
+    public Vector<Double> getPoints()
+    {
+        Vector<Double> points = new Vector<>();
+        points.add(a);
+        points.add(b);
+        points.add(c);
+        return points;
+    }
+
+    @Override
+    public Vector<Double> getInverse(double membership)
+    {
+        Vector<Double> xValues = new Vector<>();
+        xValues.add((b - a) * membership + a);
+        xValues.add((b - c) * membership + c);
+
+        return xValues;
     }
 
     @Override

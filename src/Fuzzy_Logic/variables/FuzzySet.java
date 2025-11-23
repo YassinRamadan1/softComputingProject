@@ -1,5 +1,7 @@
 package variables;
 
+import java.util.Vector;
+
 import membership.IMembershipFunction;
 
 public class FuzzySet {
@@ -18,6 +20,20 @@ public class FuzzySet {
 
     public IMembershipFunction getMembershipFunction() {
         return membershipFunction;
+    }
+
+    public double calculateCentroid() {
+        return membershipFunction.calculateCentroid();
+    }
+
+    public Vector<Double> getPoints()
+    {
+        return membershipFunction.getPoints();
+    }
+
+    public Vector<Double> getInverse(double membership)
+    {
+        return membershipFunction.getInverse(membership);
     }
 
     public double getMembership(double x) {
