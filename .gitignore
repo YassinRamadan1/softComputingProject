@@ -1,6 +1,8 @@
 .vscode/
 bin/
 out/
+target/
 .idea
 softComputingProject.iml
 NFG-Library.iml
+*.class
