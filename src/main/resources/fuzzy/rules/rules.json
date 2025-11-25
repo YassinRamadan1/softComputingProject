@@ -1,0 +1,46 @@
+[
+  {
+    "name": "R2",
+    "enabled": true,
+    "weight": 0.8,
+    "connector": "AND",
+    "antecedents": [
+      {
+        "variableName": "Light",
+        "setName": "Dark",
+        "operator": "IS"
+      },
+      {
+        "variableName": "Temperature",
+        "setName": "Cold",
+        "operator": "IS"
+      }
+    ],
+    "consequent": {
+      "variableName": "BlindPosition",
+      "setName": "Open"
+    }
+  },
+  {
+    "name": "R1",
+    "enabled": true,
+    "weight": 1.0,
+    "connector": "AND",
+    "antecedents": [
+      {
+        "variableName": "Light",
+        "setName": "Bright",
+        "operator": "IS"
+      },
+      {
+        "variableName": "Temperature",
+        "setName": "Hot",
+        "operator": "IS"
+      }
+    ],
+    "consequent": {
+      "variableName": "BlindPosition",
+      "setName": "Closed"
+    }
+  }
+]
