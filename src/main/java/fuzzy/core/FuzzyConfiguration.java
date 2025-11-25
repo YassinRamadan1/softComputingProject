@@ -14,7 +14,6 @@ public class FuzzyConfiguration {
             }
         }
     }
-
     public enum AndOperatorType{
         MIN, ALGEBRAIC_PRODUCT;
 
@@ -26,7 +25,6 @@ public class FuzzyConfiguration {
             }
         }
     }
-
     public enum OrOperatorType{
         MAX, ALGEBRAIC_SUM;
 
@@ -38,7 +36,6 @@ public class FuzzyConfiguration {
             }
         }
     }
-
     public enum ImplicationOperatorType{
         MIN, PRODUCT;
 
@@ -50,7 +47,6 @@ public class FuzzyConfiguration {
             }
         }
     }
-
     public enum AggregationOperatorType{
         MAX, SUM;
 
@@ -62,7 +58,6 @@ public class FuzzyConfiguration {
             }
         }
     }
-
     public enum DefuzzificationMethodType {
         MEAN_OF_MAX, WEIGHTED_AVERAGE;
 
@@ -74,9 +69,8 @@ public class FuzzyConfiguration {
             }
         }
     }
-
     public enum ValidationStrategyType {
-        CLAMP, DEFAULT_VALUE;
+        CLAMP, STRICT;
 
         public static ValidationStrategyType fromString(String strategy) {
             try {
@@ -86,7 +80,6 @@ public class FuzzyConfiguration {
             }
         }
     }
-
     public enum MembershipFunctionType {
         TRIANGULAR, TRAPEZOIDAL;
 
@@ -98,6 +91,7 @@ public class FuzzyConfiguration {
             }
         }
     }
+
 
     private InferenceEngineType inferenceEngineType;
     private AndOperatorType andOperatorType;
@@ -150,143 +144,108 @@ public class FuzzyConfiguration {
     public InferenceEngineType getInferenceEngineType() {
         return inferenceEngineType;
     }
-
     public void setInferenceEngineType(InferenceEngineType inferenceEngineType) {
         this.inferenceEngineType = inferenceEngineType;
     }
-
     public AndOperatorType getAndOperatorType() {
         return andOperatorType;
     }
-
     public void setAndOperatorType(AndOperatorType andOperatorType) {
         this.andOperatorType = andOperatorType;
     }
-
     public OrOperatorType getOrOperatorType() {
         return orOperatorType;
     }
-
     public void setOrOperatorType(OrOperatorType orOperatorType) {
         this.orOperatorType = orOperatorType;
     }
-
     public ImplicationOperatorType getImplicationOperatorType() {
         return implicationOperatorType;
     }
-
     public void setImplicationOperatorType(ImplicationOperatorType implicationOperatorType) {
         this.implicationOperatorType = implicationOperatorType;
     }
-
     public AggregationOperatorType getAggregationOperatorType() {
         return aggregationOperatorType;
     }
-
     public void setAggregationOperatorType(AggregationOperatorType aggregationOperatorType) {
         this.aggregationOperatorType = aggregationOperatorType;
     }
-
     public DefuzzificationMethodType getDefuzzificationMethodType() {
         return defuzzificationMethodType;
     }
-
     public void setDefuzzificationMethodType(DefuzzificationMethodType defuzzificationMethodType) {
         this.defuzzificationMethodType = defuzzificationMethodType;
     }
-
     public ValidationStrategyType getValidationStrategyType() {
         return validationStrategyType;
     }
-
     public void setValidationStrategyType(ValidationStrategyType validationStrategyType) {
         this.validationStrategyType = validationStrategyType;
     }
-
     public double getDefaultInputMin() {
         return defaultInputMin;
     }
-
     public void setDefaultInputMin(double defaultInputMin) {
         this.defaultInputMin = defaultInputMin;
     }
-
     public double getDefaultInputMax() {
         return defaultInputMax;
     }
-
     public void setDefaultInputMax(double defaultInputMax) {
         this.defaultInputMax = defaultInputMax;
     }
-
     public double getDefaultOutputMin() {
         return defaultOutputMin;
     }
-
     public void setDefaultOutputMin(double defaultOutputMin) {
         this.defaultOutputMin = defaultOutputMin;
     }
-
     public double getDefaultOutputMax() {
         return defaultOutputMax;
     }
-
     public void setDefaultOutputMax(double defaultOutputMax) {
         this.defaultOutputMax = defaultOutputMax;
     }
-
     public int getDefaultNumberOfSets() {
         return defaultNumberOfSets;
     }
-
     public void setDefaultNumberOfSets(int defaultNumberOfSets) {
         this.defaultNumberOfSets = defaultNumberOfSets;
     }
-
     public MembershipFunctionType getDefaultMembershipFunctionType() {
         return defaultMembershipFunctionType;
     }
-
     public void setDefaultMembershipFunctionType(MembershipFunctionType defaultMembershipFunctionType) {
         this.defaultMembershipFunctionType = defaultMembershipFunctionType;
     }
-
     public boolean isAutoGenerateSets() {
         return autoGenerateSets;
     }
-
     public void setAutoGenerateSets(boolean autoGenerateSets) {
         this.autoGenerateSets = autoGenerateSets;
     }
-
     public boolean isWindowBlindEnabled() {
         return windowBlindEnabled;
     }
-
     public void setWindowBlindEnabled(boolean windowBlindEnabled) {
         this.windowBlindEnabled = windowBlindEnabled;
     }
-
     public String getWindowBlindRuleFile() {
         return windowBlindRuleFile;
     }
-
     public void setWindowBlindRuleFile(String windowBlindRuleFile) {
         this.windowBlindRuleFile = windowBlindRuleFile;
     }
-
     public String[] getWindowBlindInputVariables() {
         return windowBlindInputVariables;
     }
-
     public void setWindowBlindInputVariables(String[] windowBlindInputVariables) {
         this.windowBlindInputVariables = windowBlindInputVariables;
     }
-
     public String getWindowBlindOutputVariable() {
         return windowBlindOutputVariable;
     }
-
     public void setWindowBlindOutputVariable(String windowBlindOutputVariable) {
         this.windowBlindOutputVariable = windowBlindOutputVariable;
     }

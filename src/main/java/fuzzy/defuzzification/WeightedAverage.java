@@ -6,15 +6,13 @@ import java.util.Map;
 import fuzzy.variables.FuzzyVariable;
 
 public class WeightedAverage implements DeFuzzificationMethod {
-    
-    private FuzzyVariable outputVariable;
-    private final Map<String, Double> Memberships = new LinkedHashMap();
+    private final FuzzyVariable outputVariable;
+    private final Map<String, Double> Memberships = new LinkedHashMap<>();
 
     public WeightedAverage(FuzzyVariable outputVariable, Map<String, Double> memberships) {
         this.outputVariable = outputVariable;
         this.Memberships.putAll(memberships);
     }
-
     @Override
     public double getCrispOutput() {
 
