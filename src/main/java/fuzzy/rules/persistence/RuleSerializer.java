@@ -5,10 +5,8 @@ import fuzzy.rules.FuzzyRuleBase;
 import fuzzy.rules.RuleAntecedent;
 import fuzzy.rules.RuleConsequent;
 import fuzzy.variables.FuzzyVariable;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +23,11 @@ public class RuleSerializer {
         for (FuzzyRule rule : ruleBase.getRules()) {
             List<RuleAntecedentDTO> antecedents = new ArrayList<>();
             for (RuleAntecedent antecedent : rule.getAntecedents()) {
-                FuzzyVariable var = antecedent.variable();
+                FuzzyVariable var = antecedent.getVariable();
                 antecedents.add(new RuleAntecedentDTO(
                         var.getName(),
-                        antecedent.setName(),
-                        antecedent.operator().toString()
+                        antecedent.getSetName(),
+                        antecedent.getOperator().toString()
                 ));
             }
 
@@ -42,8 +40,8 @@ public class RuleSerializer {
     private static RuleDTO getRuleDTO(FuzzyRule rule, List<RuleAntecedentDTO> antecedents) {
         RuleConsequent consequent = rule.getConsequent();
         RuleConsequentDTO consequentDTO = new RuleConsequentDTO(
-                consequent.variable().getName(),
-                consequent.setName()
+                consequent.getVariable().getName(),
+                consequent.getSetName()
         );
 
         String connector = rule.getConnector().name();

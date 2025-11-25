@@ -1,7 +1,30 @@
 package fuzzy.rules;
 import fuzzy.variables.FuzzyVariable;
 
-public record RuleConsequent(FuzzyVariable variable, String setName) {
+public class RuleConsequent {
+    FuzzyVariable variable;
+    String setName;
+
+    public RuleConsequent(FuzzyVariable variable, String setName) {
+        this.variable = variable;
+        this.setName = setName;
+    }
+
+    public String getSetName() {
+        return setName;
+    }
+
+    public void setSetName(String setName) {
+        this.setName = setName;
+    }
+
+    public FuzzyVariable getVariable() {
+        return variable;
+    }
+
+    public void setVariable(FuzzyVariable variable) {
+        this.variable = variable;
+    }
 
     @Override
     public String toString() {

@@ -27,7 +27,7 @@
     "windowBlind": {
       "enabled": true,
       "ruleFile": "resources/fuzzy/rules/window_blind_rules.json",
-      "inputVariables": ["Light", "Temperature", "Occupancy"],
+      "inputVariables": ["Light", "Temperature"],
       "outputVariable": "BlindPosition"
     }
   }
