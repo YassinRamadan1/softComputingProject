@@ -24,7 +24,6 @@ public class TestConfiguration {
         System.out.println("Default MF type       : " + config.getDefaultMembershipFunctionType());
 
         System.out.println();
-        System.out.println("Window blind enabled  : " + config.isWindowBlindEnabled());
         System.out.println("Window blind rule file: " + config.getWindowBlindRuleFile());
 
         String[] inputs = config.getWindowBlindInputVariables();

@@ -3,6 +3,7 @@ package fuzzy.linguistic;
 import fuzzy.membershipfunctions.IMembershipFunction;
 import fuzzy.membershipfunctions.TrapezoidalMF;
 import fuzzy.membershipfunctions.TriangularMF;
+import fuzzy.util.StaticData;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -11,24 +12,24 @@ public class TestFuzzifier {
     public static void main(String[] args) {
 
         // 1. Create Membership Functions
-        IMembershipFunction low = new TrapezoidalMF("Low", 0, 0, 100, 300);
-        IMembershipFunction medium = new TriangularMF("Medium", 200, 500, 800);
-        IMembershipFunction high = new TrapezoidalMF("High", 700, 900, 1000, 1000);
+        IMembershipFunction low = new TrapezoidalMF(StaticData.LOW, 0, 0, 100, 300);
+        IMembershipFunction medium = new TriangularMF(StaticData.MEDIUM, 200, 500, 800);
+        IMembershipFunction high = new TrapezoidalMF(StaticData.HIGH, 700, 900, 1000, 1000);
 
-        IMembershipFunction soft = new TrapezoidalMF("Soft", 0, 0, 20, 40);
-        IMembershipFunction ordinary = new TrapezoidalMF("Ordinary", 20, 40, 60, 80);
-        IMembershipFunction stiff = new TrapezoidalMF("Stiff", 60, 80, 100, 100);
+        IMembershipFunction soft = new TrapezoidalMF(StaticData.SOFT, 0, 0, 20, 40);
+        IMembershipFunction ordinary = new TrapezoidalMF(StaticData.ORDINARY, 20, 40, 60, 80);
+        IMembershipFunction stiff = new TrapezoidalMF(StaticData.STIFF, 60, 80, 100, 100);
 
         // 2. Create Fuzzy Variable
-        FuzzyVariable light = new FuzzyVariable("LightIntensity", 0, 1000);
-        light.addFuzzySet(new FuzzySet("Low", low));
-        light.addFuzzySet(new FuzzySet("Medium", medium));
-        light.addFuzzySet(new FuzzySet("High", high));
+        FuzzyVariable light = new FuzzyVariable(StaticData.LIGHT_INTENSITY, 0, 1000);
+        light.addFuzzySet(new FuzzySet(StaticData.LOW, low));
+        light.addFuzzySet(new FuzzySet(StaticData.MEDIUM, medium));
+        light.addFuzzySet(new FuzzySet(StaticData.HIGH, high));
 
-        FuzzyVariable fabric = new FuzzyVariable("Fabric", 0, 100);
-        fabric.addFuzzySet(new FuzzySet("Soft", soft));
-        fabric.addFuzzySet(new FuzzySet("Ordinary", ordinary));
-        fabric.addFuzzySet(new FuzzySet("Stiff", stiff));
+        FuzzyVariable fabric = new FuzzyVariable(StaticData.FABRIC, 0, 100);
+        fabric.addFuzzySet(new FuzzySet(StaticData.SOFT, soft));
+        fabric.addFuzzySet(new FuzzySet(StaticData.ORDINARY, ordinary));
+        fabric.addFuzzySet(new FuzzySet(StaticData.STIFF, stiff));
 
         // 3. Create Fuzzifier
         Fuzzifier fuzzifier1 = new Fuzzifier();
@@ -39,10 +40,10 @@ public class TestFuzzifier {
 
         // 4. Create CrispValue
         Map<String, Double> inputs1 = new LinkedHashMap<>();
-        inputs1.put("LightIntensity", 450.0);
+        inputs1.put(StaticData.LIGHT_INTENSITY, 450.0);
 
         Map<String, Double> inputs2 = new LinkedHashMap<>();
-        inputs2.put("Fabric", 25.0);
+        inputs2.put(StaticData.FABRIC, 25.0);
 
         // 5. Call fuzzify to make fuzzification
         Map<String, Map<String, Double>> result1 = fuzzifier1.fuzzify(inputs1);

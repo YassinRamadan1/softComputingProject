@@ -5,12 +5,12 @@
     "connector": "AND",
     "antecedents": [
       {
-        "variableName": "Light",
+        "variableName": "LightIntensity",
         "setName": "Dark",
         "operator": "IS"
       },
       {
-        "variableName": "Temperature",
+        "variableName": "RoomTemperature",
         "setName": "Cold",
         "operator": "IS"
       }
@@ -26,12 +26,12 @@
     "connector": "AND",
     "antecedents": [
       {
-        "variableName": "Light",
+        "variableName": "LightIntensity",
         "setName": "Bright",
         "operator": "IS"
       },
       {
-        "variableName": "Temperature",
+        "variableName": "RoomTemperature",
         "setName": "Hot",
         "operator": "IS"
       }

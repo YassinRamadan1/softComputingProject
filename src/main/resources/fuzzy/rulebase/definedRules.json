@@ -4,8 +4,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Hot", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "Closed" }
   },
@@ -14,8 +14,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Warm", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "Closed" }
   },
@@ -24,8 +24,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Comfortable", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "SlightlyOpen" }
   },
@@ -34,8 +34,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Cold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
   },
@@ -44,8 +44,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "VeryCold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
   },
@@ -54,8 +54,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "High", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "High", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Hot", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "Closed" }
   },
@@ -64,8 +64,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "High", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "High", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Warm", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "SlightlyOpen" }
   },
@@ -74,8 +74,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "High", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "High", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Comfortable", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
   },
@@ -84,8 +84,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "High", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "High", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Cold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
   },
@@ -94,8 +94,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "High", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "High", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "VeryCold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   },
@@ -104,8 +104,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Hot", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "SlightlyOpen" }
   },
@@ -114,8 +114,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Warm", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
   },
@@ -124,8 +124,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Comfortable", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
   },
@@ -134,8 +134,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Cold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
   },
@@ -144,8 +144,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "VeryCold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   },
@@ -154,8 +154,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Low", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Low", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Hot", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
   },
@@ -164,8 +164,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Low", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Low", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Warm", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
   },
@@ -174,8 +174,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Low", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Low", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Comfortable", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
   },
@@ -184,8 +184,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Low", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Low", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Cold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   },
@@ -194,8 +194,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "Low", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "Low", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "VeryCold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   },
@@ -204,8 +204,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Hot", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
   },
@@ -214,8 +214,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Warm", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   },
@@ -224,8 +224,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Comfortable", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   },
@@ -234,8 +234,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Cold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   },
@@ -244,8 +244,8 @@
     "enabled": true,
     "connector": "AND",
     "antecedents": [
-      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
-      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+      { "variableName": "LightIntensity", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "VeryCold", "operator": "IS" }
     ],
     "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
   }

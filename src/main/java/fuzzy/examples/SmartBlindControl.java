@@ -22,7 +22,7 @@ import fuzzy.operators.tnorm.TNorm;
 import fuzzy.rulebase.FuzzyRuleBase;
 import fuzzy.rulebase.RuleBuilder;
 import fuzzy.rulebase.persistence.RuleFileHandler;
-import fuzzy.util.SD;
+import fuzzy.util.StaticData;
 import fuzzy.validation.InputValidationStrategy;
 import fuzzy.validation.InputValidator;
 import fuzzy.validation.InvalidInputException;
@@ -103,7 +103,7 @@ public class SmartBlindControl {
         if (loadFromFiles) {
             config = ConfigLoader.load();
 
-            System.out.println("Configuration loaded from: " + SD.CONFIG_PATH);
+            System.out.println("Configuration loaded from: " + StaticData.CONFIG_PATH);
             lightIntensity = createVariableFromConfig(config.getInputVariables()[0]);
             roomTemperature = createVariableFromConfig(config.getInputVariables()[1]);
             blindOpening = createVariableFromConfig(config.getOutputVariable());
@@ -127,7 +127,6 @@ public class SmartBlindControl {
         Aggregation aggregation = OperatorFactory.createAggregation(config.getAggregationOperatorType());
         inference = new MamdaniInference(tNorm, sNorm, implication, aggregation);
 
-        // Initialize input validator using config strategy
         InputValidationStrategy strategy = ValidationStrategyFactory.createStrategy(config.getValidationStrategyType(), true);
         inputValidator = new InputValidator(strategy);
     }
@@ -171,7 +170,7 @@ public class SmartBlindControl {
             RuleFileHandler fileHandler = new RuleFileHandler();
             String rulesPath = config.getRulesFile();
             if (rulesPath == null || rulesPath.isEmpty()) {
-                rulesPath = SD.DEFINED_RULES_PATH;
+                rulesPath = StaticData.DEFINED_RULES_PATH;
             }
             System.out.println("Loading rules from: " + rulesPath);
             FuzzyRuleBase loaded = fileHandler.load(Path.of(rulesPath), variableMap);
@@ -186,61 +185,61 @@ public class SmartBlindControl {
 
     private FuzzyRuleBase createManualRules() {
         FuzzyRuleBase rules = new FuzzyRuleBase();
-        rules.addRule(RuleBuilder.named("R1").when(lightIntensity, "VeryHigh").and(roomTemperature, "Hot").then(blindOpening, "Closed").build());
-        rules.addRule(RuleBuilder.named("R2").when(lightIntensity, "VeryHigh").and(roomTemperature, "Warm").then(blindOpening, "Closed").build());
-        rules.addRule(RuleBuilder.named("R3").when(lightIntensity, "VeryHigh").and(roomTemperature, "Comfortable").then(blindOpening, "SlightlyOpen").build());
-        rules.addRule(RuleBuilder.named("R4").when(lightIntensity, "VeryHigh").and(roomTemperature, "Cold").then(blindOpening, "HalfOpen").build());
-        rules.addRule(RuleBuilder.named("R5").when(lightIntensity, "VeryHigh").and(roomTemperature, "VeryCold").then(blindOpening, "MostlyOpen").build());
-        rules.addRule(RuleBuilder.named("R6").when(lightIntensity, "High").and(roomTemperature, "Hot").then(blindOpening, "Closed").build());
-        rules.addRule(RuleBuilder.named("R7").when(lightIntensity, "High").and(roomTemperature, "Warm").then(blindOpening, "SlightlyOpen").build());
-        rules.addRule(RuleBuilder.named("R8").when(lightIntensity, "High").and(roomTemperature, "Comfortable").then(blindOpening, "HalfOpen").build());
-        rules.addRule(RuleBuilder.named("R9").when(lightIntensity, "High").and(roomTemperature, "Cold").then(blindOpening, "MostlyOpen").build());
-        rules.addRule(RuleBuilder.named("R10").when(lightIntensity, "High").and(roomTemperature, "VeryCold").then(blindOpening, "FullyOpen").build());
-        rules.addRule(RuleBuilder.named("R11").when(lightIntensity, "Medium").and(roomTemperature, "Hot").then(blindOpening, "SlightlyOpen").build());
-        rules.addRule(RuleBuilder.named("R12").when(lightIntensity, "Medium").and(roomTemperature, "Warm").then(blindOpening, "HalfOpen").build());
-        rules.addRule(RuleBuilder.named("R13").when(lightIntensity, "Medium").and(roomTemperature, "Comfortable").then(blindOpening, "HalfOpen").build());
-        rules.addRule(RuleBuilder.named("R14").when(lightIntensity, "Medium").and(roomTemperature, "Cold").then(blindOpening, "MostlyOpen").build());
-        rules.addRule(RuleBuilder.named("R15").when(lightIntensity, "Medium").and(roomTemperature, "VeryCold").then(blindOpening, "FullyOpen").build());
-        rules.addRule(RuleBuilder.named("R16").when(lightIntensity, "Low").and(roomTemperature, "Hot").then(blindOpening, "HalfOpen").build());
-        rules.addRule(RuleBuilder.named("R17").when(lightIntensity, "Low").and(roomTemperature, "Warm").then(blindOpening, "MostlyOpen").build());
-        rules.addRule(RuleBuilder.named("R18").when(lightIntensity, "Low").and(roomTemperature, "Comfortable").then(blindOpening, "MostlyOpen").build());
-        rules.addRule(RuleBuilder.named("R19").when(lightIntensity, "Low").and(roomTemperature, "Cold").then(blindOpening, "FullyOpen").build());
-        rules.addRule(RuleBuilder.named("R20").when(lightIntensity, "Low").and(roomTemperature, "VeryCold").then(blindOpening, "FullyOpen").build());
-        rules.addRule(RuleBuilder.named("R21").when(lightIntensity, "VeryLow").and(roomTemperature, "Hot").then(blindOpening, "MostlyOpen").build());
-        rules.addRule(RuleBuilder.named("R22").when(lightIntensity, "VeryLow").and(roomTemperature, "Warm").then(blindOpening, "FullyOpen").build());
-        rules.addRule(RuleBuilder.named("R23").when(lightIntensity, "VeryLow").and(roomTemperature, "Comfortable").then(blindOpening, "FullyOpen").build());
-        rules.addRule(RuleBuilder.named("R24").when(lightIntensity, "VeryLow").and(roomTemperature, "Cold").then(blindOpening, "FullyOpen").build());
-        rules.addRule(RuleBuilder.named("R25").when(lightIntensity, "VeryLow").and(roomTemperature, "VeryCold").then(blindOpening, "FullyOpen").build());
+        rules.addRule(RuleBuilder.named("R1").when(lightIntensity, StaticData.VERY_HIGH).and(roomTemperature, StaticData.HOT).then(blindOpening, StaticData.CLOSED).build());
+        rules.addRule(RuleBuilder.named("R2").when(lightIntensity, StaticData.VERY_HIGH).and(roomTemperature, StaticData.WARM).then(blindOpening, StaticData.CLOSED).build());
+        rules.addRule(RuleBuilder.named("R3").when(lightIntensity, StaticData.VERY_HIGH).and(roomTemperature, StaticData.COMFORTABLE).then(blindOpening, StaticData.SLIGHTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R4").when(lightIntensity, StaticData.VERY_HIGH).and(roomTemperature, StaticData.COLD).then(blindOpening, StaticData.HALF_OPEN).build());
+        rules.addRule(RuleBuilder.named("R5").when(lightIntensity, StaticData.VERY_HIGH).and(roomTemperature, StaticData.VERY_COLD).then(blindOpening, StaticData.MOSTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R6").when(lightIntensity, StaticData.HIGH).and(roomTemperature, StaticData.HOT).then(blindOpening, StaticData.CLOSED).build());
+        rules.addRule(RuleBuilder.named("R7").when(lightIntensity, StaticData.HIGH).and(roomTemperature, StaticData.WARM).then(blindOpening, StaticData.SLIGHTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R8").when(lightIntensity, StaticData.HIGH).and(roomTemperature, StaticData.COMFORTABLE).then(blindOpening, StaticData.HALF_OPEN).build());
+        rules.addRule(RuleBuilder.named("R9").when(lightIntensity, StaticData.HIGH).and(roomTemperature, StaticData.COLD).then(blindOpening, StaticData.MOSTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R10").when(lightIntensity, StaticData.HIGH).and(roomTemperature, StaticData.VERY_COLD).then(blindOpening, StaticData.FULLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R11").when(lightIntensity, StaticData.MEDIUM).and(roomTemperature, StaticData.HOT).then(blindOpening, StaticData.SLIGHTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R12").when(lightIntensity, StaticData.MEDIUM).and(roomTemperature, StaticData.WARM).then(blindOpening, StaticData.HALF_OPEN).build());
+        rules.addRule(RuleBuilder.named("R13").when(lightIntensity, StaticData.MEDIUM).and(roomTemperature, StaticData.COMFORTABLE).then(blindOpening, StaticData.HALF_OPEN).build());
+        rules.addRule(RuleBuilder.named("R14").when(lightIntensity, StaticData.MEDIUM).and(roomTemperature, StaticData.COLD).then(blindOpening, StaticData.MOSTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R15").when(lightIntensity, StaticData.MEDIUM).and(roomTemperature, StaticData.VERY_COLD).then(blindOpening, StaticData.FULLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R16").when(lightIntensity, StaticData.LOW).and(roomTemperature, StaticData.HOT).then(blindOpening, StaticData.HALF_OPEN).build());
+        rules.addRule(RuleBuilder.named("R17").when(lightIntensity, StaticData.LOW).and(roomTemperature, StaticData.WARM).then(blindOpening, StaticData.MOSTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R18").when(lightIntensity, StaticData.LOW).and(roomTemperature, StaticData.COMFORTABLE).then(blindOpening, StaticData.MOSTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R19").when(lightIntensity, StaticData.LOW).and(roomTemperature, StaticData.COLD).then(blindOpening, StaticData.FULLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R20").when(lightIntensity, StaticData.LOW).and(roomTemperature, StaticData.VERY_COLD).then(blindOpening, StaticData.FULLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R21").when(lightIntensity, StaticData.VERY_LOW).and(roomTemperature, StaticData.HOT).then(blindOpening, StaticData.MOSTLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R22").when(lightIntensity, StaticData.VERY_LOW).and(roomTemperature, StaticData.WARM).then(blindOpening, StaticData.FULLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R23").when(lightIntensity, StaticData.VERY_LOW).and(roomTemperature, StaticData.COMFORTABLE).then(blindOpening, StaticData.FULLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R24").when(lightIntensity, StaticData.VERY_LOW).and(roomTemperature, StaticData.COLD).then(blindOpening, StaticData.FULLY_OPEN).build());
+        rules.addRule(RuleBuilder.named("R25").when(lightIntensity, StaticData.VERY_LOW).and(roomTemperature, StaticData.VERY_COLD).then(blindOpening, StaticData.FULLY_OPEN).build());
         return rules;
     }
 
     private FuzzyVariable createLightIntensityVariable() {
-        FuzzyVariable light = new FuzzyVariable("LightIntensity", 0.0, 1000.0);
-        light.addFuzzySet(new FuzzySet("VeryLow", new TrapezoidalMF("VeryLow", 0, 0, 30, 100)));
-        light.addFuzzySet(new FuzzySet("Low", new TrapezoidalMF("Low", 80, 150, 250, 350)));
-        light.addFuzzySet(new FuzzySet("Medium", new TriangularMF("Medium", 300, 500, 700)));
-        light.addFuzzySet(new FuzzySet("High", new TrapezoidalMF("High", 650, 750, 850, 920)));
-        light.addFuzzySet(new FuzzySet("VeryHigh", new TrapezoidalMF("VeryHigh", 900, 950, 1000, 1000)));
+        FuzzyVariable light = new FuzzyVariable(StaticData.LIGHT_INTENSITY, 0.0, 1000.0);
+        light.addFuzzySet(new FuzzySet(StaticData.VERY_LOW, new TrapezoidalMF(StaticData.VERY_LOW, 0, 0, 30, 100)));
+        light.addFuzzySet(new FuzzySet(StaticData.LOW, new TrapezoidalMF(StaticData.LOW, 80, 150, 250, 350)));
+        light.addFuzzySet(new FuzzySet(StaticData.MEDIUM, new TriangularMF(StaticData.MEDIUM, 300, 500, 700)));
+        light.addFuzzySet(new FuzzySet(StaticData.HIGH, new TrapezoidalMF(StaticData.HIGH, 650, 750, 850, 920)));
+        light.addFuzzySet(new FuzzySet(StaticData.VERY_HIGH, new TrapezoidalMF(StaticData.VERY_HIGH, 900, 950, 1000, 1000)));
         return light;
     }
 
     private FuzzyVariable createRoomTemperatureVariable() {
-        FuzzyVariable temp = new FuzzyVariable("RoomTemperature", 0.0, 40.0);
-        temp.addFuzzySet(new FuzzySet("VeryCold", new TriangularMF("VeryCold", 0, 0, 8)));
-        temp.addFuzzySet(new FuzzySet("Cold", new TriangularMF("Cold", 5, 12, 17)));
-        temp.addFuzzySet(new FuzzySet("Comfortable", new TriangularMF("Comfortable", 15, 22, 27)));
-        temp.addFuzzySet(new FuzzySet("Warm", new TriangularMF("Warm", 25, 30, 34)));
-        temp.addFuzzySet(new FuzzySet("Hot", new TriangularMF("Hot", 32, 40, 40)));
+        FuzzyVariable temp = new FuzzyVariable(StaticData.ROOM_TEMPERATURE, 0.0, 40.0);
+        temp.addFuzzySet(new FuzzySet(StaticData.VERY_COLD, new TriangularMF(StaticData.VERY_COLD, 0, 0, 8)));
+        temp.addFuzzySet(new FuzzySet(StaticData.COLD, new TriangularMF(StaticData.COLD, 5, 12, 17)));
+        temp.addFuzzySet(new FuzzySet(StaticData.COMFORTABLE, new TriangularMF(StaticData.COMFORTABLE, 15, 22, 27)));
+        temp.addFuzzySet(new FuzzySet(StaticData.WARM, new TriangularMF(StaticData.WARM, 25, 30, 34)));
+        temp.addFuzzySet(new FuzzySet(StaticData.HOT, new TriangularMF(StaticData.HOT, 32, 40, 40)));
         return temp;
     }
 
     private FuzzyVariable createBlindOpeningVariable() {
-        FuzzyVariable blind = new FuzzyVariable("BlindOpening", 0.0, 100.0);
-        blind.addFuzzySet(new FuzzySet("Closed", new TriangularMF("Closed", 0, 0, 10)));
-        blind.addFuzzySet(new FuzzySet("SlightlyOpen", new TriangularMF("SlightlyOpen", 5, 20, 40)));
-        blind.addFuzzySet(new FuzzySet("HalfOpen", new TriangularMF("HalfOpen", 30, 50, 70)));
-        blind.addFuzzySet(new FuzzySet("MostlyOpen", new TriangularMF("MostlyOpen", 60, 75, 90)));
-        blind.addFuzzySet(new FuzzySet("FullyOpen", new TriangularMF("FullyOpen", 85, 100, 100)));
+        FuzzyVariable blind = new FuzzyVariable(StaticData.BLIND_OPENING, 0.0, 100.0);
+        blind.addFuzzySet(new FuzzySet(StaticData.CLOSED, new TriangularMF(StaticData.CLOSED, 0, 0, 10)));
+        blind.addFuzzySet(new FuzzySet(StaticData.SLIGHTLY_OPEN, new TriangularMF(StaticData.SLIGHTLY_OPEN, 5, 20, 40)));
+        blind.addFuzzySet(new FuzzySet(StaticData.HALF_OPEN, new TriangularMF(StaticData.HALF_OPEN, 30, 50, 70)));
+        blind.addFuzzySet(new FuzzySet(StaticData.MOSTLY_OPEN, new TriangularMF(StaticData.MOSTLY_OPEN, 60, 75, 90)));
+        blind.addFuzzySet(new FuzzySet(StaticData.FULLY_OPEN, new TriangularMF(StaticData.FULLY_OPEN, 85, 100, 100)));
         return blind;
     }
 

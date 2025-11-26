@@ -1,9 +1,8 @@
 package fuzzy.config;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import fuzzy.util.SD;
+import fuzzy.util.StaticData;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +14,7 @@ public final class ConfigLoader {
     }
 
     public static FuzzyConfiguration load() {
-        String CONFIG_FILE_PATH = SD.CONFIG_PATH;
+        String CONFIG_FILE_PATH = StaticData.CONFIG_PATH;
         return load(CONFIG_FILE_PATH);
     }
 
@@ -40,58 +39,57 @@ public final class ConfigLoader {
         FuzzyConfiguration config = FuzzyConfiguration.getDefaultConfiguration();
         if (root == null) return config;
 
-        Gson gson = new Gson();
-        if (root.has("defaults")) {
-            JsonObject defaults = root.getAsJsonObject("defaults");
+        if (root.has(StaticData.DEFAULTS)) {
+            JsonObject defaults = root.getAsJsonObject(StaticData.DEFAULTS);
 
             config.setInferenceEngineType(
                     FuzzyConfiguration.InferenceEngineType.fromString(
-                            getString(defaults, "inferenceEngine", config.getInferenceEngineType().name())
+                            getString(defaults, StaticData.INFERENCE_ENGINE, config.getInferenceEngineType().name())
                     )
             );
             config.setAndOperatorType(
                     FuzzyConfiguration.AndOperatorType.fromString(
-                            getString(defaults, "andOperator", config.getAndOperatorType().name())
+                            getString(defaults, StaticData.AND_OPERATOR, config.getAndOperatorType().name())
                     )
             );
             config.setOrOperatorType(
                     FuzzyConfiguration.OrOperatorType.fromString(
-                            getString(defaults, "orOperator", config.getOrOperatorType().name())
+                            getString(defaults, StaticData.OR_OPERATOR, config.getOrOperatorType().name())
                     )
             );
             config.setImplicationOperatorType(
                     FuzzyConfiguration.ImplicationOperatorType.fromString(
-                            getString(defaults, "implicationOperator", config.getImplicationOperatorType().name())
+                            getString(defaults, StaticData.IMPLICATION_OPERATOR, config.getImplicationOperatorType().name())
                     )
             );
             config.setAggregationOperatorType(
                     FuzzyConfiguration.AggregationOperatorType.fromString(
-                            getString(defaults, "aggregationOperator", config.getAggregationOperatorType().name())
+                            getString(defaults, StaticData.AGGREGATION_OPERATOR, config.getAggregationOperatorType().name())
                     )
             );
             config.setDefuzzificationMethodType(
                     FuzzyConfiguration.DefuzzificationMethodType.fromString(
-                            getString(defaults, "defuzzificationMethod", config.getDefuzzificationMethodType().name())
+                            getString(defaults, StaticData.DEFUZZIFICATION_METHOD, config.getDefuzzificationMethodType().name())
                     )
             );
             config.setValidationStrategyType(
                     FuzzyConfiguration.ValidationStrategyType.fromString(
-                            getString(defaults, "validationStrategy", config.getValidationStrategyType().name())
+                            getString(defaults, StaticData.VALIDATION_STRATEGY, config.getValidationStrategyType().name())
                     )
             );
         }
-        if (root.has("caseStudy")) {
-            JsonObject caseStudy = root.getAsJsonObject("caseStudy");
+        if (root.has(StaticData.CASE_STUDY)) {
+            JsonObject caseStudy = root.getAsJsonObject(StaticData.CASE_STUDY);
 
-            config.setCaseStudyName(getString(caseStudy, "name", ""));
-            config.setCaseStudyDescription(getString(caseStudy, "description", ""));
+            config.setCaseStudyName(getString(caseStudy, StaticData.NAME, ""));
+            config.setCaseStudyDescription(getString(caseStudy, StaticData.DESCRIPTION, ""));
 
-            if (caseStudy.has("rulesFile")) {
-                config.setRulesFile(caseStudy.get("rulesFile").getAsString());
+            if (caseStudy.has(StaticData.RULES_FILE)) {
+                config.setRulesFile(caseStudy.get(StaticData.RULES_FILE).getAsString());
             }
 
-            if (caseStudy.has("inputs") && caseStudy.get("inputs").isJsonArray()) {
-                var inputsArray = caseStudy.getAsJsonArray("inputs");
+            if (caseStudy.has(StaticData.INPUTS) && caseStudy.get(StaticData.INPUTS).isJsonArray()) {
+                var inputsArray = caseStudy.getAsJsonArray(StaticData.INPUTS);
                 FuzzyConfiguration.VariableConfig[] inputs = new FuzzyConfiguration.VariableConfig[inputsArray.size()];
 
                 for (int i = 0; i < inputsArray.size(); i++) {
@@ -100,19 +98,19 @@ public final class ConfigLoader {
                 config.setInputVariables(inputs);
             }
 
-            if (caseStudy.has("output")) {
-                config.setOutputVariable(parseVariableConfig(caseStudy.getAsJsonObject("output")));
+            if (caseStudy.has(StaticData.OUTPUT) && caseStudy.get(StaticData.OUTPUT).isJsonObject()) {
+                config.setOutputVariable(parseVariableConfig(caseStudy.getAsJsonObject(StaticData.OUTPUT)));
             }
 
-            if (caseStudy.has("testScenarios") && caseStudy.get("testScenarios").isJsonArray()) {
-                var array = caseStudy.getAsJsonArray("testScenarios");
+            if (caseStudy.has(StaticData.TEST_SCENARIOS) && caseStudy.get(StaticData.TEST_SCENARIOS).isJsonArray()) {
+                var array = caseStudy.getAsJsonArray(StaticData.TEST_SCENARIOS);
                 FuzzyConfiguration.TestScenario[] scenarios = new FuzzyConfiguration.TestScenario[array.size()];
 
                 for (int i = 0; i < array.size(); i++) {
                     JsonObject scenario = array.get(i).getAsJsonObject();
-                    String name = getString(scenario, "name", "Scenario " + (i + 1));
-                    double light = getDouble(scenario, "lightIntensity", 0);
-                    double temp = getDouble(scenario, "roomTemperature", 0);
+                    String name = getString(scenario, StaticData.NAME, StaticData.SCENARIO + (i + 1));
+                    double light = getDouble(scenario, StaticData.LIGHT_INTENSITY_SMALL_L, 0);
+                    double temp = getDouble(scenario, StaticData.ROOM_TEMPERATURE_SMALL_R, 0);
                     scenarios[i] = new FuzzyConfiguration.TestScenario(name, light, temp);
                 }
                 config.setTestScenarios(scenarios);
@@ -123,30 +121,30 @@ public final class ConfigLoader {
     }
 
     private static FuzzyConfiguration.VariableConfig parseVariableConfig(JsonObject varObj) {
-        String name = getString(varObj, "name", "");
+        String name = getString(varObj, StaticData.NAME, "");
         double min = 0, max = 100;
 
-        if (varObj.has("domain")) {
-            JsonObject domain = varObj.getAsJsonObject("domain");
-            min = getDouble(domain, "min", 0);
-            max = getDouble(domain, "max", 100);
+        if (varObj.has(StaticData.DOMAIN)) {
+            JsonObject domain = varObj.getAsJsonObject(StaticData.DOMAIN);
+            min = getDouble(domain, StaticData.MIN, 0);
+            max = getDouble(domain, StaticData.MAX, 100);
         }
 
         FuzzyConfiguration.FuzzySetConfig[] fuzzySets = new FuzzyConfiguration.FuzzySetConfig[0];
-        if (varObj.has("fuzzySets") && varObj.get("fuzzySets").isJsonArray()) {
-            var setsArray = varObj.getAsJsonArray("fuzzySets");
+        if (varObj.has(StaticData.FUZZY_SETS) && varObj.get(StaticData.FUZZY_SETS).isJsonArray()) {
+            var setsArray = varObj.getAsJsonArray(StaticData.FUZZY_SETS);
             fuzzySets = new FuzzyConfiguration.FuzzySetConfig[setsArray.size()];
 
             for (int j = 0; j < setsArray.size(); j++) {
                 JsonObject setObj = setsArray.get(j).getAsJsonObject();
-                String setName = getString(setObj, "name", "Set" + j);
+                String setName = getString(setObj, StaticData.NAME, StaticData.SET + j);
                 FuzzyConfiguration.MembershipFunctionType type = FuzzyConfiguration.MembershipFunctionType.fromString(
-                        getString(setObj, "type", "TRIANGULAR")
+                        getString(setObj, StaticData.TYPE, StaticData.TRIANGULAR)
                 );
 
                 double[] params = new double[0];
-                if (setObj.has("params") && setObj.get("params").isJsonArray()) {
-                    var paramsArray = setObj.getAsJsonArray("params");
+                if (setObj.has(StaticData.PARAMS) && setObj.get(StaticData.PARAMS).isJsonArray()) {
+                    var paramsArray = setObj.getAsJsonArray(StaticData.PARAMS);
                     params = new double[paramsArray.size()];
                     for (int k = 0; k < paramsArray.size(); k++) {
                         params[k] = paramsArray.get(k).getAsDouble();

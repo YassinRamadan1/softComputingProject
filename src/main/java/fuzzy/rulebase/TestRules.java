@@ -7,7 +7,7 @@ import fuzzy.membershipfunctions.TriangularMF;
 import fuzzy.rulebase.persistence.RuleDeserializer;
 import fuzzy.rulebase.persistence.RuleFileHandler;
 import fuzzy.rulebase.persistence.RuleSerializer;
-import fuzzy.util.SD;
+import fuzzy.util.StaticData;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -17,39 +17,39 @@ public class TestRules {
 
     public static void main(String[] args) throws Exception {
 
-        FuzzyVariable light = new FuzzyVariable("Light", 0.0, 100.0);
-        IMembershipFunction lightDarkMF = new TriangularMF("Dark", 0.0, 0.0, 50.0);
-        IMembershipFunction lightBrightMF = new TriangularMF("Bright", 50.0, 100.0, 100.0);
-        light.addFuzzySet(new FuzzySet("Dark", lightDarkMF));
-        light.addFuzzySet(new FuzzySet("Bright", lightBrightMF));
+        FuzzyVariable light = new FuzzyVariable(StaticData.LIGHT_INTENSITY, 0.0, 100.0);
+        IMembershipFunction lightDarkMF = new TriangularMF(StaticData.DARK, 0.0, 0.0, 50.0);
+        IMembershipFunction lightBrightMF = new TriangularMF(StaticData.BRIGHT, 50.0, 100.0, 100.0);
+        light.addFuzzySet(new FuzzySet(StaticData.DARK, lightDarkMF));
+        light.addFuzzySet(new FuzzySet(StaticData.BRIGHT, lightBrightMF));
 
-        FuzzyVariable temperature = new FuzzyVariable("Temperature", 0.0, 40.0);
-        IMembershipFunction tempColdMF = new TriangularMF("Cold", 0.0, 0.0, 20.0);
-        IMembershipFunction tempHotMF = new TriangularMF("Hot", 20.0, 40.0, 40.0);
-        temperature.addFuzzySet(new FuzzySet("Cold", tempColdMF));
-        temperature.addFuzzySet(new FuzzySet("Hot", tempHotMF));
+        FuzzyVariable temperature = new FuzzyVariable(StaticData.ROOM_TEMPERATURE, 0.0, 40.0);
+        IMembershipFunction tempColdMF = new TriangularMF(StaticData.COLD, 0.0, 0.0, 20.0);
+        IMembershipFunction tempHotMF = new TriangularMF(StaticData.HOT, 20.0, 40.0, 40.0);
+        temperature.addFuzzySet(new FuzzySet(StaticData.COLD, tempColdMF));
+        temperature.addFuzzySet(new FuzzySet(StaticData.HOT, tempHotMF));
 
-        FuzzyVariable blind = new FuzzyVariable("BlindOpening", 0.0, 100.0);
-        IMembershipFunction blindClosedMF = new TriangularMF("Closed", 0.0, 0.0, 50.0);
-        IMembershipFunction blindOpenMF = new TriangularMF("Open", 50.0, 100.0, 100.0);
-        blind.addFuzzySet(new FuzzySet("Closed", blindClosedMF));
-        blind.addFuzzySet(new FuzzySet("Open", blindOpenMF));
+        FuzzyVariable blind = new FuzzyVariable(StaticData.BLIND_OPENING, 0.0, 100.0);
+        IMembershipFunction blindClosedMF = new TriangularMF(StaticData.CLOSED, 0.0, 0.0, 50.0);
+        IMembershipFunction blindOpenMF = new TriangularMF(StaticData.OPENED, 50.0, 100.0, 100.0);
+        blind.addFuzzySet(new FuzzySet(StaticData.CLOSED, blindClosedMF));
+        blind.addFuzzySet(new FuzzySet(StaticData.OPENED, blindOpenMF));
 
 
         FuzzyRuleBase ruleBase = new FuzzyRuleBase();
 
         FuzzyRule r1 = RuleBuilder.named("R1")
-                .when(light, "Bright")
-                .and(temperature, "Hot")
-                .then(blind, "Closed")
+                .when(light, StaticData.BRIGHT)
+                .and(temperature, StaticData.HOT)
+                .then(blind, StaticData.CLOSED)
                 .enabled(true)
                 .build();
         ruleBase.addRule(r1);
 
         FuzzyRule r2 = RuleBuilder.named("R2")
-                .when(light, "Dark")
-                .and(temperature, "Cold")
-                .then(blind, "Open")
+                .when(light, StaticData.DARK)
+                .and(temperature, StaticData.COLD)
+                .then(blind, StaticData.OPENED)
                 .enabled(true)
                 .build();
         ruleBase.addRule(r2);
@@ -77,8 +77,8 @@ public class TestRules {
 
         RuleFileHandler fileHandler = new RuleFileHandler();
 
-        Path savedFilePath = Path.of(SD.SAVED_RULES_PATH);
-        Path definedFilePath = Path.of(SD.DEFINED_RULES_PATH);
+        Path savedFilePath = Path.of(StaticData.SAVED_RULES_PATH);
+        Path definedFilePath = Path.of(StaticData.DEFINED_RULES_PATH);
 
         fileHandler.save(savedFilePath, ruleBase);
         System.out.println("Rules saved to: " + savedFilePath.toAbsolutePath());

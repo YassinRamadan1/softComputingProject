@@ -8,6 +8,7 @@ import fuzzy.linguistic.FuzzyVariable;
 import fuzzy.membershipfunctions.TriangularMF;
 import fuzzy.rulebase.FuzzyRuleBase;
 import fuzzy.rulebase.RuleBuilder;
+import fuzzy.util.StaticData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,33 +16,34 @@ import java.util.Map;
 public class TestSugeno {
 
     public static void main(String[] args) {
-        FuzzyVariable light = new FuzzyVariable("Light", 0.0, 100.0);
-        light.addFuzzySet(new FuzzySet("Dark", new TriangularMF("Dark", 0, 0, 50)));
-        light.addFuzzySet(new FuzzySet("Bright", new TriangularMF("Bright", 50, 100, 100)));
+        FuzzyVariable light = new FuzzyVariable(StaticData.LIGHT_INTENSITY, 0.0, 100.0);
+        light.addFuzzySet(new FuzzySet(StaticData.DARK, new TriangularMF(StaticData.DARK, 0, 0, 50)));
+        light.addFuzzySet(new FuzzySet(StaticData.BRIGHT, new TriangularMF(StaticData.BRIGHT, 50, 100, 100)));
 
-        FuzzyVariable temp = new FuzzyVariable("Temperature", 0.0, 40.0);
-        temp.addFuzzySet(new FuzzySet("Cold", new TriangularMF("Cold", 0, 0, 20)));
-        temp.addFuzzySet(new FuzzySet("Hot", new TriangularMF("Hot", 20, 40, 40)));
+        FuzzyVariable temp = new FuzzyVariable(StaticData.ROOM_TEMPERATURE, 0.0, 40.0);
+        temp.addFuzzySet(new FuzzySet(StaticData.COLD, new TriangularMF(StaticData.COLD, 0, 0, 20)));
+        temp.addFuzzySet(new FuzzySet(StaticData.HOT, new TriangularMF(StaticData.HOT, 20, 40, 40)));
 
-        FuzzyVariable blind = new FuzzyVariable("BlindOpening", 0.0, 100.0);
+        FuzzyVariable blind = new FuzzyVariable(StaticData.BLIND_OPENING, 0.0, 100.0);
 
         FuzzyRuleBase ruleBase = new FuzzyRuleBase();
 
         ruleBase.addRule(RuleBuilder.named("R1")
-                .when(light, "Bright")
-                .and(temp, "Hot")
-                .then(blind, "Closed")
+                .when(light, StaticData.BRIGHT)
+                .and(temp, StaticData.HOT)
+                .then(blind,StaticData.CLOSED)
                 .build());
 
         ruleBase.addRule(RuleBuilder.named("R2")
-                .when(light, "Dark")
-                .and(temp, "Cold")
-                .then(blind, "Open")
+                .when(light, StaticData.DARK)
+                .and(temp, StaticData.COLD)
+                .then(blind, StaticData.OPENED)
                 .build());
 
         Map<String, SugenoOutput> sugenoOutputs = new HashMap<>();
         sugenoOutputs.put("R1", new SugenoOutput(10.0));
         sugenoOutputs.put("R2", new SugenoOutput(90.0));
+
 
         FuzzyConfiguration config = FuzzyConfiguration.getDefaultConfiguration();
 
@@ -52,12 +54,12 @@ public class TestSugeno {
         );
 
         Map<String, Map<String, Double>> fuzzifiedInputs = new HashMap<>();
-        fuzzifiedInputs.put("Light", light.fuzzify(75.0));
-        fuzzifiedInputs.put("Temperature", temp.fuzzify(30.0));
+        fuzzifiedInputs.put(StaticData.LIGHT_INTENSITY, light.fuzzify(75.0));
+        fuzzifiedInputs.put(StaticData.ROOM_TEMPERATURE, temp.fuzzify(30.0));
 
         System.out.println("=== Fuzzified Inputs ===");
-        System.out.println("Light: " + fuzzifiedInputs.get("Light"));
-        System.out.println("Temperature: " + fuzzifiedInputs.get("Temperature"));
+        System.out.println(StaticData.LIGHT_INTENSITY + ": " + fuzzifiedInputs.get(StaticData.LIGHT_INTENSITY));
+        System.out.println(StaticData.ROOM_TEMPERATURE + ": " + fuzzifiedInputs.get(StaticData.ROOM_TEMPERATURE));
 
         InferenceResult result = engine.evaluate(fuzzifiedInputs, ruleBase, blind);
 

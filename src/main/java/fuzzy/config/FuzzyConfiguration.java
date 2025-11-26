@@ -1,6 +1,6 @@
 package fuzzy.config;
 
-import fuzzy.util.SD;
+import fuzzy.util.StaticData;
 
 public class FuzzyConfiguration {
     private InferenceEngineType inferenceEngineType;
@@ -16,7 +16,6 @@ public class FuzzyConfiguration {
     private double defaultOutputMin;
     private double defaultOutputMax;
     private int defaultNumberOfSets;
-    private boolean windowBlindEnabled;
     private String windowBlindRuleFile;
     private String[] windowBlindInputVariables;
     private String windowBlindOutputVariable;
@@ -45,10 +44,9 @@ public class FuzzyConfiguration {
         config.defaultOutputMax = 100.0;
         config.defaultNumberOfSets = 3;
 
-        config.windowBlindEnabled = false;
-        config.windowBlindRuleFile = SD.DEFINED_RULES_PATH;
-        config.windowBlindInputVariables = new String[]{SD.LIGHT, SD.TEMPERATURE};
-        config.windowBlindOutputVariable = SD.BLIND_POSITION;
+        config.windowBlindRuleFile = StaticData.DEFINED_RULES_PATH;
+        config.windowBlindInputVariables = new String[]{StaticData.LIGHT_INTENSITY, StaticData.ROOM_TEMPERATURE};
+        config.windowBlindOutputVariable = StaticData.BLIND_OPENING;
 
         return config;
     }
@@ -155,14 +153,6 @@ public class FuzzyConfiguration {
 
     public void setDefaultMembershipFunctionType(MembershipFunctionType defaultMembershipFunctionType) {
         this.defaultMembershipFunctionType = defaultMembershipFunctionType;
-    }
-
-    public boolean isWindowBlindEnabled() {
-        return windowBlindEnabled;
-    }
-
-    public void setWindowBlindEnabled(boolean windowBlindEnabled) {
-        this.windowBlindEnabled = windowBlindEnabled;
     }
 
     public String getWindowBlindRuleFile() {
