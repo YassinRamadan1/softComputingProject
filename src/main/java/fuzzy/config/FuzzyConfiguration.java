@@ -3,96 +3,6 @@ package fuzzy.config;
 import fuzzy.util.SD;
 
 public class FuzzyConfiguration {
-    public enum InferenceEngineType {
-        MAMDANI, SUGENO_ZERO, SUGENO_FIRST;
-
-        public static InferenceEngineType fromString(String engine) {
-            try {
-                return InferenceEngineType.valueOf(engine.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return InferenceEngineType.MAMDANI;
-            }
-        }
-    }
-    public enum AndOperatorType{
-        MIN, ALGEBRAIC_PRODUCT;
-
-        public static AndOperatorType fromString(String type) {
-            try {
-                return AndOperatorType.valueOf(type.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return MIN;
-            }
-        }
-    }
-    public enum OrOperatorType{
-        MAX, ALGEBRAIC_SUM;
-
-        public static OrOperatorType fromString(String type) {
-            try {
-                return OrOperatorType.valueOf(type.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return MAX;
-            }
-        }
-    }
-    public enum ImplicationOperatorType{
-        MIN, PRODUCT;
-
-        public static ImplicationOperatorType fromString(String type) {
-            try {
-                return ImplicationOperatorType.valueOf(type.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return MIN;
-            }
-        }
-    }
-    public enum AggregationOperatorType{
-        MAX, SUM;
-
-        public static AggregationOperatorType fromString(String type) {
-            try {
-                return AggregationOperatorType.valueOf(type.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return MAX;
-            }
-        }
-    }
-    public enum DefuzzificationMethodType {
-        MEAN_OF_MAX, WEIGHTED_AVERAGE;
-
-        public static DefuzzificationMethodType fromString(String method) {
-            try {
-                return DefuzzificationMethodType.valueOf(method.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return MEAN_OF_MAX;
-            }
-        }
-    }
-    public enum ValidationStrategyType {
-        CLAMP, STRICT;
-
-        public static ValidationStrategyType fromString(String strategy) {
-            try {
-                return ValidationStrategyType.valueOf(strategy.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return CLAMP;
-            }
-        }
-    }
-    public enum MembershipFunctionType {
-        TRIANGULAR, TRAPEZOIDAL;
-
-        public static MembershipFunctionType fromString(String type) {
-            try {
-                return MembershipFunctionType.valueOf(type.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                return TRIANGULAR;
-            }
-        }
-    }
-
-
     private InferenceEngineType inferenceEngineType;
     private AndOperatorType andOperatorType;
     private OrOperatorType orOperatorType;
@@ -101,17 +11,21 @@ public class FuzzyConfiguration {
     private DefuzzificationMethodType defuzzificationMethodType;
     private ValidationStrategyType validationStrategyType;
     private MembershipFunctionType defaultMembershipFunctionType;
-
     private double defaultInputMin;
     private double defaultInputMax;
     private double defaultOutputMin;
     private double defaultOutputMax;
     private int defaultNumberOfSets;
-
     private boolean windowBlindEnabled;
     private String windowBlindRuleFile;
     private String[] windowBlindInputVariables;
     private String windowBlindOutputVariable;
+    private String caseStudyName;
+    private String caseStudyDescription;
+    private String rulesFile;
+    private VariableConfig[] inputVariables = new VariableConfig[0];
+    private VariableConfig outputVariable;
+    private TestScenario[] testScenarios = new TestScenario[0];
 
     public static FuzzyConfiguration getDefaultConfiguration() {
         FuzzyConfiguration config = new FuzzyConfiguration();
@@ -133,7 +47,7 @@ public class FuzzyConfiguration {
 
         config.windowBlindEnabled = false;
         config.windowBlindRuleFile = SD.DEFINED_RULES_PATH;
-        config.windowBlindInputVariables = new String[] {SD.LIGHT, SD.TEMPERATURE};
+        config.windowBlindInputVariables = new String[]{SD.LIGHT, SD.TEMPERATURE};
         config.windowBlindOutputVariable = SD.BLIND_POSITION;
 
         return config;
@@ -275,10 +189,154 @@ public class FuzzyConfiguration {
         this.windowBlindOutputVariable = windowBlindOutputVariable;
     }
 
+    public String getCaseStudyName() {
+        return caseStudyName;
+    }
+
+    public void setCaseStudyName(String caseStudyName) {
+        this.caseStudyName = caseStudyName;
+    }
+
+    public String getCaseStudyDescription() {
+        return caseStudyDescription;
+    }
+
+    public void setCaseStudyDescription(String caseStudyDescription) {
+        this.caseStudyDescription = caseStudyDescription;
+    }
+
+    public String getRulesFile() {
+        return rulesFile;
+    }
+
+    public void setRulesFile(String rulesFile) {
+        this.rulesFile = rulesFile;
+    }
+
+    public VariableConfig[] getInputVariables() {
+        return inputVariables;
+    }
+
+    public void setInputVariables(VariableConfig[] inputVariables) {
+        this.inputVariables = inputVariables;
+    }
+
+    public VariableConfig getOutputVariable() {
+        return outputVariable;
+    }
+
+    public void setOutputVariable(VariableConfig outputVariable) {
+        this.outputVariable = outputVariable;
+    }
+
+    public TestScenario[] getTestScenarios() {
+        return testScenarios;
+    }
+
+    public void setTestScenarios(TestScenario[] testScenarios) {
+        this.testScenarios = testScenarios;
+    }
+
+    public enum InferenceEngineType {
+        MAMDANI, SUGENO_ZERO, SUGENO_FIRST;
+
+        public static InferenceEngineType fromString(String engine) {
+            try {
+                return InferenceEngineType.valueOf(engine.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return InferenceEngineType.MAMDANI;
+            }
+        }
+    }
+
+    public enum AndOperatorType {
+        MIN, ALGEBRAIC_PRODUCT;
+
+        public static AndOperatorType fromString(String type) {
+            try {
+                return AndOperatorType.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return MIN;
+            }
+        }
+    }
+
+    public enum OrOperatorType {
+        MAX, ALGEBRAIC_SUM;
+
+        public static OrOperatorType fromString(String type) {
+            try {
+                return OrOperatorType.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return MAX;
+            }
+        }
+    }
+
+    public enum ImplicationOperatorType {
+        MIN, PRODUCT;
+
+        public static ImplicationOperatorType fromString(String type) {
+            try {
+                return ImplicationOperatorType.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return MIN;
+            }
+        }
+    }
+
+    public enum AggregationOperatorType {
+        MAX, SUM;
+
+        public static AggregationOperatorType fromString(String type) {
+            try {
+                return AggregationOperatorType.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return MAX;
+            }
+        }
+    }
+
+    public enum DefuzzificationMethodType {
+        MEAN_OF_MAX, WEIGHTED_AVERAGE;
+
+        public static DefuzzificationMethodType fromString(String method) {
+            try {
+                return DefuzzificationMethodType.valueOf(method.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return MEAN_OF_MAX;
+            }
+        }
+    }
+
+    public enum ValidationStrategyType {
+        CLAMP, STRICT;
+
+        public static ValidationStrategyType fromString(String strategy) {
+            try {
+                return ValidationStrategyType.valueOf(strategy.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return CLAMP;
+            }
+        }
+    }
+
+    public enum MembershipFunctionType {
+        TRIANGULAR, TRAPEZOIDAL;
+
+        public static MembershipFunctionType fromString(String type) {
+            try {
+                return MembershipFunctionType.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return TRIANGULAR;
+            }
+        }
+    }
+
     public static class FuzzySetConfig {
-        private String name;
-        private MembershipFunctionType type;
-        private double[] params;
+        private final String name;
+        private final MembershipFunctionType type;
+        private final double[] params;
 
         public FuzzySetConfig(String name, MembershipFunctionType type, double[] params) {
             this.name = name;
@@ -286,16 +344,24 @@ public class FuzzyConfiguration {
             this.params = params;
         }
 
-        public String getName() { return name; }
-        public MembershipFunctionType getType() { return type; }
-        public double[] getParams() { return params; }
+        public String getName() {
+            return name;
+        }
+
+        public MembershipFunctionType getType() {
+            return type;
+        }
+
+        public double[] getParams() {
+            return params;
+        }
     }
 
     public static class VariableConfig {
-        private String name;
-        private double min;
-        private double max;
-        private FuzzySetConfig[] fuzzySets;
+        private final String name;
+        private final double min;
+        private final double max;
+        private final FuzzySetConfig[] fuzzySets;
 
         public VariableConfig(String name, double min, double max, FuzzySetConfig[] fuzzySets) {
             this.name = name;
@@ -304,16 +370,27 @@ public class FuzzyConfiguration {
             this.fuzzySets = fuzzySets;
         }
 
-        public String getName() { return name; }
-        public double getMin() { return min; }
-        public double getMax() { return max; }
-        public FuzzySetConfig[] getFuzzySets() { return fuzzySets; }
+        public String getName() {
+            return name;
+        }
+
+        public double getMin() {
+            return min;
+        }
+
+        public double getMax() {
+            return max;
+        }
+
+        public FuzzySetConfig[] getFuzzySets() {
+            return fuzzySets;
+        }
     }
 
     public static class TestScenario {
-        private String name;
-        private double lightIntensity;
-        private double roomTemperature;
+        private final String name;
+        private final double lightIntensity;
+        private final double roomTemperature;
 
         public TestScenario(String name, double lightIntensity, double roomTemperature) {
             this.name = name;
@@ -321,33 +398,16 @@ public class FuzzyConfiguration {
             this.roomTemperature = roomTemperature;
         }
 
-        public String getName() { return name; }
-        public double getLightIntensity() { return lightIntensity; }
-        public double getRoomTemperature() { return roomTemperature; }
+        public String getName() {
+            return name;
+        }
+
+        public double getLightIntensity() {
+            return lightIntensity;
+        }
+
+        public double getRoomTemperature() {
+            return roomTemperature;
+        }
     }
-
-    private String caseStudyName;
-    private String caseStudyDescription;
-    private String rulesFile;
-    private VariableConfig[] inputVariables = new VariableConfig[0];
-    private VariableConfig outputVariable;
-    private TestScenario[] testScenarios = new TestScenario[0];
-
-    public String getCaseStudyName() { return caseStudyName; }
-    public void setCaseStudyName(String caseStudyName) { this.caseStudyName = caseStudyName; }
-
-    public String getCaseStudyDescription() { return caseStudyDescription; }
-    public void setCaseStudyDescription(String caseStudyDescription) { this.caseStudyDescription = caseStudyDescription; }
-
-    public String getRulesFile() { return rulesFile; }
-    public void setRulesFile(String rulesFile) { this.rulesFile = rulesFile; }
-
-    public VariableConfig[] getInputVariables() { return inputVariables; }
-    public void setInputVariables(VariableConfig[] inputVariables) { this.inputVariables = inputVariables; }
-
-    public VariableConfig getOutputVariable() { return outputVariable; }
-    public void setOutputVariable(VariableConfig outputVariable) { this.outputVariable = outputVariable; }
-
-    public TestScenario[] getTestScenarios() { return testScenarios; }
-    public void setTestScenarios(TestScenario[] testScenarios) { this.testScenarios = testScenarios; }
 }

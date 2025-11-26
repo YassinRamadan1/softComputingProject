@@ -1,6 +1,7 @@
 package fuzzy.rulebase.persistence;
-import fuzzy.rulebase.FuzzyRuleBase;
+
 import fuzzy.linguistic.FuzzyVariable;
+import fuzzy.rulebase.FuzzyRuleBase;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

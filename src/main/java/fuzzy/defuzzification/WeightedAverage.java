@@ -1,9 +1,9 @@
 package fuzzy.defuzzification;
 
+import fuzzy.linguistic.FuzzyVariable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import fuzzy.linguistic.FuzzyVariable;
 
 public class WeightedAverage implements DeFuzzificationMethod {
     private final FuzzyVariable outputVariable;
@@ -19,8 +19,7 @@ public class WeightedAverage implements DeFuzzificationMethod {
 
         double numerator = 0.0;
         double denominator = 0.0;
-        for(Map.Entry<String, Double> entry : Memberships.entrySet())
-        {
+        for (Map.Entry<String, Double> entry : Memberships.entrySet()) {
             numerator += outputVariable.getSet(entry.getKey()).calculateCentroid() * entry.getValue();
             denominator += entry.getValue();
         }

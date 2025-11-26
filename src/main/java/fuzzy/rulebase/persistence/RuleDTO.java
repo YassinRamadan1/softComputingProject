@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RuleDTO {
     public String name;
-    public  boolean enabled;
+    public boolean enabled;
     public String connector;
     public List<RuleAntecedentDTO> antecedents;
     public RuleConsequentDTO consequent;

@@ -1,4 +1,5 @@
 package fuzzy.rulebase;
+
 import fuzzy.linguistic.FuzzyVariable;
 
 public class RuleConsequent {

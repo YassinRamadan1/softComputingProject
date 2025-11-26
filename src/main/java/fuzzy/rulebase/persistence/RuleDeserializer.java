@@ -2,16 +2,17 @@ package fuzzy.rulebase.persistence;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import fuzzy.linguistic.FuzzyVariable;
 import fuzzy.rulebase.FuzzyRuleBase;
 import fuzzy.rulebase.RuleAntecedent;
 import fuzzy.rulebase.RuleBuilder;
 import fuzzy.rulebase.RuleConnector;
-import fuzzy.linguistic.FuzzyVariable;
 
 import java.util.Map;
 
 public class RuleDeserializer {
-    private  final Gson gson;
+    private final Gson gson;
+
     public RuleDeserializer() {
         gson = new GsonBuilder().setPrettyPrinting().create();
     }
@@ -20,7 +21,7 @@ public class RuleDeserializer {
         RuleDTO[] dtos = gson.fromJson(json, RuleDTO[].class);
         FuzzyRuleBase ruleBase = new FuzzyRuleBase();
 
-        if(dtos==null) return ruleBase;
+        if (dtos == null) return ruleBase;
 
         for (RuleDTO dto : dtos) {
             RuleBuilder builder = RuleBuilder.named(dto.name);
@@ -30,7 +31,8 @@ public class RuleDeserializer {
             if (dto.antecedents != null) {
                 for (RuleAntecedentDTO ruleAntecedentDTO : dto.antecedents) {
                     FuzzyVariable variable = variableMap.get(ruleAntecedentDTO.variableName);
-                    if(variable==null) throw new IllegalStateException("Variable not found: " + ruleAntecedentDTO.variableName);
+                    if (variable == null)
+                        throw new IllegalStateException("Variable not found: " + ruleAntecedentDTO.variableName);
 
                     RuleAntecedent.Operator op = RuleAntecedent.Operator.valueOf(ruleAntecedentDTO.operator);
                     if (first) {
@@ -50,10 +52,11 @@ public class RuleDeserializer {
                 }
             }
 
-            if (dto.consequent==null) throw new IllegalStateException("Consequent not found");
+            if (dto.consequent == null) throw new IllegalStateException("Consequent not found");
 
             FuzzyVariable outputVariable = variableMap.get(dto.consequent.variableName);
-            if(outputVariable==null) throw new IllegalStateException("Variable not found: " + dto.consequent.variableName);
+            if (outputVariable == null)
+                throw new IllegalStateException("Variable not found: " + dto.consequent.variableName);
 
             builder.then(outputVariable, dto.consequent.setName);
             builder.enabled(dto.enabled);

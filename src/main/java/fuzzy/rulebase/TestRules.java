@@ -1,13 +1,13 @@
 package fuzzy.rulebase;
 
-import fuzzy.util.SD;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
 import fuzzy.membershipfunctions.IMembershipFunction;
 import fuzzy.membershipfunctions.TriangularMF;
 import fuzzy.rulebase.persistence.RuleDeserializer;
 import fuzzy.rulebase.persistence.RuleFileHandler;
 import fuzzy.rulebase.persistence.RuleSerializer;
-import fuzzy.linguistic.FuzzySet;
-import fuzzy.linguistic.FuzzyVariable;
+import fuzzy.util.SD;
 
 import java.nio.file.Path;
 import java.util.HashMap;

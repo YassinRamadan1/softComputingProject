@@ -4,7 +4,8 @@ import fuzzy.membershipfunctions.IMembershipFunction;
 import fuzzy.membershipfunctions.TrapezoidalMF;
 import fuzzy.membershipfunctions.TriangularMF;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class TestFuzzifier {
     public static void main(String[] args) {

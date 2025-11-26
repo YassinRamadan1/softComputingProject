@@ -4,12 +4,12 @@ import java.util.Objects;
 import java.util.Vector;
 
 public class Chromosome<T> {
-    private Vector<T> genes;
-    private double fitness = Double.POSITIVE_INFINITY;
     public int chromosomeLength;
     public Chromosome<T> parent;
+    private Vector<T> genes;
+    private double fitness = Double.POSITIVE_INFINITY;
 
-    public Chromosome(Vector<T> genes){
+    public Chromosome(Vector<T> genes) {
         this.genes = genes;
         this.parent = null;
     }
@@ -17,16 +17,15 @@ public class Chromosome<T> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Chromosome)) return false;
-        Chromosome<?> c = (Chromosome<?>) o;
+        if (!(o instanceof Chromosome<?> c)) return false;
         return Objects.equals(this.genes, c.genes);
     }
 
-    public Chromosome<T> getParent (){
+    public Chromosome<T> getParent() {
         return this.parent;
     }
 
-    public Vector<T> getGenes() { 
+    public Vector<T> getGenes() {
         return genes;
     }
 

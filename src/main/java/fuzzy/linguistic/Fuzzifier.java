@@ -1,6 +1,7 @@
 package fuzzy.linguistic;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Fuzzifier {
     private final Map<String, FuzzyVariable> variables = new LinkedHashMap<>();

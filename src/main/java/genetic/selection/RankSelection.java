@@ -1,9 +1,14 @@
 package genetic.selection;
+
 import genetic.chromosome.Chromosome;
-import java.util.*;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Random;
+import java.util.Vector;
 
 public class RankSelection<T> implements Selection<T> {
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     @Override
     public Vector<Chromosome<T>> select(Vector<Chromosome<T>> population, int numOfSelections) {
@@ -20,16 +25,16 @@ public class RankSelection<T> implements Selection<T> {
         for (int i = 1; i <= size; i++) {
             double rankProb = i / totalRankSum;
             cumulative += rankProb;
-            cumulativeProb[i-1] = cumulative;
+            cumulativeProb[i - 1] = cumulative;
         }
 
         Vector<Chromosome<T>> selected = new Vector<>(Collections.nCopies(numOfSelections, new Chromosome<>(new Vector<>())));
 
-        for(int i=0; i<numOfSelections; i++){
+        for (int i = 0; i < numOfSelections; i++) {
             double r = rand.nextDouble();
-            for(int j=0; j<size; j++){
-                if(r <= cumulativeProb[j]){
-                    selected.set(i,sortedPopulation.get(j));
+            for (int j = 0; j < size; j++) {
+                if (r <= cumulativeProb[j]) {
+                    selected.set(i, sortedPopulation.get(j));
                     break;
                 }
             }

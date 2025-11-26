@@ -1,6 +1,8 @@
 package fuzzy.linguistic;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class FuzzyVariable {
     // Temperature 0->40

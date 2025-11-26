@@ -5,11 +5,12 @@ import fuzzy.config.OperatorFactory;
 import fuzzy.defuzzification.DeFuzzifier;
 import fuzzy.defuzzification.MeanOfMax;
 import fuzzy.inference.InferenceResult;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
 import fuzzy.membershipfunctions.TriangularMF;
 import fuzzy.rulebase.FuzzyRuleBase;
 import fuzzy.rulebase.RuleBuilder;
-import fuzzy.linguistic.FuzzySet;
-import fuzzy.linguistic.FuzzyVariable;
+
 import java.util.HashMap;
 import java.util.Map;
 

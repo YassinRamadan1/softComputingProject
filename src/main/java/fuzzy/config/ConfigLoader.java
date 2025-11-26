@@ -11,7 +11,8 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
 public final class ConfigLoader {
-    private ConfigLoader(){}
+    private ConfigLoader() {
+    }
 
     public static FuzzyConfiguration load() {
         String CONFIG_FILE_PATH = SD.CONFIG_PATH;
@@ -20,7 +21,7 @@ public final class ConfigLoader {
 
     public static FuzzyConfiguration load(String path) {
         try (Reader reader = openResource(path)) {
-            if(reader==null)  return FuzzyConfiguration.getDefaultConfiguration();
+            if (reader == null) return FuzzyConfiguration.getDefaultConfiguration();
 
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
             return parseConfiguration(root);
@@ -37,10 +38,10 @@ public final class ConfigLoader {
 
     private static FuzzyConfiguration parseConfiguration(JsonObject root) {
         FuzzyConfiguration config = FuzzyConfiguration.getDefaultConfiguration();
-        if(root==null)  return config;
+        if (root == null) return config;
 
         Gson gson = new Gson();
-        if(root.has("defaults")) {
+        if (root.has("defaults")) {
             JsonObject defaults = root.getAsJsonObject("defaults");
 
             config.setInferenceEngineType(

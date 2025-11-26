@@ -18,10 +18,9 @@ public class TrapezoidalMF implements IMembershipFunction {
     public double calculateCentroid() {
         return (a + b + c + d) / 4.0;
     }
-    
+
     @Override
-    public Vector<Double> getPoints()
-    {
+    public Vector<Double> getPoints() {
         Vector<Double> points = new Vector<>();
         points.add(a);
         points.add(b);
@@ -31,23 +30,16 @@ public class TrapezoidalMF implements IMembershipFunction {
     }
 
     @Override
-    public Vector<Double> getInverse(double membership)
-    {
+    public Vector<Double> getInverse(double membership) {
         Vector<Double> xValues = new Vector<>();
-        if(a == b)
-        {
+        if (a == b) {
             xValues.add(b);
-        }
-        else
-        {
+        } else {
             xValues.add((b - a) * membership + a);
         }
-        if(c == d)
-        {
-           xValues.add(c);
-        }
-        else
-        {
+        if (c == d) {
+            xValues.add(c);
+        } else {
             xValues.add((c - d) * membership + d);
         }
         return xValues;
@@ -55,28 +47,28 @@ public class TrapezoidalMF implements IMembershipFunction {
 
     @Override
     public double getMembership(double x) {
-        if (x <= a || x >= d) 
+        if (x <= a || x >= d)
             return 0.0;
-        else if (x >= b && x <= c) 
+        else if (x >= b && x <= c)
             return 1.0;
-        else if (x > a && x < b) 
+        else if (x > a && x < b)
             return (x - a) / (b - a);
-        else 
+        else
             return (d - x) / (d - c);
     }
 
     @Override
-    public double getMin() { 
-        return a; 
+    public double getMin() {
+        return a;
     }
 
     @Override
-    public double getMax() { 
-        return d; 
+    public double getMax() {
+        return d;
     }
 
     @Override
-    public String getName() { 
-        return name; 
+    public String getName() {
+        return name;
     }
 }

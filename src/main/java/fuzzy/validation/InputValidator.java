@@ -1,6 +1,7 @@
 package fuzzy.validation;
 
 import fuzzy.linguistic.FuzzyVariable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +13,11 @@ public class InputValidator {
         this.inputValidationStrategy = inputValidationStrategy;
         this.variableStrategies = new HashMap<>();
     }
+
     public void setStrategyForVariable(String variableName, InputValidationStrategy strategy) {
         variableStrategies.put(variableName, strategy);
     }
+
     public double validateInput(double value, FuzzyVariable variable) throws InvalidInputException {
         InputValidationStrategy strategy = variableStrategies.getOrDefault(
                 variable.getName(),
@@ -22,6 +25,7 @@ public class InputValidator {
         );
         return strategy.validate(value, variable);
     }
+
     public Map<String, Double> validateInputs(Map<String, Double> inputs, Map<String, FuzzyVariable> variables) throws InvalidInputException {
         Map<String, Double> validatedInputs = new HashMap<>();
 

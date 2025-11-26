@@ -1,14 +1,11 @@
 package fuzzy.rulebase;
+
 import fuzzy.linguistic.FuzzyVariable;
 
 public class RuleAntecedent {
-    public enum Operator {
-        IS, IS_NOT
-    }
     FuzzyVariable variable;
     Operator operator;
     String setName;
-
     public RuleAntecedent(FuzzyVariable variable, Operator operator, String setName) {
         this.variable = variable;
         this.operator = operator;
@@ -42,5 +39,9 @@ public class RuleAntecedent {
     @Override
     public String toString() {
         return variable.getName() + " " + operator.toString() + " " + setName;
+    }
+
+    public enum Operator {
+        IS, IS_NOT
     }
 }

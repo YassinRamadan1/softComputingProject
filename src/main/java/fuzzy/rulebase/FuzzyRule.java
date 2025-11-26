@@ -33,19 +33,19 @@ public class FuzzyRule {
         return consequent;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("IF ");
-        for(int i=0; i<antecedents.size(); ++i) {
-            if(i>0) sb.append(" ").append(connector.name()).append(" ");
+        for (int i = 0; i < antecedents.size(); ++i) {
+            if (i > 0) sb.append(" ").append(connector.name()).append(" ");
             sb.append(antecedents.get(i));
         }
         sb.append(" THEN ").append(consequent).append(" (enabled=").append(enabled).append(")");

@@ -23,8 +23,8 @@ import fuzzy.rulebase.FuzzyRuleBase;
 import fuzzy.rulebase.RuleBuilder;
 import fuzzy.rulebase.persistence.RuleFileHandler;
 import fuzzy.util.SD;
-import fuzzy.validation.InputValidator;
 import fuzzy.validation.InputValidationStrategy;
+import fuzzy.validation.InputValidator;
 import fuzzy.validation.InvalidInputException;
 import fuzzy.validation.ValidationStrategyFactory;
 
@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class SmartBlindControl {
+    private final boolean loadFromFiles;
     private FuzzyVariable lightIntensity;
     private FuzzyVariable roomTemperature;
     private FuzzyVariable blindOpening;
@@ -41,11 +42,61 @@ public class SmartBlindControl {
     private MamdaniInference inference;
     private FuzzyConfiguration config;
     private InputValidator inputValidator;
-    private final boolean loadFromFiles;
 
     public SmartBlindControl(boolean loadFromFiles) {
         this.loadFromFiles = loadFromFiles;
         initialize();
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("========================================");
+        System.out.println("   SMART BLIND CONTROL - CASE STUDY");
+        System.out.println("========================================\n");
+
+        System.out.println("Select mode:");
+        System.out.println("1. Load from files (config.json + definedRules.json)");
+        System.out.println("2. Use manual configuration");
+        System.out.print("Enter choice (1 or 2): ");
+        int modeChoice = scanner.nextInt();
+        boolean loadFromFiles = (modeChoice == 1);
+
+        System.out.println("\n--- Initializing System ---");
+        SmartBlindControl controller = new SmartBlindControl(loadFromFiles);
+
+        System.out.println("\n========================================");
+        System.out.println("          EVALUATION MODE");
+        System.out.println("========================================\n");
+
+        while (true) {
+            System.out.println("\nOptions:");
+            System.out.println("1. Evaluate with custom inputs");
+            System.out.println("2. Run test scenarios");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice: ");
+            int choice = scanner.nextInt();
+
+            if (choice == 1) {
+                System.out.print("Enter Light Intensity (0-1000 lux): ");
+                double light = scanner.nextDouble();
+                System.out.print("Enter Room Temperature (0-40 °C): ");
+                double temp = scanner.nextDouble();
+                controller.evaluate(light, temp);
+            } else if (choice == 2) {
+                if (loadFromFiles) {
+                    controller.runTestScenariosFromConfig();
+                } else {
+                    controller.runHardcodedTestScenarios();
+                }
+            } else if (choice == 3) {
+                System.out.println("Exiting...");
+                break;
+            } else {
+                System.out.println("Invalid choice. Try again.");
+            }
+        }
+        scanner.close();
     }
 
     private void initialize() {
@@ -83,12 +134,12 @@ public class SmartBlindControl {
 
     private FuzzyVariable createVariableFromConfig(FuzzyConfiguration.VariableConfig varConfig) {
         FuzzyVariable variable = new FuzzyVariable(varConfig.getName(), varConfig.getMin(), varConfig.getMax());
-        
+
         for (FuzzyConfiguration.FuzzySetConfig setConfig : varConfig.getFuzzySets()) {
             IMembershipFunction mf = createMembershipFunction(setConfig);
             variable.addFuzzySet(new FuzzySet(setConfig.getName(), mf));
         }
-        
+
         return variable;
     }
 
@@ -250,56 +301,5 @@ public class SmartBlindControl {
         evaluate(50, 5);
         evaluate(800, 28);
         evaluate(200, 15);
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("========================================");
-        System.out.println("   SMART BLIND CONTROL - CASE STUDY");
-        System.out.println("========================================\n");
-
-        System.out.println("Select mode:");
-        System.out.println("1. Load from files (config.json + definedRules.json)");
-        System.out.println("2. Use manual configuration");
-        System.out.print("Enter choice (1 or 2): ");
-        int modeChoice = scanner.nextInt();
-        boolean loadFromFiles = (modeChoice == 1);
-
-        System.out.println("\n--- Initializing System ---");
-        SmartBlindControl controller = new SmartBlindControl(loadFromFiles);
-
-        System.out.println("\n========================================");
-        System.out.println("          EVALUATION MODE");
-        System.out.println("========================================\n");
-
-        while (true) {
-            System.out.println("\nOptions:");
-            System.out.println("1. Evaluate with custom inputs");
-            System.out.println("2. Run test scenarios");
-            System.out.println("3. Exit");
-            System.out.print("Enter choice: ");
-            int choice = scanner.nextInt();
-
-            if (choice == 1) {
-                System.out.print("Enter Light Intensity (0-1000 lux): ");
-                double light = scanner.nextDouble();
-                System.out.print("Enter Room Temperature (0-40 °C): ");
-                double temp = scanner.nextDouble();
-                controller.evaluate(light, temp);
-            } else if (choice == 2) {
-                if (loadFromFiles) {
-                    controller.runTestScenariosFromConfig();
-                } else {
-                    controller.runHardcodedTestScenarios();
-                }
-            } else if (choice == 3) {
-                System.out.println("Exiting...");
-                break;
-            } else {
-                System.out.println("Invalid choice. Try again.");
-            }
-        }
-        scanner.close();
     }
 }

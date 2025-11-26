@@ -19,8 +19,7 @@ public class TriangularMF implements IMembershipFunction {
     }
 
     @Override
-    public Vector<Double> getPoints()
-    {
+    public Vector<Double> getPoints() {
         Vector<Double> points = new Vector<>();
         points.add(a);
         points.add(b);
@@ -29,8 +28,7 @@ public class TriangularMF implements IMembershipFunction {
     }
 
     @Override
-    public Vector<Double> getInverse(double membership)
-    {
+    public Vector<Double> getInverse(double membership) {
         Vector<Double> xValues = new Vector<>();
         xValues.add((b - a) * membership + a);
         xValues.add((b - c) * membership + c);
@@ -40,28 +38,28 @@ public class TriangularMF implements IMembershipFunction {
 
     @Override
     public double getMembership(double x) {
-        if (x <= a || x >= c) 
+        if (x <= a || x >= c)
             return 0.0;
-        else if (x == b) 
+        else if (x == b)
             return 1.0;
-        else if (x > a && x < b) 
+        else if (x > a && x < b)
             return (x - a) / (b - a); // from line equation left line of triangular
-        else 
+        else
             return (c - x) / (c - b); // from line equation right line of triangular
     }
 
     @Override
-    public double getMin() { 
-        return a; 
+    public double getMin() {
+        return a;
     }
 
     @Override
-    public double getMax() { 
-        return c; 
+    public double getMax() {
+        return c;
     }
 
     @Override
-    public String getName() { 
-        return name; 
+    public String getName() {
+        return name;
     }
 }

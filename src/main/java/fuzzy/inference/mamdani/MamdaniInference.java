@@ -3,14 +3,15 @@ package fuzzy.inference.mamdani;
 import fuzzy.inference.AntecedentEvaluator;
 import fuzzy.inference.InferenceEngine;
 import fuzzy.inference.InferenceResult;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
 import fuzzy.operators.aggregation.Aggregation;
 import fuzzy.operators.implication.Implication;
 import fuzzy.operators.snorm.SNorm;
 import fuzzy.operators.tnorm.TNorm;
 import fuzzy.rulebase.FuzzyRule;
 import fuzzy.rulebase.FuzzyRuleBase;
-import fuzzy.linguistic.FuzzySet;
-import fuzzy.linguistic.FuzzyVariable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 

@@ -1,6 +1,7 @@
 package genetic.mutation;
 
 import genetic.chromosome.Chromosome;
+
 import java.util.Random;
 import java.util.Vector;
 

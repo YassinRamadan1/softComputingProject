@@ -1,6 +1,7 @@
 package fuzzy.inference;
 
 import fuzzy.linguistic.FuzzyVariable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class InferenceResult {
     public FuzzyVariable getOutputVariable() {
         return outputVariable;
     }
+
     public Map<String, Double> getAggregatedOutputMemberships() {
         return aggregatedOutputMemberships;
     }

@@ -1,17 +1,19 @@
 package genetic;
 
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Vector;
 import genetic.chromosome.Chromosome;
 import genetic.crossover.UniformCrossover;
 import genetic.mutation.Insert;
 import genetic.replacement.GGA_Replacment;
 import genetic.selection.RouletteWheelSelection;
+
+import java.util.Collections;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Vector;
+
 public class CaseStudyApplication {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.print("Population size = 100\nCrossover rate = 0.7\nMutation rate = 0.01\nGenerations = 1000\n");
         System.out.println("Enter 1 or 2:\n1.Use default parameters\n2.Enter custom parameters");
 
@@ -22,7 +24,7 @@ public class CaseStudyApplication {
 
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
-        if(choice == 2){
+        if (choice == 2) {
             System.out.print("Enter population size: ");
             popSize = sc.nextInt();
 
@@ -43,9 +45,9 @@ public class CaseStudyApplication {
 
         System.out.print("Enter number of jobs: ");
         Integer numberOfJobs = sc.nextInt();
-        Integer [] durations = new Integer[numberOfJobs];
-        Integer [] limits = new Integer[numberOfJobs];
-        for(int i=0; i<numberOfJobs; ++i){
+        Integer[] durations = new Integer[numberOfJobs];
+        Integer[] limits = new Integer[numberOfJobs];
+        for (int i = 0; i < numberOfJobs; ++i) {
             System.out.println("Enter duration and limit for job " + i + ": ");
             Integer duration = sc.nextInt();
             Integer limit = sc.nextInt();
@@ -72,7 +74,7 @@ public class CaseStudyApplication {
                 Vector<String> schedule = new Vector<>();
 
                 double finalTime = 1;
-                for(int i = 0; i < Machines.size(); i++) {
+                for (int i = 0; i < Machines.size(); i++) {
                     Vector<Integer> jobs = Machines.get(i);
                     Collections.sort(jobs, (j1, j2) -> {
                         if (limits[j1] != limits[j2]) return Integer.compare(limits[j1], limits[j2]);
@@ -101,7 +103,7 @@ public class CaseStudyApplication {
                                 .append("], ");
                     }
 
-                    if (machineSchedule.length() > 2){
+                    if (machineSchedule.length() > 2) {
                         machineSchedule.setLength(machineSchedule.length() - 2);
                     }
                     schedule.add(machineSchedule.toString());
@@ -111,7 +113,7 @@ public class CaseStudyApplication {
                 }
 
                 double fitness = 1.0 / finalTime;
-                if(!isFeasible[0]){
+                if (!isFeasible[0]) {
                     fitness *= 0.001; // give a low fitness to infeasible solutions
                 }
 
@@ -123,7 +125,7 @@ public class CaseStudyApplication {
             @Override
             public Vector<Chromosome<Integer>> initializePopulation() {
                 Random rand = new Random();
-                Vector <Chromosome<Integer>> population = new Vector<Chromosome<Integer>>(populationSize);
+                Vector<Chromosome<Integer>> population = new Vector<Chromosome<Integer>>(populationSize);
 
                 int maxAttempts = 10000; // Maximum attempts to find a feasible solution
                 int totalAttempts = 0;
@@ -135,7 +137,7 @@ public class CaseStudyApplication {
 
                     while (totalAttempts < maxAttempts) {
                         totalAttempts++;
-                        Vector <Integer> genes = new Vector<Integer>(numberOfJobs);
+                        Vector<Integer> genes = new Vector<Integer>(numberOfJobs);
                         for (int j = 0; j < numberOfJobs; j++) {
                             int gene = rand.nextInt(3);
                             genes.add(gene);
@@ -161,7 +163,7 @@ public class CaseStudyApplication {
                     }
                 }
 
-                if(feasibleCount == 0){
+                if (feasibleCount == 0) {
                     System.out.println("Warning: No feasible solution found in initialization. Continuing with infeasible population...");
                 }
                 return population;
@@ -173,7 +175,7 @@ public class CaseStudyApplication {
         ga_engine.setChromosomeLength(numberOfJobs);
         ga_engine.setFitnessFunction(fitnessFunction);
         ga_engine.setInitialization(initializePopulation);
-        ga_engine.setCrossoverRate (crossoverRate);
+        ga_engine.setCrossoverRate(crossoverRate);
         ga_engine.setMutationRate(mutationRate);
         ga_engine.setGenerations(generations);
         ga_engine.setCrossover(new UniformCrossover<>());

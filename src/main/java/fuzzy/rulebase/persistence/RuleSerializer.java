@@ -1,12 +1,13 @@
 package fuzzy.rulebase.persistence;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fuzzy.linguistic.FuzzyVariable;
 import fuzzy.rulebase.FuzzyRule;
 import fuzzy.rulebase.FuzzyRuleBase;
 import fuzzy.rulebase.RuleAntecedent;
 import fuzzy.rulebase.RuleConsequent;
-import fuzzy.linguistic.FuzzyVariable;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,23 @@ public class RuleSerializer {
 
     public RuleSerializer() {
         gson = new GsonBuilder().setPrettyPrinting().create();
+    }
+
+    private static RuleDTO getRuleDTO(FuzzyRule rule, List<RuleAntecedentDTO> antecedents) {
+        RuleConsequent consequent = rule.getConsequent();
+        RuleConsequentDTO consequentDTO = new RuleConsequentDTO(
+                consequent.getVariable().getName(),
+                consequent.getSetName()
+        );
+
+        String connector = rule.getConnector().name();
+
+        return new RuleDTO(rule.getName(),
+                rule.isEnabled(),
+                connector,
+                antecedents,
+                consequentDTO
+        );
     }
 
     public String serialize(FuzzyRuleBase ruleBase) {
@@ -35,22 +53,5 @@ public class RuleSerializer {
             dtoList.add(dto);
         }
         return gson.toJson(dtoList);
-    }
-
-    private static RuleDTO getRuleDTO(FuzzyRule rule, List<RuleAntecedentDTO> antecedents) {
-        RuleConsequent consequent = rule.getConsequent();
-        RuleConsequentDTO consequentDTO = new RuleConsequentDTO(
-                consequent.getVariable().getName(),
-                consequent.getSetName()
-        );
-
-        String connector = rule.getConnector().name();
-
-        return new RuleDTO(rule.getName(),
-                rule.isEnabled(),
-                connector,
-                antecedents,
-                consequentDTO
-        );
     }
 }

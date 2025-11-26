@@ -1,8 +1,8 @@
 package fuzzy.linguistic;
 
-import java.util.Vector;
-
 import fuzzy.membershipfunctions.IMembershipFunction;
+
+import java.util.Vector;
 
 public class FuzzySet {
     private final String name;
@@ -25,13 +25,11 @@ public class FuzzySet {
         return membershipFunction.calculateCentroid();
     }
 
-    public Vector<Double> getPoints()
-    {
+    public Vector<Double> getPoints() {
         return membershipFunction.getPoints();
     }
 
-    public Vector<Double> getInverse(double membership)
-    {
+    public Vector<Double> getInverse(double membership) {
         return membershipFunction.getInverse(membership);
     }
 
