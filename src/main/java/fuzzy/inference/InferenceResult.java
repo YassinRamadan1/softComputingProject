@@ -1,6 +1,6 @@
 package fuzzy.inference;
 
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

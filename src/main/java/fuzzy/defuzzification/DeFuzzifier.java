@@ -2,7 +2,7 @@ package fuzzy.defuzzification;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
 
 public class DeFuzzifier {
     private FuzzyVariable outputVariable;
@@ -14,9 +14,11 @@ public class DeFuzzifier {
         this.Memberships.putAll(memberships);
         this.method = method;
     }
+
     public double getCrispOutput() {
         return method.getCrispOutput();
     }
+
     public String getCrispSet() {
         double v = method.getCrispOutput();
         double maxMembership = Double.NEGATIVE_INFINITY;

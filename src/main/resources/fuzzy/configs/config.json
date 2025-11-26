@@ -1,34 +1,58 @@
 {
   "defaults": {
-    "inferenceEngine": "SUGENO_FIRST",
-    "andOperator": "ALGEBRAIC_PRODUCT",
-    "orOperator": "ALGEBRAIC_SUM",
-    "implicationOperator": "PRODUCT",
-    "aggregationOperator": "SUM",
-    "defuzzificationMethod": "WEIGHTED_AVERAGE",
-    "validationStrategy": "DEFAULT_VALUE"
+    "inferenceEngine": "MAMDANI",
+    "andOperator": "MIN",
+    "orOperator": "MAX",
+    "implicationOperator": "MIN",
+    "aggregationOperator": "MAX",
+    "defuzzificationMethod": "MEAN_OF_MAX",
+    "validationStrategy": "CLAMP"
   },
-
-  "variables": {
-    "defaultInputDomain": {
-      "min": -10.0,
-      "max": 50.0
-    },
-    "defaultOutputDomain": {
-      "min": 0.0,
-      "max": 1.0
-    },
-    "defaultNumberOfSets": 5,
-    "defaultMembershipFunctionType": "TRAPEZOIDAL",
-    "autoGenerateSets": false
-  },
-
   "caseStudy": {
-    "windowBlind": {
-      "enabled": true,
-      "ruleFile": "resources/fuzzy/rules/window_blind_rules.json",
-      "inputVariables": ["Light", "Temperature"],
-      "outputVariable": "BlindPosition"
-    }
+    "name": "SmartBlindControl",
+    "description": "Automatic blind position control based on light intensity and room temperature",
+    "rulesFile": "src/main/resources/fuzzy/rulebase/rules.json",
+    "inputs": [
+      {
+        "name": "LightIntensity",
+        "domain": { "min": 0.0, "max": 1000.0 },
+        "fuzzySets": [
+          { "name": "VeryLow", "type": "TRAPEZOIDAL", "params": [0, 0, 30, 100] },
+          { "name": "Low", "type": "TRAPEZOIDAL", "params": [80, 150, 250, 350] },
+          { "name": "Medium", "type": "TRIANGULAR", "params": [300, 500, 700] },
+          { "name": "High", "type": "TRAPEZOIDAL", "params": [650, 750, 850, 920] },
+          { "name": "VeryHigh", "type": "TRAPEZOIDAL", "params": [900, 950, 1000, 1000] }
+        ]
+      },
+      {
+        "name": "RoomTemperature",
+        "domain": { "min": 0.0, "max": 40.0 },
+        "fuzzySets": [
+          { "name": "VeryCold", "type": "TRIANGULAR", "params": [0, 0, 8] },
+          { "name": "Cold", "type": "TRIANGULAR", "params": [5, 12, 17] },
+          { "name": "Comfortable", "type": "TRIANGULAR", "params": [15, 22, 27] },
+          { "name": "Warm", "type": "TRIANGULAR", "params": [25, 30, 34] },
+          { "name": "Hot", "type": "TRIANGULAR", "params": [32, 40, 40] }
+        ]
+      }
+    ],
+    "output": {
+      "name": "BlindOpening",
+      "domain": { "min": 0.0, "max": 100.0 },
+      "fuzzySets": [
+        { "name": "Closed", "type": "TRIANGULAR", "params": [0, 0, 10] },
+        { "name": "SlightlyOpen", "type": "TRIANGULAR", "params": [5, 20, 40] },
+        { "name": "HalfOpen", "type": "TRIANGULAR", "params": [30, 50, 70] },
+        { "name": "MostlyOpen", "type": "TRIANGULAR", "params": [60, 75, 90] },
+        { "name": "FullyOpen", "type": "TRIANGULAR", "params": [85, 100, 100] }
+      ]
+    },
+    "testScenarios": [
+      { "name": "Very Bright & Hot", "lightIntensity": 950, "roomTemperature": 35 },
+      { "name": "Medium Light & Comfortable", "lightIntensity": 500, "roomTemperature": 22 },
+      { "name": "Very Low Light & Very Cold", "lightIntensity": 50, "roomTemperature": 5 },
+      { "name": "High Light & Warm", "lightIntensity": 800, "roomTemperature": 28 },
+      { "name": "Low Light & Comfortable", "lightIntensity": 200, "roomTemperature": 15 }
+    ]
   }
 }

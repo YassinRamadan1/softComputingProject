@@ -7,10 +7,10 @@ import fuzzy.operators.aggregation.Aggregation;
 import fuzzy.operators.implication.Implication;
 import fuzzy.operators.snorm.SNorm;
 import fuzzy.operators.tnorm.TNorm;
-import fuzzy.rules.FuzzyRule;
-import fuzzy.rules.FuzzyRuleBase;
-import fuzzy.variables.FuzzySet;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.rulebase.FuzzyRule;
+import fuzzy.rulebase.FuzzyRuleBase;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -40,7 +40,6 @@ public class MamdaniInference implements InferenceEngine {
 
             AntecedentEvaluator evaluator = new AntecedentEvaluator(andOperator, orOperator);
             double antecedentStrength = evaluator.evaluate(rule, fuzzifiedInputs);
-            antecedentStrength*=rule.getWeight();
 
             String consequentSetName = rule.getConsequent().getSetName();
             double currentMembership = aggregatedMemberships.get(consequentSetName);

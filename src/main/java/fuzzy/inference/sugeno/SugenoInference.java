@@ -5,9 +5,9 @@ import fuzzy.inference.InferenceEngine;
 import fuzzy.inference.InferenceResult;
 import fuzzy.operators.snorm.SNorm;
 import fuzzy.operators.tnorm.TNorm;
-import fuzzy.rules.FuzzyRule;
-import fuzzy.rules.FuzzyRuleBase;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.rulebase.FuzzyRule;
+import fuzzy.rulebase.FuzzyRuleBase;
+import fuzzy.linguistic.FuzzyVariable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -32,12 +32,11 @@ public class SugenoInference implements InferenceEngine {
 
             AntecedentEvaluator evaluator = new AntecedentEvaluator(andOperator, orOperator);
             double antecedentStrength = evaluator.evaluate(rule, fuzzifiedInputs);
-            antecedentStrength*=rule.getWeight();
 
             SugenoOutput output = ruleOutputs.get(rule.getName());
             if(output==null) throw new IllegalStateException("No Sugeno output defined for rule: " + rule.getName());
 
-            double ruleOutputValue = output.evaluate();
+            double ruleOutputValue = output.getConstantValue();
             numerator+=antecedentStrength*ruleOutputValue;
             denominator+=antecedentStrength;
         }

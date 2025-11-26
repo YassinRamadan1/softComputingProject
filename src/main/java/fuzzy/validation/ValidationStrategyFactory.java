@@ -1,6 +1,6 @@
 package fuzzy.validation;
 
-import fuzzy.core.FuzzyConfiguration;
+import fuzzy.config.FuzzyConfiguration;
 
 public class ValidationStrategyFactory {
     public static InputValidationStrategy createStrategy(FuzzyConfiguration.ValidationStrategyType type) {

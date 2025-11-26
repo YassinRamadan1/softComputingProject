@@ -1,6 +1,6 @@
 package fuzzy.validation;
 
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
 
 public class ClampingStrategy implements InputValidationStrategy{
     private final boolean logWarnings;
@@ -28,8 +28,4 @@ public class ClampingStrategy implements InputValidationStrategy{
         return clampedValue;
     }
 
-    @Override
-    public String getStrategyName() {
-        return "Clamping";
-    }
 }

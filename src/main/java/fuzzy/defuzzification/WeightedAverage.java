@@ -3,7 +3,7 @@ package fuzzy.defuzzification;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
 
 public class WeightedAverage implements DeFuzzificationMethod {
     private final FuzzyVariable outputVariable;
@@ -13,6 +13,7 @@ public class WeightedAverage implements DeFuzzificationMethod {
         this.outputVariable = outputVariable;
         this.Memberships.putAll(memberships);
     }
+
     @Override
     public double getCrispOutput() {
 

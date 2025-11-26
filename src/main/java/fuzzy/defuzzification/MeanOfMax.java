@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.AbstractMap.SimpleEntry;
 
-import fuzzy.variables.FuzzySet;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
 
 public class MeanOfMax implements DeFuzzificationMethod {
     private final FuzzyVariable outputVariable;
@@ -16,6 +16,7 @@ public class MeanOfMax implements DeFuzzificationMethod {
         this.outputVariable = outputVariable;
         this.Memberships.putAll(memberships);
     }
+
     SimpleEntry<Double, Double> calculateIntersection(SimpleEntry<Double, Double> line1Point1, SimpleEntry<Double, Double> line1Point2, SimpleEntry<Double, Double> line2Point1, SimpleEntry<Double, Double> line2Point2) {
         double x1 = line1Point1.getKey();
         double y1 = line1Point1.getValue();
@@ -37,6 +38,7 @@ public class MeanOfMax implements DeFuzzificationMethod {
 
         return new SimpleEntry<>(px, py);
     }
+
     public Vector<SimpleEntry<Double, Double>> getAggregatedShape() {
         Vector<SimpleEntry<Double, Double>> aggregated = new Vector<>();
         double lastMembership = 0.0;
@@ -122,6 +124,7 @@ public class MeanOfMax implements DeFuzzificationMethod {
 
         return aggregated;
     }
+
     @Override
     public double getCrispOutput() {
 

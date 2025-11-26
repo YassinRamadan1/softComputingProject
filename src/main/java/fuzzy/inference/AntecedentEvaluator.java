@@ -2,9 +2,9 @@ package fuzzy.inference;
 
 import fuzzy.operators.snorm.SNorm;
 import fuzzy.operators.tnorm.TNorm;
-import fuzzy.rules.FuzzyRule;
-import fuzzy.rules.RuleAntecedent;
-import fuzzy.rules.RuleConnector;
+import fuzzy.rulebase.FuzzyRule;
+import fuzzy.rulebase.RuleAntecedent;
+import fuzzy.rulebase.RuleConnector;
 import java.util.Map;
 
 public class AntecedentEvaluator {

@@ -1,6 +1,6 @@
 package fuzzy.validation;
 
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
 import java.util.HashMap;
 import java.util.Map;
 

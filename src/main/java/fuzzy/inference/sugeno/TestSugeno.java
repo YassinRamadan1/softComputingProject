@@ -1,13 +1,13 @@
 package fuzzy.inference.sugeno;
 
-import fuzzy.core.FuzzyConfiguration;
-import fuzzy.core.OperatorFactory;
+import fuzzy.config.FuzzyConfiguration;
+import fuzzy.config.OperatorFactory;
 import fuzzy.inference.InferenceResult;
-import fuzzy.membership.TriangularMF;
-import fuzzy.rules.FuzzyRuleBase;
-import fuzzy.rules.RuleBuilder;
-import fuzzy.variables.FuzzySet;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.membershipfunctions.TriangularMF;
+import fuzzy.rulebase.FuzzyRuleBase;
+import fuzzy.rulebase.RuleBuilder;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class TestSugeno {
         temp.addFuzzySet(new FuzzySet("Cold", new TriangularMF("Cold", 0, 0, 20)));
         temp.addFuzzySet(new FuzzySet("Hot", new TriangularMF("Hot", 20, 40, 40)));
 
-        FuzzyVariable blind = new FuzzyVariable("BlindPosition", 0.0, 100.0);
+        FuzzyVariable blind = new FuzzyVariable("BlindOpening", 0.0, 100.0);
 
         FuzzyRuleBase ruleBase = new FuzzyRuleBase();
 
@@ -66,6 +66,6 @@ public class TestSugeno {
         double crispOutput = result.getAggregatedOutputMemberships().get("SugenoCrispOutput");
 
         System.out.println("\n=== Final Crisp Output ===");
-        System.out.println("Blind Position: " + crispOutput);
+        System.out.println("Blind Opening: " + crispOutput + "%");
     }
 }

@@ -3,10 +3,10 @@ package fuzzy.defuzzification;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import fuzzy.membership.IMembershipFunction;
-import fuzzy.membership.TriangularMF;
-import fuzzy.variables.FuzzySet;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.membershipfunctions.IMembershipFunction;
+import fuzzy.membershipfunctions.TriangularMF;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
 
 public class TestDeFuzzificationMethods {
     

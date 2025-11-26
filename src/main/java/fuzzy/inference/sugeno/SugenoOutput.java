@@ -8,7 +8,7 @@ public class SugenoOutput {
     public SugenoOutput(double constantValue) {
         this.constantValue = constantValue;
     }
-    public double evaluate() {return constantValue;}
+    public double getConstantValue() {return constantValue;}
     @Override
     public String toString() {
         return String.format("%.2f", constantValue);

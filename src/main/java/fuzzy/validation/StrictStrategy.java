@@ -1,6 +1,6 @@
 package fuzzy.validation;
 
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
 
 public class StrictStrategy implements InputValidationStrategy {
     @Override
@@ -31,8 +31,4 @@ public class StrictStrategy implements InputValidationStrategy {
         return value;
     }
 
-    @Override
-    public String getStrategyName() {
-        return "Strict";
-    }
 }
