@@ -1,12 +1,12 @@
 package fuzzy.defuzzification;
 
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
+
+import java.util.AbstractMap.SimpleEntry;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.util.AbstractMap.SimpleEntry;
-
-import fuzzy.variables.FuzzySet;
-import fuzzy.variables.FuzzyVariable;
 
 public class MeanOfMax implements DeFuzzificationMethod {
     private final FuzzyVariable outputVariable;
@@ -16,6 +16,7 @@ public class MeanOfMax implements DeFuzzificationMethod {
         this.outputVariable = outputVariable;
         this.Memberships.putAll(memberships);
     }
+
     SimpleEntry<Double, Double> calculateIntersection(SimpleEntry<Double, Double> line1Point1, SimpleEntry<Double, Double> line1Point2, SimpleEntry<Double, Double> line2Point1, SimpleEntry<Double, Double> line2Point2) {
         double x1 = line1Point1.getKey();
         double y1 = line1Point1.getValue();
@@ -37,74 +38,63 @@ public class MeanOfMax implements DeFuzzificationMethod {
 
         return new SimpleEntry<>(px, py);
     }
+
     public Vector<SimpleEntry<Double, Double>> getAggregatedShape() {
         Vector<SimpleEntry<Double, Double>> aggregated = new Vector<>();
         double lastMembership = 0.0;
-        for(Map.Entry<String, Double> entry : Memberships.entrySet())
-        {
+        for (Map.Entry<String, Double> entry : Memberships.entrySet()) {
             FuzzySet set = outputVariable.getSet(entry.getKey());
             Vector<Double> fuzzySetPoints = set.getPoints();
             Vector<Double> newFuzzySetPoints = set.getInverse(entry.getValue());
-            if(!aggregated.isEmpty())
-            {
+            if (!aggregated.isEmpty()) {
                 SimpleEntry<Double, Double> fuzzySetsIntersection = calculateIntersection(
                         aggregated.get(aggregated.size() - 2), aggregated.get(aggregated.size() - 1),
                         new SimpleEntry<Double, Double>(fuzzySetPoints.get(0), 0.0),
                         new SimpleEntry<Double, Double>(newFuzzySetPoints.get(0), entry.getValue()));
 
-                if(fuzzySetsIntersection == null)
-                {
+                if (fuzzySetsIntersection == null) {
                     aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(0), entry.getValue()));
-                    if(newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
+                    if (newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
                         aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(1), entry.getValue()));
                     aggregated.add(new SimpleEntry<Double, Double>(fuzzySetPoints.get(fuzzySetPoints.size() - 1), 0.0));
                     lastMembership = entry.getValue();
                     continue;
                 }
 
-                if(fuzzySetsIntersection.getValue() < entry.getValue() && fuzzySetsIntersection.getValue() < lastMembership)
-                {
+                if (fuzzySetsIntersection.getValue() < entry.getValue() && fuzzySetsIntersection.getValue() < lastMembership) {
                     aggregated.set(aggregated.size() - 1, fuzzySetsIntersection);
                     aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(0), entry.getValue()));
-                    if(newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
+                    if (newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
                         aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(1), entry.getValue()));
                     aggregated.add(new SimpleEntry<Double, Double>(fuzzySetPoints.get(fuzzySetPoints.size() - 1), 0.0));
-                }
-                else if(fuzzySetsIntersection.getValue() > entry.getValue() && fuzzySetsIntersection.getValue() < lastMembership)
-                {
+                } else if (fuzzySetsIntersection.getValue() > entry.getValue() && fuzzySetsIntersection.getValue() < lastMembership) {
                     SimpleEntry<Double, Double> horizontalIntersection = calculateIntersection(
                             aggregated.get(aggregated.size() - 2), aggregated.get(aggregated.size() - 1),
                             new SimpleEntry<Double, Double>(0.0, entry.getValue()),
                             new SimpleEntry<Double, Double>(1.0, entry.getValue()));
 
-                    if(horizontalIntersection != null)
-                    {
+                    if (horizontalIntersection != null) {
                         aggregated.set(aggregated.size() - 1, horizontalIntersection);
                     }
 
                     aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(1), entry.getValue()));
                     aggregated.add(new SimpleEntry<Double, Double>(fuzzySetPoints.get(fuzzySetPoints.size() - 1), 0.0));
-                }
-                else if(fuzzySetsIntersection.getValue() < entry.getValue() && fuzzySetsIntersection.getValue() > lastMembership)
-                {
+                } else if (fuzzySetsIntersection.getValue() < entry.getValue() && fuzzySetsIntersection.getValue() > lastMembership) {
                     SimpleEntry<Double, Double> horizontalIntersection = calculateIntersection(
                             new SimpleEntry<Double, Double>(fuzzySetPoints.get(0), 0.0),
                             new SimpleEntry<Double, Double>(fuzzySetPoints.get(1), 1.0),
                             new SimpleEntry<Double, Double>(0.0, lastMembership),
                             new SimpleEntry<Double, Double>(1.0, lastMembership));
 
-                    if(horizontalIntersection != null)
-                    {
+                    if (horizontalIntersection != null) {
                         aggregated.set(aggregated.size() - 2, horizontalIntersection);
                     }
 
                     aggregated.set(aggregated.size() - 1, new SimpleEntry<Double, Double>(newFuzzySetPoints.get(0), entry.getValue()));
-                    if(newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
+                    if (newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
                         aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(1), entry.getValue()));
                     aggregated.add(new SimpleEntry<Double, Double>(fuzzySetPoints.get(fuzzySetPoints.size() - 1), 0.0));
-                }
-                else
-                {
+                } else {
                     aggregated.set(aggregated.size() - 2, new SimpleEntry<Double, Double>(newFuzzySetPoints.get(1), entry.getValue()));
                     aggregated.set(aggregated.size() - 1, new SimpleEntry<Double, Double>(fuzzySetPoints.get(fuzzySetPoints.size() - 1), 0.0));
                 }
@@ -114,7 +104,7 @@ public class MeanOfMax implements DeFuzzificationMethod {
 
             aggregated.add(new SimpleEntry<Double, Double>(fuzzySetPoints.get(0), 0.0));
             aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(0), entry.getValue()));
-            if(newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
+            if (newFuzzySetPoints.get(0) != newFuzzySetPoints.get(1))
                 aggregated.add(new SimpleEntry<Double, Double>(newFuzzySetPoints.get(1), entry.getValue()));
             aggregated.add(new SimpleEntry<Double, Double>(fuzzySetPoints.get(fuzzySetPoints.size() - 1), 0.0));
             lastMembership = entry.getValue();
@@ -122,25 +112,22 @@ public class MeanOfMax implements DeFuzzificationMethod {
 
         return aggregated;
     }
+
     @Override
     public double getCrispOutput() {
 
         double maxMembership = Double.NEGATIVE_INFINITY;
         Vector<SimpleEntry<Double, Double>> aggregatedShape = getAggregatedShape();
-        for(SimpleEntry<Double, Double> entry : aggregatedShape)
-        {
-            if(entry.getValue() > maxMembership)
-            {
+        for (SimpleEntry<Double, Double> entry : aggregatedShape) {
+            if (entry.getValue() > maxMembership) {
                 maxMembership = entry.getValue();
             }
         }
 
         double sum = 0.0;
         int count = 0;
-        for(SimpleEntry<Double, Double> entry : aggregatedShape)
-        {
-            if(entry.getValue() == maxMembership)
-            {
+        for (SimpleEntry<Double, Double> entry : aggregatedShape) {
+            if (entry.getValue() == maxMembership) {
                 sum += entry.getKey();
                 count++;
             }

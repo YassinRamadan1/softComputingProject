@@ -1,0 +1,252 @@
+[
+  {
+    "name": "R1",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Closed" }
+  },
+  {
+    "name": "R2",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Closed" }
+  },
+  {
+    "name": "R3",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "SlightlyOpen" }
+  },
+  {
+    "name": "R4",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
+  },
+  {
+    "name": "R5",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryHigh", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
+  },
+  {
+    "name": "R6",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "High", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Closed" }
+  },
+  {
+    "name": "R7",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "High", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "SlightlyOpen" }
+  },
+  {
+    "name": "R8",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "High", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
+  },
+  {
+    "name": "R9",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "High", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
+  },
+  {
+    "name": "R10",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "High", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  },
+  {
+    "name": "R11",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "SlightlyOpen" }
+  },
+  {
+    "name": "R12",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
+  },
+  {
+    "name": "R13",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
+  },
+  {
+    "name": "R14",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
+  },
+  {
+    "name": "R15",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Medium", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  },
+  {
+    "name": "R16",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Low", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "HalfOpen" }
+  },
+  {
+    "name": "R17",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Low", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
+  },
+  {
+    "name": "R18",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Low", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
+  },
+  {
+    "name": "R19",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Low", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  },
+  {
+    "name": "R20",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "Low", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  },
+  {
+    "name": "R21",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Hot", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "MostlyOpen" }
+  },
+  {
+    "name": "R22",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Warm", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  },
+  {
+    "name": "R23",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Comfortable", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  },
+  {
+    "name": "R24",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "Cold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  },
+  {
+    "name": "R25",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "VeryLow", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "VeryCold", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "FullyOpen" }
+  }
+]

@@ -1,15 +1,16 @@
 package fuzzy.inference.mamdani;
 
-import fuzzy.core.FuzzyConfiguration;
-import fuzzy.core.OperatorFactory;
+import fuzzy.config.FuzzyConfiguration;
+import fuzzy.config.OperatorFactory;
 import fuzzy.defuzzification.DeFuzzifier;
 import fuzzy.defuzzification.MeanOfMax;
 import fuzzy.inference.InferenceResult;
-import fuzzy.membership.TriangularMF;
-import fuzzy.rules.FuzzyRuleBase;
-import fuzzy.rules.RuleBuilder;
-import fuzzy.variables.FuzzySet;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
+import fuzzy.membershipfunctions.TriangularMF;
+import fuzzy.rulebase.FuzzyRuleBase;
+import fuzzy.rulebase.RuleBuilder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class TestMamdani {
         temp.addFuzzySet(new FuzzySet("Cold", new TriangularMF("Cold", 0, 0, 20)));
         temp.addFuzzySet(new FuzzySet("Hot", new TriangularMF("Hot", 20, 40, 40)));
 
-        FuzzyVariable blind = new FuzzyVariable("BlindPosition", 0.0, 100.0);
+        FuzzyVariable blind = new FuzzyVariable("BlindOpening", 0.0, 100.0);
         blind.addFuzzySet(new FuzzySet("Closed", new TriangularMF("Closed", 0, 0, 50)));
         blind.addFuzzySet(new FuzzySet("Open", new TriangularMF("Open", 50, 100, 100)));
 
@@ -71,8 +72,9 @@ public class TestMamdani {
         );
 
         double crispOutput = defuzzifier.getCrispOutput();
+        String crispSet = defuzzifier.getCrispSet();
 
         System.out.println("\n=== Defuzzified Output ===");
-        System.out.println("Crisp Blind Position: " + crispOutput);
+        System.out.println("Crisp Blind Opening: " + crispOutput + "%, Crips Blind Set: " + crispSet);
     }
 }

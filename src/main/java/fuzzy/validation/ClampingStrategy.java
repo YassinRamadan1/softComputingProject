@@ -1,17 +1,22 @@
 package fuzzy.validation;
 
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
 
-public class ClampingStrategy implements InputValidationStrategy{
+public class ClampingStrategy implements InputValidationStrategy {
     private final boolean logWarnings;
 
-    public ClampingStrategy(boolean logWarnings) {this.logWarnings = logWarnings;}
-    public ClampingStrategy() {this(false);}
+    public ClampingStrategy(boolean logWarnings) {
+        this.logWarnings = logWarnings;
+    }
+
+    public ClampingStrategy() {
+        this(false);
+    }
 
     @Override
     public double validate(double value, FuzzyVariable variable) {
         if (Double.isNaN(value) || Double.isInfinite(value)) {
-            throw  new InvalidInputException(
+            throw new InvalidInputException(
                     variable.getName(),
                     value,
                     "Value is not a number or Infinity"
@@ -28,8 +33,4 @@ public class ClampingStrategy implements InputValidationStrategy{
         return clampedValue;
     }
 
-    @Override
-    public String getStrategyName() {
-        return "Clamping";
-    }
 }

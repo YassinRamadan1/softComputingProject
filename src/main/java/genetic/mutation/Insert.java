@@ -1,14 +1,14 @@
 package genetic.mutation;
 
-import java.util.Random;
-
 import genetic.chromosome.Chromosome;
+
+import java.util.Random;
 
 public class Insert implements Mutation<Integer> {
     @Override
     public Chromosome<Integer> mutate(Chromosome<Integer> chromosome, double mutationRate) {
         Random random = new Random();
-        
+
         if (random.nextDouble() > mutationRate) {
             return chromosome;
         }
@@ -25,13 +25,13 @@ public class Insert implements Mutation<Integer> {
         int lastIdx = Math.max(randomPosition1, randomPosition2);
         int firstIdx = Math.min(randomPosition1, randomPosition2);
 
-        for(int i=lastIdx; i>firstIdx+1;i--) {
+        for (int i = lastIdx; i > firstIdx + 1; i--) {
             Integer temp = chromosome.getGenes().get(i);
-            chromosome.getGenes().set(i, chromosome.getGenes().get(i-1));
-            chromosome.getGenes().set(i-1, temp);
+            chromosome.getGenes().set(i, chromosome.getGenes().get(i - 1));
+            chromosome.getGenes().set(i - 1, temp);
         }
 
         return chromosome;
     }
-    
+
 }

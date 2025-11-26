@@ -1,13 +1,13 @@
 package genetic.crossover;
 
+import genetic.chromosome.Chromosome;
+
 import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
-import genetic.chromosome.Chromosome;
-
 public class TwoPointCrossover<T> implements Crossover<T> {
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     @Override
     public Vector<Chromosome<T>> crossover(Chromosome<T> parent1, Chromosome<T> parent2) {
@@ -15,21 +15,21 @@ public class TwoPointCrossover<T> implements Crossover<T> {
         int point1 = rand.nextInt(length - 2);
         int point2 = rand.nextInt(length - point1 - 1) + point1 + 1;
 
-        
-        Vector<T> offSpringGenes1 = new Vector<T> ((Collections.nCopies(length, (T) null)));
-        Vector<T> offSpringGenes2 = new Vector<T> ((Collections.nCopies(length, (T) null)));
 
-        for(int i=0; i<point1; i++){
+        Vector<T> offSpringGenes1 = new Vector<T>((Collections.nCopies(length, null)));
+        Vector<T> offSpringGenes2 = new Vector<T>((Collections.nCopies(length, null)));
+
+        for (int i = 0; i < point1; i++) {
             offSpringGenes1.set(i, parent1.getGenes().get(i));
             offSpringGenes2.set(i, parent2.getGenes().get(i));
         }
 
-        for(int i=point1; i<point2; i++){
+        for (int i = point1; i < point2; i++) {
             offSpringGenes1.set(i, parent2.getGenes().get(i));
             offSpringGenes2.set(i, parent1.getGenes().get(i));
         }
 
-        for(int i=point2; i<length; i++){
+        for (int i = point2; i < length; i++) {
             offSpringGenes1.set(i, parent1.getGenes().get(i));
             offSpringGenes2.set(i, parent2.getGenes().get(i));
         }

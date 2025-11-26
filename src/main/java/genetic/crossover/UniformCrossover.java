@@ -1,26 +1,27 @@
 package genetic.crossover;
-import java.util.Vector;
-import java.util.Collections;
-import java.util.Random;
+
 import genetic.chromosome.Chromosome;
 
+import java.util.Collections;
+import java.util.Random;
+import java.util.Vector;
+
 public class UniformCrossover<T> implements Crossover<T> {
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     @Override
     public Vector<Chromosome<T>> crossover(Chromosome<T> parent1, Chromosome<T> parent2) {
         int length = parent1.getGenes().size();
 
-        
-        Vector<T> offSpringGenes1 = new Vector<T> ((Collections.nCopies(length, (T) null)));
-        Vector<T> offSpringGenes2 = new Vector<T> ((Collections.nCopies(length, (T) null)));
 
-        for(int i=0; i<length; i++){
-            if(rand.nextBoolean()){
+        Vector<T> offSpringGenes1 = new Vector<T>((Collections.nCopies(length, null)));
+        Vector<T> offSpringGenes2 = new Vector<T>((Collections.nCopies(length, null)));
+
+        for (int i = 0; i < length; i++) {
+            if (rand.nextBoolean()) {
                 offSpringGenes1.set(i, parent1.getGenes().get(i));
                 offSpringGenes2.set(i, parent2.getGenes().get(i));
-            }
-            else{
+            } else {
                 offSpringGenes1.set(i, parent2.getGenes().get(i));
                 offSpringGenes2.set(i, parent1.getGenes().get(i));
             }
@@ -28,8 +29,8 @@ public class UniformCrossover<T> implements Crossover<T> {
 
         Chromosome<T> offSpring1 = new Chromosome<T>(offSpringGenes1);
         Chromosome<T> offSpring2 = new Chromosome<T>(offSpringGenes2);
-        offSpring1.parent = parent1; 
-        offSpring2.parent = parent2; 
+        offSpring1.parent = parent1;
+        offSpring2.parent = parent2;
 
 
         Vector<Chromosome<T>> offSpring = new Vector<Chromosome<T>>(2);

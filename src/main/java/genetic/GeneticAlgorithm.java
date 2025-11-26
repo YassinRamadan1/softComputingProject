@@ -1,13 +1,13 @@
 package genetic;
 
-import java.util.Map;
-import java.util.Random;
-import java.util.Vector;
 import genetic.chromosome.Chromosome;
 import genetic.crossover.Crossover;
 import genetic.mutation.Mutation;
 import genetic.replacement.Replacement;
 import genetic.selection.Selection;
+
+import java.util.Random;
+import java.util.Vector;
 
 public class GeneticAlgorithm<T> {
     double mutationRate;
@@ -24,14 +24,14 @@ public class GeneticAlgorithm<T> {
 
     Selection<T> selection;
     Replacement<T> replacement;
-    Crossover<T> cv ;
+    Crossover<T> cv;
     Mutation<T> mutation;
 
-    public void setSelection(Selection<T> selection) { 
+    public void setSelection(Selection<T> selection) {
         this.selection = selection;
     }
 
-    public void setCrossover(Crossover<T> crossover) { 
+    public void setCrossover(Crossover<T> crossover) {
         this.cv = crossover;
     }
 
@@ -42,9 +42,8 @@ public class GeneticAlgorithm<T> {
     public void setReplacement(Replacement<T> replacement) {
         this.replacement = replacement;
     }
-    
-    public void setPopulationSize(int populationSize)
-    {
+
+    public void setPopulationSize(int populationSize) {
         this.populationSize = populationSize;
         fitnessValues = new Vector<>(populationSize);
         for (int i = 0; i < populationSize; i++) {
@@ -52,46 +51,40 @@ public class GeneticAlgorithm<T> {
         }
     }
 
-    public void setChromosomeLength(int chromosomeLength)
-    {
+    public void setChromosomeLength(int chromosomeLength) {
         this.chromosomeLength = chromosomeLength;
     }
 
-    
-    public void setCrossoverRate(double crossoverRate)
-    {
+
+    public void setCrossoverRate(double crossoverRate) {
         this.crossoverRate = crossoverRate;
     }
 
-    public void setMutationRate(double mutationRate)
-    {
+    public void setMutationRate(double mutationRate) {
         this.mutationRate = mutationRate;
     }
 
-    public void setGenerations(int generations)
-    {
+    public void setGenerations(int generations) {
         this.generations = generations;
     }
 
-    public void setFitnessFunction(FitnessFunction<T> func)
-    {
+    public void setFitnessFunction(FitnessFunction<T> func) {
         this.func = func;
 
     }
 
-    public void setInitialization(InitializePopulation<T> initializePopulation){
+    public void setInitialization(InitializePopulation<T> initializePopulation) {
         this.initializePopulation = initializePopulation;
     }
 
-    public void run() 
-    {
+    public void run() {
         population = initializePopulation.initializePopulation();
         double maxFitness = Double.NEGATIVE_INFINITY;
         Chromosome<T> bestChromosome = population.get(0);
         Vector<String> bestSchedule = new Vector<>();
         boolean bestFeasible = false;
-        for(int t=0; t<generations; t++){
-            for(int i=0; i<populationSize; i++){
+        for (int t = 0; t < generations; t++) {
+            for (int i = 0; i < populationSize; i++) {
                 EvaluationResult eval = func.evaluate(population.get(i));
                 double fitness = eval.fitness;
                 fitnessValues.set(i, fitness);
@@ -104,20 +97,20 @@ public class GeneticAlgorithm<T> {
                 }
             }
 
-            Vector<Chromosome<T>> selected = selection.select(population, (int)(population.size() * crossoverRate));
+            Vector<Chromosome<T>> selected = selection.select(population, (int) (population.size() * crossoverRate));
             Vector<Chromosome<T>> offSpring = new Vector<>();
 
             for (int i = 0; i < selected.size(); i += 2) {
-                offSpring.addAll(cv.crossover(selected.get(i), selected.get((i+1)%selected.size())));
+                offSpring.addAll(cv.crossover(selected.get(i), selected.get((i + 1) % selected.size())));
             }
 
-            Vector <Chromosome<T>> mutated = new Vector<>(); 
+            Vector<Chromosome<T>> mutated = new Vector<>();
             for (int i = 0; i < offSpring.size(); i++) {
                 mutated.add(mutation.mutate(offSpring.get(i), mutationRate));
             }
 
             population = replacement.replacement(population, mutated);
-                        
+
         }
 
         System.out.println("\n========== Genetic Algorithm Result ==========");

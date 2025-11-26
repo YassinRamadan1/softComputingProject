@@ -1,6 +1,6 @@
 package genetic;
 
-import java.util.*;
+import java.util.Vector;
 
 public class EvaluationResult {
     public double fitness;

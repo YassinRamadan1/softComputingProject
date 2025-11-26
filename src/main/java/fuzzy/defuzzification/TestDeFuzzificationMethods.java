@@ -1,15 +1,15 @@
 package fuzzy.defuzzification;
 
+import fuzzy.linguistic.FuzzySet;
+import fuzzy.linguistic.FuzzyVariable;
+import fuzzy.membershipfunctions.IMembershipFunction;
+import fuzzy.membershipfunctions.TriangularMF;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import fuzzy.membership.IMembershipFunction;
-import fuzzy.membership.TriangularMF;
-import fuzzy.variables.FuzzySet;
-import fuzzy.variables.FuzzyVariable;
-
 public class TestDeFuzzificationMethods {
-    
+
     public static void main(String[] args) {
 
         FuzzyVariable outputVar = new FuzzyVariable("Output", 0.0, 100.0);
@@ -17,12 +17,12 @@ public class TestDeFuzzificationMethods {
         IMembershipFunction mfMedium = new TriangularMF("Medium", 25, 50, 75);
         IMembershipFunction mfHigh = new TriangularMF("High", 50, 100, 100);
         FuzzySet lowSet = new FuzzySet("Low", mfLow);
-        FuzzySet mediumSet = new FuzzySet("Medium", mfMedium);  
+        FuzzySet mediumSet = new FuzzySet("Medium", mfMedium);
         FuzzySet highSet = new FuzzySet("High", mfHigh);
         outputVar.addFuzzySet(lowSet);
         outputVar.addFuzzySet(mediumSet);
         outputVar.addFuzzySet(highSet);
-        
+
         Map<String, Double> Memberships = new LinkedHashMap();
         Memberships.put("Low", 0.3);
         Memberships.put("Medium", 0.6);

@@ -2,9 +2,10 @@ package fuzzy.inference;
 
 import fuzzy.operators.snorm.SNorm;
 import fuzzy.operators.tnorm.TNorm;
-import fuzzy.rules.FuzzyRule;
-import fuzzy.rules.RuleAntecedent;
-import fuzzy.rules.RuleConnector;
+import fuzzy.rulebase.FuzzyRule;
+import fuzzy.rulebase.RuleAntecedent;
+import fuzzy.rulebase.RuleConnector;
+
 import java.util.Map;
 
 public class AntecedentEvaluator {
@@ -25,18 +26,18 @@ public class AntecedentEvaluator {
             String setName = antecedent.getSetName();
 
             Map<String, Double> fuzzifiedValues = fuzzifiedInputs.get(varName);
-            if(fuzzifiedValues == null) {
+            if (fuzzifiedValues == null) {
                 throw new IllegalStateException("Fuzzified values not found for variable: " + varName);
             }
 
             Double membership = fuzzifiedValues.get(setName);
-            if(membership==null) membership=0.0;
+            if (membership == null) membership = 0.0;
 
-            if(antecedent.getOperator()==RuleAntecedent.Operator.IS_NOT) {
-                membership=1.0-membership;
+            if (antecedent.getOperator() == RuleAntecedent.Operator.IS_NOT) {
+                membership = 1.0 - membership;
             }
 
-            if(connector==RuleConnector.AND) {
+            if (connector == RuleConnector.AND) {
                 antecedentStrength = andOperator.apply(antecedentStrength, membership);
             } else {
                 antecedentStrength = orOperator.apply(antecedentStrength, membership);

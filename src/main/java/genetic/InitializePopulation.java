@@ -1,10 +1,10 @@
 package genetic;
 
-import java.util.Vector;
-
 import genetic.chromosome.Chromosome;
 
+import java.util.Vector;
+
 public interface InitializePopulation<T> {
-    public Vector<Chromosome<T>> initializePopulation();
-    
+    Vector<Chromosome<T>> initializePopulation();
+
 }

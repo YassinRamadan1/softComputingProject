@@ -1,11 +1,12 @@
 package genetic.replacement;
-import java.util.Vector;
-import java.util.Collections;
-import java.util.Comparator;
 
 import genetic.chromosome.Chromosome;
 
-public class Elitism_Replacement<T> implements Replacement<T>{
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Vector;
+
+public class Elitism_Replacement<T> implements Replacement<T> {
 
     private final int nElites;
 

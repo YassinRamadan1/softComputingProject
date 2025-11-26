@@ -1,7 +1,8 @@
 package fuzzy.inference;
 
-import fuzzy.rules.FuzzyRuleBase;
-import fuzzy.variables.FuzzyVariable;
+import fuzzy.linguistic.FuzzyVariable;
+import fuzzy.rulebase.FuzzyRuleBase;
+
 import java.util.Map;
 
 public interface InferenceEngine {
