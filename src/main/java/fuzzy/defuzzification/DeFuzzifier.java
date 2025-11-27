@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DeFuzzifier {
-    private final Map<String, Double> Memberships = new LinkedHashMap();
+    private final Map<String, Double> Memberships = new LinkedHashMap<>();
     private final FuzzyVariable outputVariable;
     private final DeFuzzificationMethod method;
 

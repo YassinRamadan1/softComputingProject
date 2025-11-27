@@ -24,7 +24,7 @@ public class TestDeFuzzificationMethods {
         outputVar.addFuzzySet(mediumSet);
         outputVar.addFuzzySet(highSet);
 
-        Map<String, Double> Memberships = new LinkedHashMap();
+        Map<String, Double> Memberships = new LinkedHashMap<>();
         Memberships.put(StaticData.LOW, 0.3);
         Memberships.put(StaticData.MEDIUM, 0.6);
         Memberships.put(StaticData.HIGH, 0.2);
