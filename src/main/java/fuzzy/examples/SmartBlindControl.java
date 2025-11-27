@@ -159,9 +159,10 @@ public class SmartBlindControl {
         Implication implication = OperatorFactory.createImplication(config.getImplicationOperatorType());
         Aggregation aggregation = OperatorFactory.createAggregation(config.getAggregationOperatorType());
         mamdaniInference = new MamdaniInference(tNorm, sNorm, implication, aggregation);
-
-        prepareSugenoOutputs();
-        sugenoInference = new SugenoInference(tNorm, sNorm, sugenoOutputs);
+        // if (modeChoice != 3) {
+        //     prepareSugenoOutputs();
+        //     sugenoInference = new SugenoInference(tNorm, sNorm, sugenoOutputs);
+        // }
 
         InputValidationStrategy strategy = ValidationStrategyFactory.createStrategy(config.getValidationStrategyType(), true);
         inputValidator = new InputValidator(strategy);
@@ -366,12 +367,14 @@ public class SmartBlindControl {
         System.out.println("Light: " + light + ", Temp: " + temperature + " => Blind Opening: (" + String.format("%.2f", crispOutput) + "%), The Crisp Set: {'" + crispSet + "'}");
         
 
-        InferenceResult sugenoResult = sugenoInference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
+        // if (modeChoice == 3) return crispOutput;
 
-        double sugenoOutput = sugenoResult.getAggregatedOutputMemberships().get("SugenoCrispOutput");
+        // InferenceResult sugenoResult = sugenoInference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
 
-        System.out.println("Using Sugeno Inference:");
-        System.out.println("Light: " + light + ", Temp: " + temperature + " => Blind Opening: (" + String.format("%.2f", sugenoOutput) + "%)");
+        // double sugenoOutput = sugenoResult.getAggregatedOutputMemberships().get("SugenoCrispOutput");
+
+        // System.out.println("Using Sugeno Inference:");
+        // System.out.println("Light: " + light + ", Temp: " + temperature + " => Blind Opening: (" + String.format("%.2f", sugenoOutput) + "%)");
 
         return crispOutput;
     }
