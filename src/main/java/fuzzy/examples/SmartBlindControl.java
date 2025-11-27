@@ -122,7 +122,20 @@ public class SmartBlindControl {
             System.out.println("Using manually defined rules. Total: " + ruleBase.getRules().size());
         }
         else if (modeChoice == 3) {
-            System.out.println("Please provide the path to your rules file:");
+            System.out.println("Please know that the each rule has one type of connection (AND) or (OR).");
+            System.out.println("Please provide the path to your rules file it should be like:");
+            System.out.println("[\r\n" + //
+                                "  {\r\n" + //
+                                "    \"name\": \"Rule Name\",\r\n" + //
+                                "    \"enabled\": true,\r\n" + //
+                                "    \"connector\": \"Connector Type (AND) or (OR)\",\r\n" + //
+                                "    \"antecedents\": [\r\n" + //
+                                "      { \"variableName\": \"  \", \"setName\": \"  \", \"operator\": \"(IS) or (IS_NOT)\" },\r\n" + //
+                                "      { \"variableName\": \"  \", \"setName\": \"  \", \"operator\": \"(IS) or (IS_NOT)\" }\r\n" + //
+                                "    ],\r\n" + //
+                                "    \"consequent\": { \"variableName\": \"  \", \"setName\": \"  \" }\r\n" + //
+                                "  }, ......\r\n" + //
+                                "]");
             String configPath = new Scanner(System.in).nextLine().trim();
             
             System.out.println("Configuration loaded from: " + StaticData.CONFIG_PATH);

@@ -1,0 +1,58 @@
+{
+  "defaults": {
+    "inferenceEngine": "MAMDANI",
+    "andOperator": "MIN",
+    "orOperator": "MAX",
+    "implicationOperator": "MIN",
+    "aggregationOperator": "MAX",
+    "defuzzificationMethod": "WEIGHTED_AVERAGE",
+    "validationStrategy": "CLAMP"
+  },
+  "caseStudy": {
+    "name": "SmartWashingMachine",
+    "description": "Automatic wash time control based on dirt level and fabric softness",
+    "rulesFile": "src\\main\\resources\\fuzzy\\rulebase\\LabCaseStudyRule.json",
+
+    "inputs": [
+      {
+        "name": "LightIntensity",
+        "domain": { "min": 0.0, "max": 100.0 },
+        "fuzzySets": [
+          { "name": "Small",  "type": "TRAPEZOIDAL", "params": [0, 0, 20, 40] },
+          { "name": "Medium", "type": "TRAPEZOIDAL", "params": [20, 40, 60, 80] },
+          { "name": "Large",  "type": "TRAPEZOIDAL", "params": [60, 80, 100, 100] }
+        ]
+      },
+
+      {
+        "name": "RoomTemperature",
+        "domain": { "min": 0.0, "max": 100.0 },
+        "fuzzySets": [
+          { "name": "Soft",     "type": "TRAPEZOIDAL", "params": [0, 0, 20, 40] },
+          { "name": "Ordinary", "type": "TRAPEZOIDAL", "params": [20, 40, 60, 80] },
+          { "name": "Stiff",    "type": "TRAPEZOIDAL", "params": [60, 80, 100, 100] }
+        ]
+      }
+    ],
+
+    "output": {
+      "name": "BlindOpening",
+      "domain": { "min": 0.0, "max": 60.0 },
+      "fuzzySets": [
+        { "name": "VerySmall",  "type": "TRIANGULAR", "params": [0, 0, 15] },
+        { "name": "Small",      "type": "TRIANGULAR", "params": [0, 15, 30] },
+        { "name": "Standard",   "type": "TRIANGULAR", "params": [15, 30, 45] },
+        { "name": "Large",      "type": "TRIANGULAR", "params": [30, 45, 60] },
+        { "name": "VeryLarge",  "type": "TRIANGULAR", "params": [45, 60, 60] }
+      ]
+    },
+
+    "testScenarios": [
+      { "name": "Small Dirt & Soft Fabric", "dirtLevel": 15, "fabricSoftness": 20 },
+      { "name": "Medium Dirt & Ordinary Fabric", "dirtLevel": 50, "fabricSoftness": 50 },
+      { "name": "Large Dirt & Stiff Fabric", "dirtLevel": 90, "fabricSoftness": 85 },
+      { "name": "Medium Dirt & Soft Fabric", "dirtLevel": 45, "fabricSoftness": 25 },
+      { "name": "Small Dirt & Stiff Fabric", "dirtLevel": 30, "fabricSoftness": 90 }
+    ]
+  }
+}

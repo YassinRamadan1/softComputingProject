@@ -2,8 +2,10 @@ package fuzzy.util;
 
 public class StaticData {
     public final static String DEFINED_RULES_PATH = "src/main/resources/fuzzy/rulebase/definedRules.json";
+    // public final static String DEFINED_RULES_PATH = "src/main/resources/fuzzy/rulebase/LabCaseStudyRules.json";
     public final static String SAVED_RULES_PATH = "src/main/resources/fuzzy/rulebase/savedRules.json";
     public final static String CONFIG_PATH = "/fuzzy/configs/config.json";
+    // public final static String CONFIG_PATH = "/fuzzy/configs/configForLabCaseStudy.json";
 
     public final static String LIGHT_INTENSITY = "LightIntensity";
     public final static String LIGHT_INTENSITY_SMALL_L = "lightIntensity";
