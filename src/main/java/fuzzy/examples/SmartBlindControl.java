@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class SmartBlindControl {
-    private final boolean loadFromFiles;
+    private final int modeChoice;
     private FuzzyVariable lightIntensity;
     private FuzzyVariable roomTemperature;
     private FuzzyVariable blindOpening;
@@ -43,8 +43,8 @@ public class SmartBlindControl {
     private FuzzyConfiguration config;
     private InputValidator inputValidator;
 
-    public SmartBlindControl(boolean loadFromFiles) {
-        this.loadFromFiles = loadFromFiles;
+    public SmartBlindControl(int modeChoice) {
+        this.modeChoice = modeChoice;
         initialize();
     }
 
@@ -58,12 +58,12 @@ public class SmartBlindControl {
         System.out.println("Select mode:");
         System.out.println("1. Load from files (config.json + definedRules.json)");
         System.out.println("2. Use manual configuration");
-        System.out.print("Enter choice (1 or 2): ");
-        int modeChoice = scanner.nextInt();
-        boolean loadFromFiles = (modeChoice == 1);
+        System.out.println("3. Read from your own rules file (config.json + your rules file)");
+        System.out.print("Enter choice (1, 2 or 3): ");
+        int mode = scanner.nextInt();
 
         System.out.println("\n--- Initializing System ---");
-        SmartBlindControl controller = new SmartBlindControl(loadFromFiles);
+        SmartBlindControl controller = new SmartBlindControl(mode);
 
         System.out.println("\n========================================");
         System.out.println("          EVALUATION MODE");
@@ -84,7 +84,7 @@ public class SmartBlindControl {
                 double temp = scanner.nextDouble();
                 controller.evaluate(light, temp);
             } else if (choice == 2) {
-                if (loadFromFiles) {
+                if (mode == 1 || mode == 3) {
                     controller.runTestScenariosFromConfig();
                 } else {
                     controller.runHardcodedTestScenarios();
@@ -94,13 +94,14 @@ public class SmartBlindControl {
                 break;
             } else {
                 System.out.println("Invalid choice. Try again.");
+                throw new IllegalArgumentException("Invalid mode: " + mode);
             }
         }
         scanner.close();
     }
 
     private void initialize() {
-        if (loadFromFiles) {
+        if (modeChoice == 1) {
             config = ConfigLoader.load();
 
             System.out.println("Configuration loaded from: " + StaticData.CONFIG_PATH);
@@ -109,7 +110,7 @@ public class SmartBlindControl {
             blindOpening = createVariableFromConfig(config.getOutputVariable());
 
             ruleBase = loadRulesFromFile();
-        } else {
+        } else if (modeChoice == 2) {
             config = createManualConfiguration();
             System.out.println("Using manually defined configuration.");
 
@@ -119,6 +120,21 @@ public class SmartBlindControl {
 
             ruleBase = createManualRules();
             System.out.println("Using manually defined rules. Total: " + ruleBase.getRules().size());
+        }
+        else if (modeChoice == 3) {
+            System.out.println("Please provide the path to your rules file:");
+            String configPath = new Scanner(System.in).nextLine().trim();
+            
+            System.out.println("Configuration loaded from: " + StaticData.CONFIG_PATH);
+            config = createManualConfiguration();
+            config.setRulesFile(configPath);
+            lightIntensity = createLightIntensityVariable();
+            roomTemperature = createRoomTemperatureVariable();
+            blindOpening = createBlindOpeningVariable();
+            ruleBase = loadRulesFromFile();
+        }
+        else {
+            throw new IllegalArgumentException("Invalid mode: " + modeChoice);
         }
 
         TNorm tNorm = OperatorFactory.createTNorm(config.getAndOperatorType());
