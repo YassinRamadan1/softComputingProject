@@ -9,6 +9,8 @@ import fuzzy.defuzzification.MeanOfMax;
 import fuzzy.defuzzification.WeightedAverage;
 import fuzzy.inference.InferenceResult;
 import fuzzy.inference.mamdani.MamdaniInference;
+import fuzzy.inference.sugeno.SugenoInference;
+import fuzzy.inference.sugeno.SugenoOutput;
 import fuzzy.linguistic.Fuzzifier;
 import fuzzy.linguistic.FuzzySet;
 import fuzzy.linguistic.FuzzyVariable;
@@ -39,7 +41,9 @@ public class SmartBlindControl {
     private FuzzyVariable roomTemperature;
     private FuzzyVariable blindOpening;
     private FuzzyRuleBase ruleBase;
-    private MamdaniInference inference;
+    private MamdaniInference mamdaniInference;
+    private SugenoInference sugenoInference;
+    private Map<String, SugenoOutput> sugenoOutputs;
     private FuzzyConfiguration config;
     private InputValidator inputValidator;
 
@@ -154,10 +158,62 @@ public class SmartBlindControl {
         SNorm sNorm = OperatorFactory.createSNorm(config.getOrOperatorType());
         Implication implication = OperatorFactory.createImplication(config.getImplicationOperatorType());
         Aggregation aggregation = OperatorFactory.createAggregation(config.getAggregationOperatorType());
-        inference = new MamdaniInference(tNorm, sNorm, implication, aggregation);
+        mamdaniInference = new MamdaniInference(tNorm, sNorm, implication, aggregation);
+
+        prepareSugenoOutputs();
+        sugenoInference = new SugenoInference(tNorm, sNorm, sugenoOutputs);
 
         InputValidationStrategy strategy = ValidationStrategyFactory.createStrategy(config.getValidationStrategyType(), true);
         inputValidator = new InputValidator(strategy);
+    }
+    
+    private void prepareSugenoOutputs() {
+        sugenoOutputs = new HashMap<>();
+
+        for (var rule : ruleBase.getRules()) {
+            String ruleName = rule.getName();
+
+            double outputValue = switch (ruleName) {
+                // VeryHigh LightIntensity
+                case "R1" -> 0;
+                case "R2" -> 0;
+                case "R3" -> 20;
+                case "R4" -> 50;
+                case "R5" -> 75;
+
+                // High LightIntensity
+                case "R6" -> 0;
+                case "R7" -> 20;
+                case "R8" -> 50;
+                case "R9" -> 75;
+                case "R10" -> 100;
+
+                // Medium LightIntensity
+                case "R11" -> 20;    
+                case "R12" -> 50; 
+                case "R13" -> 50; 
+                case "R14" -> 75; 
+                case "R15" -> 100;
+
+                // Low LightIntensity
+                case "R16" -> 50;
+                case "R17" -> 75; 
+                case "R18" -> 75;
+                case "R19" -> 100;
+                case "R20" -> 100;
+
+                // VeryLow LightIntensity
+                case "R21" -> 75;
+                case "R22" -> 100;
+                case "R23" -> 100;
+                case "R24" -> 100;
+                case "R25" -> 100;
+
+                default -> 50;
+            };
+
+            sugenoOutputs.put(ruleName, new SugenoOutput(outputValue));
+        }
     }
 
     private FuzzyVariable createVariableFromConfig(FuzzyConfiguration.VariableConfig varConfig) {
@@ -297,16 +353,25 @@ public class SmartBlindControl {
         fuzzifiedInputs.put(lightIntensity.getName(), lightMemberships);
         fuzzifiedInputs.put(roomTemperature.getName(), tempMemberships);
 
-        InferenceResult result = inference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
-
-        Map<String, Double> outputMemberships = result.getAggregatedOutputMemberships();
+        InferenceResult mamdaniResult = mamdaniInference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
+        
+        Map<String, Double> outputMemberships = mamdaniResult.getAggregatedOutputMemberships();
         DeFuzzificationMethod method = createDefuzzificationMethod(outputMemberships);
         DeFuzzifier defuzzifier = new DeFuzzifier(blindOpening, outputMemberships, method);
-
+        
         double crispOutput = defuzzifier.getCrispOutput();
         String crispSet = defuzzifier.getCrispSet();
-
+        
+        System.out.println("Using Mamdani Inference:");
         System.out.println("Light: " + light + ", Temp: " + temperature + " => Blind Opening: (" + String.format("%.2f", crispOutput) + "%), The Crisp Set: {'" + crispSet + "'}");
+        
+
+        InferenceResult sugenoResult = sugenoInference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
+
+        double sugenoOutput = sugenoResult.getAggregatedOutputMemberships().get("SugenoCrispOutput");
+
+        System.out.println("Using Sugeno Inference:");
+        System.out.println("Light: " + light + ", Temp: " + temperature + " => Blind Opening: (" + String.format("%.2f", sugenoOutput) + "%)");
 
         return crispOutput;
     }
