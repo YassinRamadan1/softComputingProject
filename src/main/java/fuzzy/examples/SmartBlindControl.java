@@ -80,7 +80,7 @@ public class SmartBlindControl {
             if (choice == 1) {
                 System.out.print("Enter Light Intensity (0-1000 lux): ");
                 double light = scanner.nextDouble();
-                System.out.print("Enter Room Temperature (0-40 °C): ");
+                System.out.print("Enter Room Temperature (0-40 C): ");
                 double temp = scanner.nextDouble();
                 controller.evaluate(light, temp);
             } else if (choice == 2) {
@@ -156,7 +156,7 @@ public class SmartBlindControl {
         manualConfig.setOrOperatorType(FuzzyConfiguration.OrOperatorType.MAX);
         manualConfig.setImplicationOperatorType(FuzzyConfiguration.ImplicationOperatorType.MIN);
         manualConfig.setAggregationOperatorType(FuzzyConfiguration.AggregationOperatorType.MAX);
-        manualConfig.setDefuzzificationMethodType(FuzzyConfiguration.DefuzzificationMethodType.MEAN_OF_MAX);
+        manualConfig.setDefuzzificationMethodType(FuzzyConfiguration.DefuzzificationMethodType.WEIGHTED_AVERAGE);
         return manualConfig;
     }
 
@@ -173,6 +173,7 @@ public class SmartBlindControl {
                 rulesPath = StaticData.DEFINED_RULES_PATH;
             }
             System.out.println("Loading rules from: " + rulesPath);
+            // System.out.println("Current Dic: " + System.getProperty("user.dir"));
             FuzzyRuleBase loaded = fileHandler.load(Path.of(rulesPath), variableMap);
             System.out.println("Rules loaded successfully. Total: " + loaded.getRules().size());
             return loaded;
