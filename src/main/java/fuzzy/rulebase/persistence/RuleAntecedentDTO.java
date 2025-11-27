@@ -11,3 +11,11 @@ public class RuleAntecedentDTO {
         this.operator = operator;
     }
 }
+
+/*
+{
+  "variableName": "LightIntensity",
+  "setName": "BRIGHT",
+  "operator": "IS"
+}
+*/

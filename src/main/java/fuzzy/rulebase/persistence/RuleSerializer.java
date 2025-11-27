@@ -55,3 +55,30 @@ public class RuleSerializer {
         return gson.toJson(dtoList);
     }
 }
+
+
+/*
+result of the code:
+[
+  {
+    "name": "R1",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "BRIGHT", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "HOT", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "Blind", "setName": "CLOSED" }
+  },
+  {
+    "name": "R2",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "Light", "setName": "DARK", "operator": "IS" },
+      { "variableName": "Temperature", "setName": "COLD", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "Blind", "setName": "OPENED" }
+  }
+]
+*/

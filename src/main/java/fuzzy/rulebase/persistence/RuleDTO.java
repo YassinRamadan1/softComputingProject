@@ -17,3 +17,16 @@ public class RuleDTO {
         this.consequent = consequent;
     }
 }
+
+/*
+{
+  "name": "R1",
+  "enabled": true,
+  "connector": "AND",
+  "antecedents": [
+    { "variableName": "LightIntensity", "setName": "BRIGHT", "operator": "IS" },
+    { "variableName": "RoomTemperature", "setName": "HOT", "operator": "IS" }
+  ],
+  "consequent": { "variableName": "BlindOpening", "setName": "CLOSED" }
+}
+*/
