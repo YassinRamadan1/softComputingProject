@@ -23,6 +23,9 @@ public class WeightedAverage implements DeFuzzificationMethod {
             numerator += outputVariable.getSet(entry.getKey()).calculateCentroid() * entry.getValue();
             denominator += entry.getValue();
         }
+        if (denominator == 0){
+            return 0.0;
+        }
         return numerator / denominator;
     }
 }

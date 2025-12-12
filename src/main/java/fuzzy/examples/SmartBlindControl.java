@@ -9,6 +9,8 @@ import fuzzy.defuzzification.MeanOfMax;
 import fuzzy.defuzzification.WeightedAverage;
 import fuzzy.inference.InferenceResult;
 import fuzzy.inference.mamdani.MamdaniInference;
+import fuzzy.inference.sugeno.SugenoInference;
+import fuzzy.inference.sugeno.SugenoOutput;
 import fuzzy.linguistic.Fuzzifier;
 import fuzzy.linguistic.FuzzySet;
 import fuzzy.linguistic.FuzzyVariable;
@@ -34,17 +36,19 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class SmartBlindControl {
-    private final boolean loadFromFiles;
+    private final int modeChoice;
     private FuzzyVariable lightIntensity;
     private FuzzyVariable roomTemperature;
     private FuzzyVariable blindOpening;
     private FuzzyRuleBase ruleBase;
-    private MamdaniInference inference;
+    private MamdaniInference mamdaniInference;
+    private SugenoInference sugenoInference;
+    private Map<String, SugenoOutput> sugenoOutputs;
     private FuzzyConfiguration config;
     private InputValidator inputValidator;
 
-    public SmartBlindControl(boolean loadFromFiles) {
-        this.loadFromFiles = loadFromFiles;
+    public SmartBlindControl(int modeChoice) {
+        this.modeChoice = modeChoice;
         initialize();
     }
 
@@ -58,12 +62,12 @@ public class SmartBlindControl {
         System.out.println("Select mode:");
         System.out.println("1. Load from files (config.json + definedRules.json)");
         System.out.println("2. Use manual configuration");
-        System.out.print("Enter choice (1 or 2): ");
-        int modeChoice = scanner.nextInt();
-        boolean loadFromFiles = (modeChoice == 1);
+        System.out.println("3. Read from your own rules file (config.json + your rules file)");
+        System.out.print("Enter choice (1, 2 or 3): ");
+        int mode = scanner.nextInt();
 
         System.out.println("\n--- Initializing System ---");
-        SmartBlindControl controller = new SmartBlindControl(loadFromFiles);
+        SmartBlindControl controller = new SmartBlindControl(mode);
 
         System.out.println("\n========================================");
         System.out.println("          EVALUATION MODE");
@@ -80,11 +84,11 @@ public class SmartBlindControl {
             if (choice == 1) {
                 System.out.print("Enter Light Intensity (0-1000 lux): ");
                 double light = scanner.nextDouble();
-                System.out.print("Enter Room Temperature (0-40 °C): ");
+                System.out.print("Enter Room Temperature (0-40 C): ");
                 double temp = scanner.nextDouble();
                 controller.evaluate(light, temp);
             } else if (choice == 2) {
-                if (loadFromFiles) {
+                if (mode == 1 || mode == 3) {
                     controller.runTestScenariosFromConfig();
                 } else {
                     controller.runHardcodedTestScenarios();
@@ -94,13 +98,14 @@ public class SmartBlindControl {
                 break;
             } else {
                 System.out.println("Invalid choice. Try again.");
+                throw new IllegalArgumentException("Invalid mode: " + mode);
             }
         }
         scanner.close();
     }
 
     private void initialize() {
-        if (loadFromFiles) {
+        if (modeChoice == 1) {
             config = ConfigLoader.load();
 
             System.out.println("Configuration loaded from: " + StaticData.CONFIG_PATH);
@@ -109,7 +114,7 @@ public class SmartBlindControl {
             blindOpening = createVariableFromConfig(config.getOutputVariable());
 
             ruleBase = loadRulesFromFile();
-        } else {
+        } else if (modeChoice == 2) {
             config = createManualConfiguration();
             System.out.println("Using manually defined configuration.");
 
@@ -120,15 +125,96 @@ public class SmartBlindControl {
             ruleBase = createManualRules();
             System.out.println("Using manually defined rules. Total: " + ruleBase.getRules().size());
         }
+        else if (modeChoice == 3) {
+            System.out.println("Please know that the each rule has one type of connection (AND) or (OR).");
+            System.out.println("Please provide the path to your rules file it should be like:");
+            System.out.println("[\r\n" + //
+                                "  {\r\n" + //
+                                "    \"name\": \"Rule Name\",\r\n" + //
+                                "    \"enabled\": true,\r\n" + //
+                                "    \"connector\": \"Connector Type (AND) or (OR)\",\r\n" + //
+                                "    \"antecedents\": [\r\n" + //
+                                "      { \"variableName\": \"  \", \"setName\": \"  \", \"operator\": \"(IS) or (IS_NOT)\" },\r\n" + //
+                                "      { \"variableName\": \"  \", \"setName\": \"  \", \"operator\": \"(IS) or (IS_NOT)\" }\r\n" + //
+                                "    ],\r\n" + //
+                                "    \"consequent\": { \"variableName\": \"  \", \"setName\": \"  \" }\r\n" + //
+                                "  }, ......\r\n" + //
+                                "]");
+            String configPath = new Scanner(System.in).nextLine().trim();
+            
+            System.out.println("Configuration loaded from: " + StaticData.CONFIG_PATH);
+            config = createManualConfiguration();
+            config.setRulesFile(configPath);
+            lightIntensity = createLightIntensityVariable();
+            roomTemperature = createRoomTemperatureVariable();
+            blindOpening = createBlindOpeningVariable();
+            ruleBase = loadRulesFromFile();
+        }
+        else {
+            throw new IllegalArgumentException("Invalid mode: " + modeChoice);
+        }
 
         TNorm tNorm = OperatorFactory.createTNorm(config.getAndOperatorType());
         SNorm sNorm = OperatorFactory.createSNorm(config.getOrOperatorType());
         Implication implication = OperatorFactory.createImplication(config.getImplicationOperatorType());
         Aggregation aggregation = OperatorFactory.createAggregation(config.getAggregationOperatorType());
-        inference = new MamdaniInference(tNorm, sNorm, implication, aggregation);
+        mamdaniInference = new MamdaniInference(tNorm, sNorm, implication, aggregation);
+        // if (modeChoice != 3) {
+        //     prepareSugenoOutputs();
+        //     sugenoInference = new SugenoInference(tNorm, sNorm, sugenoOutputs);
+        // }
 
         InputValidationStrategy strategy = ValidationStrategyFactory.createStrategy(config.getValidationStrategyType(), true);
         inputValidator = new InputValidator(strategy);
+    }
+    
+    private void prepareSugenoOutputs() {
+        sugenoOutputs = new HashMap<>();
+
+        for (var rule : ruleBase.getRules()) {
+            String ruleName = rule.getName();
+
+            double outputValue = switch (ruleName) {
+                // VeryHigh LightIntensity
+                case "R1" -> 0;
+                case "R2" -> 0;
+                case "R3" -> 20;
+                case "R4" -> 50;
+                case "R5" -> 75;
+
+                // High LightIntensity
+                case "R6" -> 0;
+                case "R7" -> 20;
+                case "R8" -> 50;
+                case "R9" -> 75;
+                case "R10" -> 100;
+
+                // Medium LightIntensity
+                case "R11" -> 20;    
+                case "R12" -> 50; 
+                case "R13" -> 50; 
+                case "R14" -> 75; 
+                case "R15" -> 100;
+
+                // Low LightIntensity
+                case "R16" -> 50;
+                case "R17" -> 75; 
+                case "R18" -> 75;
+                case "R19" -> 100;
+                case "R20" -> 100;
+
+                // VeryLow LightIntensity
+                case "R21" -> 75;
+                case "R22" -> 100;
+                case "R23" -> 100;
+                case "R24" -> 100;
+                case "R25" -> 100;
+
+                default -> 50;
+            };
+
+            sugenoOutputs.put(ruleName, new SugenoOutput(outputValue));
+        }
     }
 
     private FuzzyVariable createVariableFromConfig(FuzzyConfiguration.VariableConfig varConfig) {
@@ -156,7 +242,7 @@ public class SmartBlindControl {
         manualConfig.setOrOperatorType(FuzzyConfiguration.OrOperatorType.MAX);
         manualConfig.setImplicationOperatorType(FuzzyConfiguration.ImplicationOperatorType.MIN);
         manualConfig.setAggregationOperatorType(FuzzyConfiguration.AggregationOperatorType.MAX);
-        manualConfig.setDefuzzificationMethodType(FuzzyConfiguration.DefuzzificationMethodType.MEAN_OF_MAX);
+        manualConfig.setDefuzzificationMethodType(FuzzyConfiguration.DefuzzificationMethodType.WEIGHTED_AVERAGE);
         return manualConfig;
     }
 
@@ -173,6 +259,7 @@ public class SmartBlindControl {
                 rulesPath = StaticData.DEFINED_RULES_PATH;
             }
             System.out.println("Loading rules from: " + rulesPath);
+            // System.out.println("Current Dic: " + System.getProperty("user.dir"));
             FuzzyRuleBase loaded = fileHandler.load(Path.of(rulesPath), variableMap);
             System.out.println("Rules loaded successfully. Total: " + loaded.getRules().size());
             return loaded;
@@ -267,16 +354,27 @@ public class SmartBlindControl {
         fuzzifiedInputs.put(lightIntensity.getName(), lightMemberships);
         fuzzifiedInputs.put(roomTemperature.getName(), tempMemberships);
 
-        InferenceResult result = inference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
-
-        Map<String, Double> outputMemberships = result.getAggregatedOutputMemberships();
+        InferenceResult mamdaniResult = mamdaniInference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
+        
+        Map<String, Double> outputMemberships = mamdaniResult.getAggregatedOutputMemberships();
         DeFuzzificationMethod method = createDefuzzificationMethod(outputMemberships);
         DeFuzzifier defuzzifier = new DeFuzzifier(blindOpening, outputMemberships, method);
-
+        
         double crispOutput = defuzzifier.getCrispOutput();
         String crispSet = defuzzifier.getCrispSet();
-
+        
+        System.out.println("Using Mamdani Inference:");
         System.out.println("Light: " + light + ", Temp: " + temperature + " => Blind Opening: (" + String.format("%.2f", crispOutput) + "%), The Crisp Set: {'" + crispSet + "'}");
+        
+
+        // if (modeChoice == 3) return crispOutput;
+
+        // InferenceResult sugenoResult = sugenoInference.evaluate(fuzzifiedInputs, ruleBase, blindOpening);
+
+        // double sugenoOutput = sugenoResult.getAggregatedOutputMemberships().get("SugenoCrispOutput");
+
+        // System.out.println("Using Sugeno Inference:");
+        // System.out.println("Light: " + light + ", Temp: " + temperature + " => Blind Opening: (" + String.format("%.2f", sugenoOutput) + "%)");
 
         return crispOutput;
     }

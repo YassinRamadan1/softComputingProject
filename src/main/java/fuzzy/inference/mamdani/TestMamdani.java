@@ -18,26 +18,32 @@ import java.util.Map;
 public class TestMamdani {
 
     public static void main(String[] args) {
+
+        // Light Intensity from 0 to 100 (Input)
         FuzzyVariable light = new FuzzyVariable(StaticData.LIGHT_INTENSITY, 0.0, 100.0);
         light.addFuzzySet(new FuzzySet(StaticData.DARK, new TriangularMF(StaticData.DARK, 0, 0, 50)));
         light.addFuzzySet(new FuzzySet(StaticData.BRIGHT, new TriangularMF(StaticData.BRIGHT, 50, 100, 100)));
 
+        // Temperature from 0 to 40 (Input)
         FuzzyVariable temp = new FuzzyVariable(StaticData.ROOM_TEMPERATURE, 0.0, 40.0);
         temp.addFuzzySet(new FuzzySet(StaticData.COLD, new TriangularMF(StaticData.COLD, 0, 0, 20)));
         temp.addFuzzySet(new FuzzySet(StaticData.HOT, new TriangularMF(StaticData.HOT, 20, 40, 40)));
 
+        // Blind from 0 to 30 (Output)
         FuzzyVariable blind = new FuzzyVariable(StaticData.BLIND_OPENING, 0.0, 100.0);
         blind.addFuzzySet(new FuzzySet(StaticData.CLOSED, new TriangularMF(StaticData.CLOSED, 0, 0, 50)));
         blind.addFuzzySet(new FuzzySet(StaticData.OPENED, new TriangularMF(StaticData.OPENED, 50, 100, 100)));
 
         FuzzyRuleBase ruleBase = new FuzzyRuleBase();
 
+        // R1: IF Light IS BRIGHT AND Temp IS HOT THEN Blind IS CLOSED
         ruleBase.addRule(RuleBuilder.named("R1")
-                .when(light, StaticData.BRIGHT)
-                .and(temp, StaticData.HOT)
-                .then(blind, StaticData.CLOSED)
-                .build());
-
+        .when(light, StaticData.BRIGHT)
+        .and(temp, StaticData.HOT)
+        .then(blind, StaticData.CLOSED)
+        .build());
+        
+        // R2: IF Light IS DARK   AND Temp IS COLD THEN Blind IS OPENED
         ruleBase.addRule(RuleBuilder.named("R2")
                 .when(light, StaticData.DARK)
                 .and(temp, StaticData.COLD)
@@ -53,6 +59,7 @@ public class TestMamdani {
                 OperatorFactory.createAggregation(config.getAggregationOperatorType())
         );
 
+        // Fuzzify crisp inputs (Light = 75, Temp = 30)
         Map<String, Map<String, Double>> fuzzifiedInputs = new HashMap<>();
         fuzzifiedInputs.put(StaticData.LIGHT_INTENSITY, light.fuzzify(75.0));
         fuzzifiedInputs.put(StaticData.ROOM_TEMPERATURE, temp.fuzzify(30.0));

@@ -17,6 +17,7 @@ public class AntecedentEvaluator {
         this.orOperator = orOperator;
     }
 
+    // fuzzifiedInputs likes: { "Temperature": { "Hot": 0.7, "Cold": 0.3 }, ... }
     public double evaluate(FuzzyRule rule, Map<String, Map<String, Double>> fuzzifiedInputs) {
         RuleConnector connector = rule.getConnector();
         double antecedentStrength = (connector == RuleConnector.AND) ? 1.0 : 0.0;

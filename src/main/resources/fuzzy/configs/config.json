@@ -5,13 +5,13 @@
     "orOperator": "MAX",
     "implicationOperator": "MIN",
     "aggregationOperator": "MAX",
-    "defuzzificationMethod": "MEAN_OF_MAX",
+    "defuzzificationMethod": "WEIGHTED_AVERAGE",
     "validationStrategy": "CLAMP"
   },
   "caseStudy": {
     "name": "SmartBlindControl",
     "description": "Automatic blind position control based on light intensity and room temperature",
-    "rulesFile": "src/main/resources/fuzzy/rulebase/rules.json",
+    "rulesFile": "src\\main\\resources\\fuzzy\\rulebase\\definedRules.json",
     "inputs": [
       {
         "name": "LightIntensity",
@@ -48,11 +48,11 @@
       ]
     },
     "testScenarios": [
-      { "name": "Very Bright & Hot", "lightIntensity": 950, "roomTemperature": 35 },
-      { "name": "Medium Light & Comfortable", "lightIntensity": 500, "roomTemperature": 22 },
-      { "name": "Very Low Light & Very Cold", "lightIntensity": 50, "roomTemperature": 5 },
-      { "name": "High Light & Warm", "lightIntensity": 800, "roomTemperature": 28 },
-      { "name": "Low Light & Comfortable", "lightIntensity": 200, "roomTemperature": 15 }
+      { "name": "Very Low Light & Very Cold", "lightIntensity": 100, "roomTemperature": 5 },
+      { "name": "Low Light & Cold", "lightIntensity": 350, "roomTemperature": 15 },
+      { "name": "Medium Light & Comfortable", "lightIntensity": 500, "roomTemperature": 20 },
+      { "name": "High Light & Warm", "lightIntensity": 800, "roomTemperature": 30 },
+      { "name": "Very High Light & Hot", "lightIntensity": 950, "roomTemperature": 35 }
     ]
   }
 }

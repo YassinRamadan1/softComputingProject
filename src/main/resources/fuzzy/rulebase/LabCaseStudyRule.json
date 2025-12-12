@@ -1,0 +1,92 @@
+[
+  {
+    "name": "R1",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Small", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Soft", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "VerySmall" }
+  },
+  {
+    "name": "R2",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Ordinary", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Standard" }
+  },
+  {
+    "name": "R3A",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Small", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Ordinary", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Small" }
+  },
+  {
+    "name": "R3B",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Small", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Stiff", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Small" }
+  },
+  {
+    "name": "R3C",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Soft", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Small" }
+  },
+  {
+    "name": "R4",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Medium", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Stiff", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Large" }
+  },
+  {
+    "name": "R5A",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Large", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Ordinary", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "VeryLarge" }
+  },
+  {
+    "name": "R5B",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Large", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Stiff", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "VeryLarge" }
+  },
+  {
+    "name": "R6",
+    "enabled": true,
+    "connector": "AND",
+    "antecedents": [
+      { "variableName": "LightIntensity", "setName": "Large", "operator": "IS" },
+      { "variableName": "RoomTemperature", "setName": "Soft", "operator": "IS" }
+    ],
+    "consequent": { "variableName": "BlindOpening", "setName": "Standard" }
+  }
+]

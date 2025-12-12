@@ -9,3 +9,10 @@ public class RuleConsequentDTO {
         this.setName = setName;
     }
 }
+
+/*
+{
+  "variableName": "BlindOpening",
+  "setName": "CLOSED"
+}
+*/
