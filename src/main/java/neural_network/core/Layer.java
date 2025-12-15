@@ -4,8 +4,11 @@ import neural_network.activations.Activation;
 import neural_network.initializers.Initializer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Layer {
+
     private final ArrayList<Neuron> neurons;
     private final Activation activation;
 
@@ -15,7 +18,8 @@ public class Layer {
         }
 
         this.activation = activation;
-        this.neurons = new ArrayList<>();
+        this.neurons = new ArrayList<>(neuronCount);
+
         for (int i = 0; i < neuronCount; i++) {
             double[] weights = initializer.initializeWeights(inputSize);
             double bias = initializer.initializeBias();
@@ -36,26 +40,30 @@ public class Layer {
             throw new IllegalArgumentException("Gradient size does not match number of neurons");
         }
 
-        double[] dLoss_dInputs = null;
+        int inputSize = getInputSize();
+        double[] dLoss_dInputs = new double[inputSize];
+
         for (int i = 0; i < neurons.size(); i++) {
-            double[] neuronInputGradients = neurons.get(i).backward(dLoss_dOutputs[i]);
-            if (dLoss_dInputs == null) {
-                dLoss_dInputs = neuronInputGradients;
-            }
-            else {
-                for (int j = 0; j < neuronInputGradients.length; j++) {
-                    dLoss_dInputs[j] += neuronInputGradients[j];
-                }
+            double[] neuronGrad = neurons.get(i).backward(dLoss_dOutputs[i]);
+            for (int j = 0; j < inputSize; j++) {
+                dLoss_dInputs[j] += neuronGrad[j];
             }
         }
         return dLoss_dInputs;
     }
 
-    public ArrayList<Neuron> getNeurons() {
-        return neurons;
+    public List<Neuron> getNeurons() {
+        return Collections.unmodifiableList(neurons);
     }
 
     public Activation getActivation() {
         return activation;
+    }
+
+    public int getInputSize() {
+        if (neurons.isEmpty()) {
+            throw new IllegalStateException("Layer has no neurons");
+        }
+        return neurons.get(0).getWeights().length;
     }
 }

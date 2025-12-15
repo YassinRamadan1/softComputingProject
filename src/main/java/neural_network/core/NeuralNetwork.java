@@ -53,4 +53,12 @@ public class NeuralNetwork {
     public ArrayList<Layer> getLayers() {
         return layers;
     }
+
+    public int getInputSize() {
+        if (layers.isEmpty()) {
+            throw new IllegalStateException("Network has no layers");
+        }
+        return layers.get(0).getInputSize();
+    }
+
 }
