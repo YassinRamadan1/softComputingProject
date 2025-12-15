@@ -100,6 +100,43 @@ For each project phase, a dedicated **case study** demonstrates:
 
 ---
 
+## 📂Project Structure
+
+```
+NFG-Library/
+├── src/main/java/          # Main library source code
+│   ├── genetic/                       # Genetic Algorithms module with Task Scheduling case study
+│   ├── fuzzy/                         # Fuzzy Logic module with case Blind Control case study
+│   └── neural_network/                # Neural Networks module with Banknote Authentication case study
+├── src/main/resources/                # Configuration files for case studies
+├── docs/                              # Documentation
+├── pom.xml                            # Maven project file
+├── run.sh                             # Script to build and run the project
+└── README.md                          # Project overview and instructions
+
+```
+
+---
+
+## ▶️ How to Run the Neural Network Case Study (Runnable Demo)
+
+### Prerequisites
+- **Java 17+**
+- **Apache Maven**
+
+If Maven is not installed:
+```bash
+sudo apt install maven
+# From the project root directory
+chmod +x run.sh
+./run.sh
+```
+The run.sh script will:
+1. Build the project using Maven
+2. Run the Banknote Authentication neural network case study
+
+
+---
 ## 📚 Technologies Used
 - Java 17+
 - Maven
