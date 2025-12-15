@@ -1,9 +1,11 @@
 package neural_network.activations;
 
 public interface Activation {
-    double forward(double x);
+    double apply(double x);
 
     double derivative(double x);
-    
-    String getName();
-} 
+
+    default String getName() {
+        return this.getClass().getSimpleName();
+    }
+}

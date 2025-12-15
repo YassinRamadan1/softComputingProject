@@ -1,0 +1,38 @@
+{
+  "dataset": {
+    "path": "src/main/java/neural_network/case_study/data/banknote.csv",
+    "hasHeader": false,
+    "trainRatio": 0.8,
+    "shuffle": true
+  },
+
+  "model": {
+    "learningRate": 0.01,
+    "epochs": 300,
+    "batchSize": 16,
+    "threshold": 0.5
+  },
+
+  "layers": [
+    {
+      "neurons": 16,
+      "activation": "relu"
+    },
+    {
+      "neurons": 8,
+      "activation": "tanh"
+    },
+    {
+        "neurons": 4,
+        "activation": "relu"
+    },
+    {
+      "neurons": 2,
+      "activation": "tanh"
+    },
+    {
+      "neurons": 1,
+      "activation": "sigmoid"
+    }
+  ]
+}
