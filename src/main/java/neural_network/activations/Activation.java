@@ -1,4 +1,9 @@
 package neural_network.activations;
 
-public class Activation {
-}
+public interface Activation {
+    double forward(double x);
+
+    double derivative(double x);
+    
+    String getName();
+} 
