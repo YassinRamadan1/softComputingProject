@@ -20,6 +20,9 @@ public class CaseStudyConfig {
         public int epochs;
         public int batchSize;
         public double threshold;
+        public String loss;
+        public String optimizer;
+        public String initializer;
     }
 
     public static class LayerConfig {

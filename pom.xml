@@ -62,7 +62,18 @@
                 <version>3.2.5</version>
             </plugin>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>neural_network.case_study.BanknoteCaseStudy</mainClass>
+                </configuration>
+            </plugin>
+
+
         </plugins>
+
     </build>
 
 </project>

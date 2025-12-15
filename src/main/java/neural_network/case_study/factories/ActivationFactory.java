@@ -1,4 +1,4 @@
-package neural_network.case_study;
+package neural_network.case_study.factories;
 
 import neural_network.activations.*;
 

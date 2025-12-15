@@ -1,53 +1,146 @@
 # NFG-Library
 
-A modular, object-oriented Java library implementing **Neural Networks**, **Fuzzy Logic**, and **Genetic Algorithms**, supported by real-world **case studies** demonstrating practical soft computing applications.
+A modular, object-oriented **Java soft computing library** implementing:
+
+- **Genetic Algorithms**
+- **Fuzzy Logic Systems**
+- **Neural Networks**
+
+The library is supported by **real-world case studies**, each demonstrating how a soft computing technique can be applied in practice using a **clean, reusable API**.
 
 ---
 
 ## 🧠 Overview
 
-**NFG-Library** provides unified, reusable, and maintainable implementations of core soft computing techniques.  
-The goal is to offer a clean API that allows developers, students, and researchers to integrate soft computing methods into different applications easily.
+**NFG-Library** is designed as a **generic and extensible soft computing framework**.  
+Each algorithmic paradigm is implemented **independently of any specific problem**, following clean software architecture principles.
 
-This repository also includes **case studies** (one per phase) that showcase how each technique can be applied to solve real-world problems.
+For each project phase, a dedicated **case study** demonstrates:
+- How the library is configured
+- How data is preprocessed
+- How training and evaluation are performed
+- How results are obtained and interpreted
 
 ---
 
 ## 🚀 Features
 
-### ✔ Genetic Algorithms  
-- Rank / Roulette selection  
+### 🧬 Genetic Algorithms
+- Roulette & rank-based selection  
 - Crossover and mutation operators  
-- Fitness evaluation interface  
-- Customizable parameters  
+- Fitness function abstraction  
+- Configurable population size, mutation rate, and generations  
+- Problem-independent design  
 
-### ✔ Fuzzy Logic  
-- Fuzzy sets and membership functions  
-- Fuzzy rules and inference engine  
-- Defuzzification methods  
-- Modular rule-based design  
+---
 
-### ✔ Neural Networks  
-- Feed-forward neural networks  
+### 🌫️ Fuzzy Logic
+- Linguistic variables and fuzzy sets  
+- Membership functions (Triangular, Trapezoidal, Gaussian)  
+- Mamdani and Sugeno inference engines  
+- AND / OR operators (T-Norms & S-Norms)  
+- Defuzzification methods (Centroid, Mean of Maximum)  
+- Rule-based system with enable/disable and weighting support  
+
+---
+
+### 🧠 Neural Networks
+- Feed-forward fully connected neural networks  
 - Backpropagation training  
-- Activation functions (ReLU, Sigmoid, etc.)  
-- Configurable architectures  
+- Activation functions:
+  - ReLU  
+  - Sigmoid  
+  - Tanh  
+  - Linear  
+- Loss functions:
+  - Mean Squared Error (MSE)  
+  - Binary Cross-Entropy  
+- Optimizer:
+  - Stochastic Gradient Descent (SGD)  
+- Weight initialization:
+  - Xavier initialization  
+- Configurable architecture and hyperparameters  
+- Graceful handling of invalid or missing inputs  
 
 ---
 
 ## 🧪 Case Studies
 
-### 🔹 Phase 1 — Genetic Algorithms  
-- Job Scheduling  
-
-### 🔹 Phase 2 — Fuzzy Logic  
-- Automatic Window Blind Control
+### 🔹 Phase 1 — Genetic Algorithms
+**Problem:** Job Scheduling  
+**Goal:** Optimize task assignment using evolutionary search  
+**Technique:** Genetic Algorithm  
 
 ---
 
-## 📚 Technologies Used
+### 🔹 Phase 2 — Fuzzy Logic
+**Problem:** Automatic Window Blind Control  
 
-- ![Java Version](https://img.shields.io/badge/Java-25-blue)
-- Object-Oriented Design  
-- Modular Architecture  
-- Soft Computing Concepts  
+**Inputs:**  
+- Light Intensity  
+- Room Temperature  
+
+**Output:**  
+- Blind Opening Percentage  
+
+**Technique:** Mamdani & Sugeno Fuzzy Inference Systems  
+
+---
+
+### 🔹 Phase 3 — Neural Networks
+**Problem:** Banknote Authentication  
+**Goal:** Classify banknotes as genuine or counterfeit  
+
+**Details:**
+- Binary classification  
+- Feed-forward neural network  
+- ReLU hidden layer + Sigmoid output  
+- Cross-Entropy loss  
+- Config-driven architecture  
+
+---
+
+## 📂Project Structure
+
+```
+NFG-Library/
+├── src/main/java/          # Main library source code
+│   ├── genetic/                       # Genetic Algorithms module with Task Scheduling case study
+│   ├── fuzzy/                         # Fuzzy Logic module with case Blind Control case study
+│   └── neural_network/                # Neural Networks module with Banknote Authentication case study
+├── src/main/resources/                # Configuration files for case studies
+├── docs/                              # Documentation
+├── pom.xml                            # Maven project file
+├── run.sh                             # Script to build and run the project
+└── README.md                          # Project overview and instructions
+
+```
+
+---
+
+## ▶️ How to Run the Neural Network Case Study (Runnable Demo)
+
+### Prerequisites
+- **Java 17+**
+- **Apache Maven**
+
+If Maven is not installed:
+```bash
+sudo apt install maven
+# From the project root directory
+chmod +x run.sh
+./run.sh
+```
+The run.sh script will:
+1. Build the project using Maven
+2. Run the Banknote Authentication neural network case study
+
+
+---
+## 📚 Technologies Used
+- Java 17+
+- Maven
+- Object-Oriented Design
+- Modular Architecture
+- Soft Computing Algorithms
+- Configuration-driven experiments
