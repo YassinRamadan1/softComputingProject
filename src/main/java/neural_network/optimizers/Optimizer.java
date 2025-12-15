@@ -1,4 +1,6 @@
 package neural_network.optimizers;
 
-public class Optimizer {
+public interface Optimizer {
+
+    public double getNewWeight(double oldWeight, double gradient);
 }
