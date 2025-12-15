@@ -10,7 +10,10 @@
     "learningRate": 0.01,
     "epochs": 300,
     "batchSize": 16,
-    "threshold": 0.5
+    "threshold": 0.5,
+    "loss": "cross_entropy",
+    "optimizer": "sgd",
+    "initializer": "xavier"
   },
 
   "layers": [

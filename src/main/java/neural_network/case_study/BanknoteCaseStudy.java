@@ -1,12 +1,13 @@
 package neural_network.case_study;
 
 import neural_network.activations.Activation;
+import neural_network.case_study.factories.ActivationFactory;
+import neural_network.case_study.factories.InitializerFactory;
+import neural_network.case_study.factories.LossFactory;
+import neural_network.case_study.factories.OptimizerFactory;
 import neural_network.core.Layer;
 import neural_network.core.ModelConfig;
 import neural_network.core.NeuralNetwork;
-import neural_network.initializers.Xavier;
-import neural_network.loss.CrossEntropy;
-import neural_network.optimizers.SGD;
 import neural_network.training.Trainer;
 import neural_network.utils.*;
 
@@ -29,9 +30,9 @@ public class BanknoteCaseStudy {
                 .learningRate(cfg.model.learningRate)
                 .epochs(cfg.model.epochs)
                 .batchSize(cfg.model.batchSize)
-                .lossFunction(new CrossEntropy())
-                .optimizer(new SGD(cfg.model.learningRate))
-                .initializer(new Xavier())
+                .lossFunction(LossFactory.fromString(cfg.model.loss))
+                .optimizer(OptimizerFactory.fromString(cfg.model.optimizer, cfg.model.learningRate))
+                .initializer(InitializerFactory.fromString(cfg.model.initializer))
                 .build();
 
         NeuralNetwork network = new NeuralNetwork(modelConfig);
