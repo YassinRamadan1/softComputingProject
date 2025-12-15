@@ -8,10 +8,7 @@ import neural_network.initializers.Xavier;
 import neural_network.loss.CrossEntropy;
 import neural_network.optimizers.SGD;
 import neural_network.training.Trainer;
-import neural_network.utils.ClassificationMetrics;
-import neural_network.utils.Normalization;
-import neural_network.utils.SD;
-import neural_network.utils.TrainTestSplit;
+import neural_network.utils.*;
 
 public class BanknoteCaseStudy {
 
@@ -21,6 +18,8 @@ public class BanknoteCaseStudy {
 
         double[][] inputs = dataset.inputs();
         double[][] targets = dataset.targets();
+
+        DatasetValidator.validate(inputs, targets);
 
         inputs = Normalization.minMaxNormalize(inputs);
 
@@ -45,7 +44,10 @@ public class BanknoteCaseStudy {
         }
 
         Trainer trainer = new Trainer(network, modelConfig);
-        trainer.train(split.xTrain(), split.yTrain());
+
+        double[][] validatedInputs = InputValidator.validate(split.xTrain(), network.getInputSize(), 0.0);
+
+        trainer.train(validatedInputs, split.yTrain());
 
         double[][] predictions = network.predict(split.xTest());
 
@@ -53,9 +55,7 @@ public class BanknoteCaseStudy {
 
         System.out.println("\n=== Evaluation Results ===");
         System.out.println("Accuracy: " + metrics.accuracy());
-        System.out.println("TP: " + metrics.truePositive() +
-                "  FP: " + metrics.falsePositive());
-        System.out.println("TN: " + metrics.trueNegative() +
-                "  FN: " + metrics.falseNegative());
+        System.out.println("TP: " + metrics.truePositive() + "  FP: " + metrics.falsePositive());
+        System.out.println("TN: " + metrics.trueNegative() + "  FN: " + metrics.falseNegative());
     }
 }
