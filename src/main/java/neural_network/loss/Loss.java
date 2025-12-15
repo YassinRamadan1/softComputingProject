@@ -1,4 +1,6 @@
 package neural_network.loss;
 
-public class Loss {
+public interface Loss {
+    double forward(double[] yTarget, double[] yPred);
+    double[] backward(double[] yTarget, double[] yPred);
 }
