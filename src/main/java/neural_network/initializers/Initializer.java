@@ -1,4 +1,6 @@
 package neural_network.initializers;
 
-public class Initializer {
+public interface Initializer {
+    double[] initializeWeights(int inputSize);
+    double initializeBias();
 }
