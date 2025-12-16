@@ -2,16 +2,19 @@ package neural_network.training;
 
 import neural_network.core.ModelConfig;
 import neural_network.core.NeuralNetwork;
+import neural_network.optimizers.Optimizer;
 
 public class Trainer {
     private final NeuralNetwork neuralNetwork;
     private final ModelConfig config;
     private final Metrics metrics;
+    private final Optimizer optimizer;
 
     public Trainer(NeuralNetwork neuralNetwork, ModelConfig config) {
         this.neuralNetwork = neuralNetwork;
         this.config = config;
         this.metrics = new Metrics();
+        this.optimizer = config.getOptimizer();
     }
 
     public void train(double[][] inputs, double[][] targets) {
@@ -35,12 +38,16 @@ public class Trainer {
             int batchCount = 0;
             for (int start = 0; start < numSamples; start += batchSize) {
                 int end = Math.min(start + batchSize, numSamples);
-
                 double batchLoss = 0.0;
 
                 for (int i = start; i < end; i++) {
                     int idx = indices[i];
-                    batchLoss += neuralNetwork.train(inputs[idx], targets[idx]);
+                    double[] predictions = neuralNetwork.forward(inputs[idx]);
+                    double loss = config.getLoss().computeLoss(targets[idx], predictions);
+                    double[] lossGrad = config.getLoss().computeGradient(targets[idx], predictions);
+                    neuralNetwork.backward(lossGrad);
+                    optimizer.step(neuralNetwork);
+                    batchLoss += loss;
                 }
 
                 batchLoss /= (end - start);
