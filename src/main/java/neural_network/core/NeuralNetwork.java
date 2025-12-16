@@ -1,9 +1,11 @@
 package neural_network.core;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NeuralNetwork {
-    private final ArrayList<Layer> layers = new ArrayList<>();
+
+    private final List<Layer> layers = new ArrayList<>();
     private final ModelConfig config;
 
     public NeuralNetwork(ModelConfig config) {
@@ -22,20 +24,10 @@ public class NeuralNetwork {
         return outputs;
     }
 
-    public double backward(double[] predicted, double[] actual) {
-        double lossValue = config.getLoss().computeLoss(actual, predicted);
-        double[] dLoss_dOutput = config.getLoss().computeGradient(actual, predicted);
-
+    public void backward(double[] dLoss_dOutput) {
         for (int i = layers.size() - 1; i >= 0; i--) {
             dLoss_dOutput = layers.get(i).backward(dLoss_dOutput);
         }
-
-        return lossValue;
-    }
-
-    public double train(double[] inputs, double[] targets) {
-        double[] predictions = forward(inputs);
-        return backward(predictions, targets);
     }
 
     public double[] predict(double[] inputs) {
@@ -50,7 +42,7 @@ public class NeuralNetwork {
         return predictions;
     }
 
-    public ArrayList<Layer> getLayers() {
+    public List<Layer> getLayers() {
         return layers;
     }
 
@@ -60,5 +52,4 @@ public class NeuralNetwork {
         }
         return layers.get(0).getInputSize();
     }
-
 }

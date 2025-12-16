@@ -1,6 +1,8 @@
 package neural_network.optimizers;
 
-public interface Optimizer {
+import neural_network.core.NeuralNetwork;
 
-    public double getNewWeight(double oldWeight, double gradient);
+public interface Optimizer {
+    void step(NeuralNetwork network);
 }
+

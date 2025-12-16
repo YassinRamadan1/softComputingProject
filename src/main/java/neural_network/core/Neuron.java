@@ -28,8 +28,8 @@ public class Neuron {
 
         this.lastInputs = Arrays.copyOf(inputs, inputs.length);
         lastZ = bias;
-        for (int i=0; i<weights.length; ++i) {
-            lastZ+=weights[i]*inputs[i];
+        for (int i = 0; i < weights.length; ++i) {
+            lastZ += weights[i] * inputs[i];
         }
 
         return activation.apply(lastZ);
@@ -66,8 +66,7 @@ public class Neuron {
         return biasGradient;
     }
 
-    public void updateWeights(double[] newWeights, double newBias) {
-        System.arraycopy(newWeights, 0, this.weights, 0, weights.length);
-        this.bias = newBias;
+    public void setBias(double bias) {
+        this.bias = bias;
     }
 }
