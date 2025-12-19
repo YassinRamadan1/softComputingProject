@@ -63,8 +63,22 @@ public class Trainer {
             }
             epochLoss /= batchCount;
             metrics.addLoss(epochLoss);
+
+            // calculating and saving accuracy for the graphs
+            int correct = 0;
+            for (int i = 0; i < numSamples; i++) {
+                double[] prediction = neuralNetwork.forward(inputs[i]);
+                int predicted = prediction[0] >= 0.5 ? 1 : 0;
+                int actual = targets[i][0] >= 0.5 ? 1 : 0;
+                if (predicted == actual) correct++;
+            }
+            double epochAccuracy = (double) correct / numSamples;
+
+            metrics.addAccuracy(epochAccuracy);
             System.out.println("Epoch " + (epoch + 1) + "/" + epochs + " - Loss: " + epochLoss);
         }
+        metrics.saveToCSV("training_metrics.csv");
+
     }
 
     private void shuffleArray(int[] indices) {

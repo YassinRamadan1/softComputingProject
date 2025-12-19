@@ -7,27 +7,27 @@
   },
 
   "model": {
-    "learningRate": 0.01,
+    "learningRate": 0.005,
     "epochs": 10,
     "batchSize": 16,
     "threshold": 0.5,
     "loss": "cross_entropy",
     "optimizer": "sgd",
-    "initializer": "xavier"
+    "initializer": "he"
   },
 
   "layers": [
-    { 
-      "neurons": 32, 
-      "activation": "relu" 
+    {
+      "neurons": 16,
+      "activation": "relu"
     },
-    { 
-      "neurons": 16, 
-      "activation": "relu" 
+    {
+      "neurons": 8,
+      "activation": "relu"
     },
-    { 
-      "neurons": 1,  
-      "activation": "sigmoid" 
+    {
+      "neurons": 1,
+      "activation": "sigmoid"
     }
   ]
 }
