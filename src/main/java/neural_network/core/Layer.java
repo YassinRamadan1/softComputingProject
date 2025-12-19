@@ -21,7 +21,7 @@ public class Layer {
         this.neurons = new ArrayList<>(neuronCount);
 
         for (int i = 0; i < neuronCount; i++) {
-            double[] weights = initializer.initializeWeights(inputSize);
+            double[] weights = initializer.initializeWeights(inputSize, neuronCount);
             double bias = initializer.initializeBias();
             neurons.add(new Neuron(weights, bias, activation));
         }
@@ -65,5 +65,11 @@ public class Layer {
             throw new IllegalStateException("Layer has no neurons");
         }
         return neurons.get(0).getWeights().length;
+    }
+
+    public void zeroGradients() {
+        for (Neuron neuron : neurons) {
+            neuron.zeroGradients();
+        }
     }
 }
