@@ -9,6 +9,7 @@ public final class InitializerFactory {
     public static Initializer fromString(String name) {
         return switch (name.toLowerCase()) {
             case "xavier" -> new Xavier();
+            case "he" -> new He();
             default -> throw new IllegalArgumentException("Unknown initializer: " + name);
         };
     }

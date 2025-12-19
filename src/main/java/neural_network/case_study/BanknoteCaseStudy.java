@@ -38,9 +38,19 @@ public class BanknoteCaseStudy {
         NeuralNetwork network = new NeuralNetwork(modelConfig);
 
         int previousSize = split.xTrain()[0].length;
-        for (CaseStudyConfig.LayerConfig layerCfg : cfg.layers) {
+        for (int i = 0; i < cfg.layers.size(); i++) {
+            CaseStudyConfig.LayerConfig layerCfg = cfg.layers.get(i);
             Activation activation = ActivationFactory.fromString(layerCfg.activation);
-            network.addLayer(new Layer(previousSize, layerCfg.neurons, activation, modelConfig.getInitializer()));
+            
+            int nextSize;
+            if (i < cfg.layers.size() - 1) {
+                nextSize = cfg.layers.get(i + 1).neurons;
+            } else {
+                nextSize = layerCfg.neurons;
+            }
+
+            network.addLayer(new Layer(previousSize, layerCfg.neurons, nextSize, activation, modelConfig.getInitializer()));
+            
             previousSize = layerCfg.neurons;
         }
 

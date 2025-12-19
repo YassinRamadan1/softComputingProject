@@ -12,7 +12,7 @@ public class Layer {
     private final ArrayList<Neuron> neurons;
     private final Activation activation;
 
-    public Layer(int inputSize, int neuronCount, Activation activation, Initializer initializer) {
+    public Layer(int inputSize, int neuronCount, int nextLayerSize, Activation activation, Initializer initializer) {
         if (inputSize <= 0 || neuronCount <= 0) {
             throw new IllegalArgumentException("Input size and neuron count must be > 0");
         }
@@ -21,7 +21,7 @@ public class Layer {
         this.neurons = new ArrayList<>(neuronCount);
 
         for (int i = 0; i < neuronCount; i++) {
-            double[] weights = initializer.initializeWeights(inputSize);
+            double[] weights = initializer.initializeWeights(inputSize, nextLayerSize);
             double bias = initializer.initializeBias();
             neurons.add(new Neuron(weights, bias, activation));
         }
@@ -65,5 +65,11 @@ public class Layer {
             throw new IllegalStateException("Layer has no neurons");
         }
         return neurons.get(0).getWeights().length;
+    }
+
+    public void zeroGradients() {
+        for (Neuron neuron : neurons) {
+            neuron.zeroGradients();
+        }
     }
 }

@@ -13,6 +13,7 @@ public class SGDWithMomentum implements Optimizer {
     private final double momentum;
 
     private final Map<Neuron, double[]> velocityMap = new HashMap<>();
+    private final Map<Neuron, Double> biasVelocityMap = new HashMap<>();
 
     public SGDWithMomentum(double learningRate, double momentum) {
         this.learningRate = learningRate;
@@ -23,7 +24,7 @@ public class SGDWithMomentum implements Optimizer {
     public void step(NeuralNetwork network) {
         for (Layer layer : network.getLayers()) {
             for (Neuron neuron : layer.getNeurons()) {
-                double[] velocity = velocityMap.computeIfAbsent(neuron, n -> new double[n.getWeights().length]);
+                        double[] velocity = velocityMap.computeIfAbsent(neuron, n -> new double[n.getWeights().length]);
                 double[] weights = neuron.getWeights();
                 double[] grads = neuron.getWeightGradients();
 
@@ -31,7 +32,11 @@ public class SGDWithMomentum implements Optimizer {
                     velocity[i] = momentum * velocity[i] - learningRate * grads[i];
                     weights[i] += velocity[i];
                 }
-                neuron.setBias(neuron.getBias() - learningRate * neuron.getBiasGradient());
+                double biasVelocity = biasVelocityMap.getOrDefault(neuron, 0.0);
+                biasVelocity = momentum * biasVelocity - learningRate * neuron.getBiasGradient();
+                neuron.setBias(neuron.getBias() + biasVelocity);
+
+                biasVelocityMap.put(neuron, biasVelocity);
             }
         }
     }

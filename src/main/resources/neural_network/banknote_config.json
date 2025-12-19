@@ -7,13 +7,13 @@
   },
 
   "model": {
-    "learningRate": 0.01,
+    "learningRate": 0.005,
     "epochs": 10,
     "batchSize": 16,
     "threshold": 0.5,
     "loss": "cross_entropy",
     "optimizer": "sgd",
-    "initializer": "xavier"
+    "initializer": "he"
   },
 
   "layers": [
@@ -23,15 +23,7 @@
     },
     {
       "neurons": 8,
-      "activation": "tanh"
-    },
-    {
-        "neurons": 4,
-        "activation": "relu"
-    },
-    {
-      "neurons": 2,
-      "activation": "tanh"
+      "activation": "relu"
     },
     {
       "neurons": 1,

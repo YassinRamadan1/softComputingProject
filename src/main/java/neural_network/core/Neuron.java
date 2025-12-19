@@ -19,6 +19,8 @@ public class Neuron {
         this.weights = Arrays.copyOf(weights, weights.length);
         this.bias = bias;
         this.activation = activation;
+        this.weightGradients = new double[weights.length];
+        this.biasGradient = 0.0;
     }
 
     public double forward(double[] inputs) {
@@ -39,14 +41,13 @@ public class Neuron {
         double dOutput_dZ = activation.derivative(lastZ);
         double dLoss_dZ = dLoss_dOutput * dOutput_dZ;
 
-        weightGradients = new double[weights.length];
         double[] inputGradients = new double[weights.length];
         for (int i = 0; i < weights.length; i++) {
-            weightGradients[i] = dLoss_dZ * lastInputs[i];
+            weightGradients[i] += dLoss_dZ * lastInputs[i];
             inputGradients[i] = dLoss_dZ * weights[i];
         }
 
-        biasGradient = dLoss_dZ;
+        biasGradient += dLoss_dZ;
         return inputGradients;
     }
 
@@ -68,5 +69,12 @@ public class Neuron {
 
     public void setBias(double bias) {
         this.bias = bias;
+    }
+
+    public void zeroGradients() {
+        if (weightGradients != null) {
+            Arrays.fill(weightGradients, 0.0);
+        }
+        biasGradient = 0.0;
     }
 }
