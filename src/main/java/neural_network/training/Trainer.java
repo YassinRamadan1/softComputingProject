@@ -39,6 +39,11 @@ public class Trainer {
             int batchCount = 0;
             for (int start = 0; start < numSamples; start += batchSize) {
                 int end = Math.min(start + batchSize, numSamples);
+
+                for (Layer layer : neuralNetwork.getLayers()) {
+                    layer.zeroGradients();
+                }
+                
                 double batchLoss = 0.0;
 
                 for (int i = start; i < end; i++) {
@@ -51,9 +56,6 @@ public class Trainer {
                 }
                 
                 optimizer.step(neuralNetwork);
-                for (Layer layer : neuralNetwork.getLayers()) {
-                    layer.zeroGradients();
-                }
                 
                 batchLoss /= (end - start);
                 epochLoss += batchLoss;
