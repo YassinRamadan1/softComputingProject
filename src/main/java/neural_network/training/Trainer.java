@@ -1,5 +1,6 @@
 package neural_network.training;
 
+import neural_network.core.Layer;
 import neural_network.core.ModelConfig;
 import neural_network.core.NeuralNetwork;
 import neural_network.optimizers.Optimizer;
@@ -46,10 +47,14 @@ public class Trainer {
                     double loss = config.getLoss().computeLoss(targets[idx], predictions);
                     double[] lossGrad = config.getLoss().computeGradient(targets[idx], predictions);
                     neuralNetwork.backward(lossGrad);
-                    optimizer.step(neuralNetwork);
                     batchLoss += loss;
                 }
-
+                
+                optimizer.step(neuralNetwork);
+                for (Layer layer : neuralNetwork.getLayers()) {
+                    layer.zeroGradients();
+                }
+                
                 batchLoss /= (end - start);
                 epochLoss += batchLoss;
                 batchCount++;
